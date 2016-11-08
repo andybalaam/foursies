@@ -1,5 +1,8 @@
 module Board exposing
-    ( blackPiece
+    ( Board
+    , Piece
+    , Row
+    , blackPiece
     , noPiece
     , parse
     , pieceAt
