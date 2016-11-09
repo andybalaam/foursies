@@ -6,6 +6,7 @@ module Board exposing
     , noPiece
     , parse
     , pieceAt
+    , positions
     , strings
     , toStrings
     , whitePiece
@@ -47,6 +48,27 @@ whitePiece = WhitePiece
 
 blackPiece : Piece
 blackPiece = BlackPiece
+
+
+positions : List (Int, Int)
+positions =
+    [ (0, 0)
+    , (1, 0)
+    , (2, 0)
+    , (3, 0)
+    , (0, 1)
+    , (1, 1)
+    , (2, 1)
+    , (3, 1)
+    , (0, 2)
+    , (1, 2)
+    , (2, 2)
+    , (3, 2)
+    , (0, 3)
+    , (1, 3)
+    , (2, 3)
+    , (3, 3)
+    ]
 
 
 pieceAt : (Int, Int) -> Board -> Piece

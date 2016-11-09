@@ -15,6 +15,7 @@ all =
         , test "Parsing a board with a long row" parseBoardWithShortRow
         , test "Parsing a board with a bad char" parseBoardWithInvalidChar
         , test "Parsing + formatting a non-empty board" roundTripRandomBoard
+        , test "Enumerating all positions" enumerateAllPositions
         ]
 
 
@@ -97,3 +98,27 @@ roundTripRandomBoard =
             case board of
                 Err e -> Expect.fail e
                 Ok  b -> Expect.equal input (Board.toStrings b)
+
+
+enumerateAllPositions : () -> Expect.Expectation
+enumerateAllPositions =
+    \() ->
+        Expect.equal
+            [ (0, 0)
+            , (1, 0)
+            , (2, 0)
+            , (3, 0)
+            , (0, 1)
+            , (1, 1)
+            , (2, 1)
+            , (3, 1)
+            , (0, 2)
+            , (1, 2)
+            , (2, 2)
+            , (3, 2)
+            , (0, 3)
+            , (1, 3)
+            , (2, 3)
+            , (3, 3)
+            ]
+            Board.positions
