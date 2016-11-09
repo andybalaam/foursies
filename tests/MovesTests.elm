@@ -5,6 +5,9 @@ import Test exposing (describe,test,Test)
 import Expect
 
 
+import Utils
+
+
 import Board
 import Moves
 
@@ -14,6 +17,7 @@ all =
     describe "Tests of the move calculator"
         [ test "Normally all white pieces can move" allWhitePiecesCanMove
         , test "Normally all black pieces can move" allBlackPiecesCanMove
+--        , test "Generate all moves with no jumps" allMovesNoJumps
         ]
 
 
@@ -39,6 +43,28 @@ allBlackPiecesCanMove =
         <| \board -> Expect.equal
             [(1, 1)]
             ( Moves.whichCanMove Board.blackPiece board )
+
+
+--allMovesNoJumps : () -> Expect.Expectation
+--allMovesNoJumps =
+--    forBoard
+--        "XXXX"
+--        "...."
+--        "...."
+--        "OOOO"
+--        <| \board -> Utils.equalExceptOrder
+--            [ (Moves.slide (0, 3) (0, 2))
+--            , (Moves.slide (0, 3) (1, 2))
+--            , (Moves.slide (1, 3) (0, 2))
+--            , (Moves.slide (1, 3) (1, 2))
+--            , (Moves.slide (1, 3) (2, 2))
+--            , (Moves.slide (2, 3) (1, 2))
+--            , (Moves.slide (2, 3) (2, 2))
+--            , (Moves.slide (2, 3) (3, 2))
+--            , (Moves.slide (3, 3) (2, 2))
+--            , (Moves.slide (3, 3) (3, 2))
+--            ]
+--            ( Moves.allowedMoves Board.whitePiece board )
 
 
 -- Helpers

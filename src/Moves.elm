@@ -1,5 +1,7 @@
 module Moves exposing
-    ( whichCanMove
+    ( allowedMoves
+    , slide
+    , whichCanMove
     )
 
 
@@ -7,6 +9,20 @@ import String
 
 
 import Board
+
+
+type Move =
+    Slide (Int, Int) (Int, Int)
+
+
+slide : (Int, Int) -> (Int, Int) -> Move
+slide from to =
+    Slide from to
+
+
+allowedMoves : Board.Piece -> Board.Board -> List Move
+allowedMoves side board =
+    []
 
 
 whichCanMove : Board.Piece -> Board.Board -> List (Int, Int)
