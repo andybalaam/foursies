@@ -12,15 +12,29 @@ allEqual expected actualList =
 
 equalExceptOrder : List a -> List a -> Expect.Expectation
 equalExceptOrder left right =
+    case doEqualExceptOrder left right of
+        Err e -> Expect.fail
+            (  e
+            ++ " (left="
+            ++ (toString left)
+            ++ ", right="
+            ++ (toString right)
+            ++ ")"
+            )
+        Ok _ -> Expect.pass
+
+
+doEqualExceptOrder : List a -> List a -> Result String ()
+doEqualExceptOrder left right =
     case (left, right) of
-        (l :: ls, []) -> Expect.fail ((toString l) ++ " is not in right")
-        ([], r :: rs) -> Expect.fail ((toString r) ++ " is not in left")
+        (l :: ls, []) -> Err ((toString l) ++ " is not in right")
+        ([], r :: rs) -> Err ((toString r) ++ " is not in left")
         (l :: ls, r :: rs ) ->
             let
                 rightWithoutL = List.filter (\x -> x /= l) right
             in
                 if right == rightWithoutL then
-                    Expect.fail <| (toString l) ++ " is not in right"
+                    Err <| (toString l) ++ " is not in right"
                 else
-                    equalExceptOrder ls rightWithoutL
-        ([], []) -> Expect.pass
+                    doEqualExceptOrder ls rightWithoutL
+        ([], []) -> Ok ()
