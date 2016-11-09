@@ -13,8 +13,8 @@ allEqual expected actualList =
 equalExceptOrder : List a -> List a -> Expect.Expectation
 equalExceptOrder left right =
     case (left, right) of
-        (l :: ls, []) -> Expect.fail "First is longer than second"
-        ([], r :: rs) -> Expect.fail "Second is longer than first"
+        (l :: ls, []) -> Expect.fail ((toString l) ++ " is not in right")
+        ([], r :: rs) -> Expect.fail ((toString r) ++ " is not in left")
         (l :: ls, r :: rs ) ->
             let
                 rightWithoutL = List.filter (\x -> x /= l) right
