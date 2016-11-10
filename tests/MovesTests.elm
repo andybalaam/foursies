@@ -20,6 +20,8 @@ all =
         , test "Generate forward moves with no jumps" forwardMovesNoJumps
         , test "Generate backward moves with no jumps" backwardMovesNoJumps
         , test "Generate hops and slides" hopsAndSlides
+        , test "Generate all hops down-right" allHopsDownRight
+        , test "Generate all hops up-left" allHopsUpLeft
         ]
 
 
@@ -111,3 +113,43 @@ hopsAndSlides =
             , (Moves.slide (1, 1) (0, 0))
             ]
             ( Moves.allowedMoves Board.xPiece board )
+
+
+allHopsDownRight: () -> Expect.Expectation
+allHopsDownRight =
+    let
+        hops11 = \pos -> case pos of
+            Moves.Hop (1, 1) _ _ -> True
+            _ -> False
+    in
+        Utils.forBoard
+            ".X.."
+            ".OO."
+            ".OO."
+            "...."
+            <| \board -> Utils.equalExceptOrder
+                [ (Moves.hop   (1, 1) (2, 1) (3, 1))
+                , (Moves.hop   (1, 1) (2, 2) (3, 3))
+                , (Moves.hop   (1, 1) (1, 2) (1, 3))
+                ]
+                ( List.filter hops11 <| Moves.allowedMoves Board.oPiece board )
+
+
+allHopsUpLeft: () -> Expect.Expectation
+allHopsUpLeft =
+    let
+        hops22 = \pos -> case pos of
+            Moves.Hop (2, 2) _ _ -> True
+            _ -> False
+    in
+        Utils.forBoard
+            "...."
+            ".XX."
+            ".XX."
+            ".O.."
+            <| \board -> Utils.equalExceptOrder
+                [ (Moves.hop   (2, 2) (2, 1) (2, 0))
+                , (Moves.hop   (2, 2) (1, 1) (0, 0))
+                , (Moves.hop   (2, 2) (1, 2) (0, 2))
+                ]
+                ( List.filter hops22 <| Moves.allowedMoves Board.xPiece board )

@@ -1,5 +1,6 @@
 module Moves exposing
-    ( allowedMoves
+    ( Move(Slide, Hop)
+    , allowedMoves
     , hop
     , slide
     , whichCanMove
