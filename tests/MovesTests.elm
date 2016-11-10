@@ -17,7 +17,8 @@ all =
     describe "Tests of the move calculator"
         [ test "Normally all O pieces can move" allOPiecesCanMove
         , test "Normally all X pieces can move" allXPiecesCanMove
-        , test "Generate all moves with no jumps" allMovesNoJumps
+        , test "Generate forward moves with no jumps" forwardMovesNoJumps
+        , test "Generate backward moves with no jumps" backwardMovesNoJumps
         ]
 
 
@@ -45,8 +46,8 @@ allXPiecesCanMove =
             ( Moves.whichCanMove Board.xPiece board )
 
 
-allMovesNoJumps : () -> Expect.Expectation
-allMovesNoJumps =
+forwardMovesNoJumps : () -> Expect.Expectation
+forwardMovesNoJumps =
     Utils.forBoard
         "XXXX"
         "...."
@@ -65,3 +66,23 @@ allMovesNoJumps =
             , (Moves.slide (3, 3) (3, 2))
             ]
             ( Moves.allowedMoves Board.oPiece board )
+
+
+backwardMovesNoJumps : () -> Expect.Expectation
+backwardMovesNoJumps =
+    Utils.forBoard
+        "...."
+        ".X.O"
+        "...."
+        "...."
+        <| \board -> Utils.equalExceptOrder
+            [ (Moves.slide (1, 1) (1, 0))
+            , (Moves.slide (1, 1) (2, 0))
+            , (Moves.slide (1, 1) (2, 1))
+            , (Moves.slide (1, 1) (2, 2))
+            , (Moves.slide (1, 1) (1, 2))
+            , (Moves.slide (1, 1) (0, 2))
+            , (Moves.slide (1, 1) (0, 1))
+            , (Moves.slide (1, 1) (0, 0))
+            ]
+            ( Moves.allowedMoves Board.xPiece board )
