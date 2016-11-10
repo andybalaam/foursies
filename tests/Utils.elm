@@ -1,6 +1,10 @@
-module Utils exposing (allEqual, equalExceptOrder)
+module Utils exposing (allEqual, equalExceptOrder, forBoard)
+
 
 import Expect
+
+
+import Board
 
 
 allEqual : a -> List a -> Expect.Expectation
@@ -38,3 +42,17 @@ doEqualExceptOrder left right =
                 else
                     doEqualExceptOrder ls rightWithoutL
         ([], []) -> Ok ()
+
+
+forBoard :
+    String -> String -> String -> String ->
+        (Board.Board -> Expect.Expectation) ->
+        (() -> Expect.Expectation)
+forBoard s1 s2 s3 s4 fn =
+    \() ->
+        let
+            board = Board.parse <| Board.strings s1 s2 s3 s4
+        in
+            case board of
+                Err e -> Expect.fail e
+                Ok b -> fn b
