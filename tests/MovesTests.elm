@@ -22,6 +22,8 @@ all =
         , test "Generate hops and slides" hopsAndSlides
         , test "Generate all hops down-right" allHopsDownRight
         , test "Generate all hops up-left" allHopsUpLeft
+        , test "Generate all takes down-right" allTakesDownRight
+        , test "Generate all takes up-left" allTakesUpLeft
         ]
 
 
@@ -153,3 +155,43 @@ allHopsUpLeft =
                 , (Moves.hop   (2, 2) (1, 2) (0, 2))
                 ]
                 ( List.filter hops22 <| Moves.allowedMoves Board.xPiece board )
+
+
+allTakesDownRight: () -> Expect.Expectation
+allTakesDownRight =
+    let
+        takes11 = \pos -> case pos of
+            Moves.Take (1, 1) _ _ -> True
+            _ -> False
+    in
+        Utils.forBoard
+            "...."
+            ".OX."
+            ".XX."
+            "...."
+            <| \board -> Utils.equalExceptOrder
+                [ (Moves.take   (1, 1) (2, 1) (3, 1))
+                , (Moves.take   (1, 1) (2, 2) (3, 3))
+                , (Moves.take   (1, 1) (1, 2) (1, 3))
+                ]
+                ( List.filter takes11 <| Moves.allowedMoves Board.oPiece board )
+
+
+allTakesUpLeft: () -> Expect.Expectation
+allTakesUpLeft =
+    let
+        takes22 = \pos -> case pos of
+            Moves.Take (2, 2) _ _ -> True
+            _ -> False
+    in
+        Utils.forBoard
+            "...."
+            ".OO."
+            ".OX."
+            "...."
+            <| \board -> Utils.equalExceptOrder
+                [ (Moves.take   (2, 2) (2, 1) (2, 0))
+                , (Moves.take   (2, 2) (1, 1) (0, 0))
+                , (Moves.take   (2, 2) (1, 2) (0, 2))
+                ]
+                ( List.filter takes22 <| Moves.allowedMoves Board.xPiece board )

@@ -1,6 +1,6 @@
 module Board exposing
     ( Board
-    , Piece
+    , Piece(OPiece, XPiece)
     , Row
     , noPiece
     , offBoard
