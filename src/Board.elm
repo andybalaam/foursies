@@ -4,6 +4,7 @@ module Board exposing
     , Row
     , blackPiece
     , noPiece
+    , offBoard
     , parse
     , pieceAt
     , positions
@@ -16,7 +17,7 @@ module Board exposing
 import String
 
 
-type Piece = NoPiece | WhitePiece | BlackPiece
+type Piece = NoPiece | WhitePiece | BlackPiece | OffBoard
 type Strings = Strings String String String String
 
 
@@ -50,6 +51,10 @@ blackPiece : Piece
 blackPiece = BlackPiece
 
 
+offBoard : Piece
+offBoard = OffBoard
+
+
 positions : List (Int, Int)
 positions =
     [ (0, 0)
@@ -73,7 +78,29 @@ positions =
 
 pieceAt : (Int, Int) -> Board -> Piece
 pieceAt (x, y) board =
-    noPiece
+    let
+        (row0, row1, row2, row3) = board.pieces
+    in
+        case y of
+            0 -> pieceInRow x row0
+            1 -> pieceInRow x row1
+            2 -> pieceInRow x row2
+            3 -> pieceInRow x row3
+            default -> offBoard
+
+
+pieceInRow : Int -> Row -> Piece
+pieceInRow x row =
+    let
+        (p0, p1, p2, p3) = row
+    in
+        case x of
+            0 -> p0
+            1 -> p1
+            2 -> p2
+            3 -> p3
+            default -> offBoard
+
 
 
 parse : Strings -> Result String Board
@@ -164,3 +191,4 @@ pieceToChar piece =
         NoPiece -> '.'
         WhitePiece -> 'O'
         BlackPiece -> 'X'
+        OffBoard -> '#'

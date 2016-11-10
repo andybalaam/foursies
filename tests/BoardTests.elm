@@ -16,6 +16,7 @@ all =
         , test "Parsing a board with a bad char" parseBoardWithInvalidChar
         , test "Parsing + formatting a non-empty board" roundTripRandomBoard
         , test "Enumerating all positions" enumerateAllPositions
+        , describe "pieceAt for various positions" piecesAtVariousPositions
         ]
 
 
@@ -122,3 +123,24 @@ enumerateAllPositions =
             , (3, 3)
             ]
             Board.positions
+
+
+piecesAtVariousPositions : List Test
+piecesAtVariousPositions =
+    let
+        fb = Utils.forBoard
+            "X..."
+            "...."
+            ".O.."
+            "...."
+        t = \msg pos expectedPiece ->
+            test msg (
+                fb <| \b -> Expect.equal expectedPiece <| Board.pieceAt pos b
+                )
+    in
+        [ t "Top left is X" (0,0) Board.blackPiece
+        , t "(1, 2) is O" (1,2) Board.whitePiece
+        , t "Top right is nothing" (3,0) Board.noPiece
+        , t "Bottom right is nothing" (3,3) Board.noPiece
+        , t "Off board" (4,3) Board.offBoard
+        ]
