@@ -138,8 +138,8 @@ piecesAtVariousPositions =
                 fb <| \b -> Expect.equal expectedPiece <| Board.pieceAt pos b
                 )
     in
-        [ t "Top left is X" (0,0) Board.blackPiece
-        , t "(1, 2) is O" (1,2) Board.whitePiece
+        [ t "Top left is X" (0,0) Board.xPiece
+        , t "(1, 2) is O" (1,2) Board.oPiece
         , t "Top right is nothing" (3,0) Board.noPiece
         , t "Bottom right is nothing" (3,3) Board.noPiece
         , t "Off board" (4,3) Board.offBoard

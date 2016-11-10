@@ -2,22 +2,22 @@ module Board exposing
     ( Board
     , Piece
     , Row
-    , blackPiece
     , noPiece
     , offBoard
+    , oPiece
     , parse
     , pieceAt
     , positions
     , strings
     , toStrings
-    , whitePiece
+    , xPiece
     )
 
 
 import String
 
 
-type Piece = NoPiece | WhitePiece | BlackPiece | OffBoard
+type Piece = NoPiece | OPiece | XPiece | OffBoard
 type Strings = Strings String String String String
 
 
@@ -43,12 +43,12 @@ noPiece : Piece
 noPiece = NoPiece
 
 
-whitePiece : Piece
-whitePiece = WhitePiece
+oPiece : Piece
+oPiece = OPiece
 
 
-blackPiece : Piece
-blackPiece = BlackPiece
+xPiece : Piece
+xPiece = XPiece
 
 
 offBoard : Piece
@@ -152,8 +152,8 @@ parseChar : Char -> Result String Piece
 parseChar c =
     case c of
         '.' -> Ok noPiece
-        'O' -> Ok whitePiece
-        'X' -> Ok blackPiece
+        'O' -> Ok oPiece
+        'X' -> Ok xPiece
         default -> Err
             ( "Invalid character " ++ (toString c)
                 ++ " - expected '.', 'X', or 'O'"
@@ -189,6 +189,6 @@ pieceToChar : Piece -> Char
 pieceToChar piece =
     case piece of
         NoPiece -> '.'
-        WhitePiece -> 'O'
-        BlackPiece -> 'X'
+        OPiece -> 'O'
+        XPiece -> 'X'
         OffBoard -> '#'
