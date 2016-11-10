@@ -1,5 +1,6 @@
 module Moves exposing
     ( allowedMoves
+    , hop
     , slide
     , whichCanMove
     )
@@ -13,11 +14,17 @@ import Board
 
 type Move =
     Slide (Int, Int) (Int, Int)
+    | Hop (Int, Int) (Int, Int) (Int, Int)
 
 
 slide : (Int, Int) -> (Int, Int) -> Move
 slide from to =
     Slide from to
+
+
+hop : (Int, Int) -> (Int, Int) -> (Int, Int) -> Move
+hop from over to =
+    Hop from over to
 
 
 adjust : (Int, Int) -> (Int, Int) -> (Int, Int)
@@ -50,13 +57,29 @@ movesForPos side board pos =
         , slide pos (adjust pos (-1,  1))
         , slide pos (adjust pos (-1,  0))
         , slide pos (adjust pos (-1, -1))
+        , hop   pos (adjust pos ( 0, -1)) (adjust pos ( 0, -2))
+        , hop   pos (adjust pos ( 1, -1)) (adjust pos ( 2, -2))
+        , hop   pos (adjust pos ( 1,  0)) (adjust pos ( 2,  0))
+        , hop   pos (adjust pos ( 1,  1)) (adjust pos ( 2,  2))
+        , hop   pos (adjust pos ( 0,  1)) (adjust pos ( 0,  2))
+        , hop   pos (adjust pos (-1,  1)) (adjust pos (-2,  2))
+        , hop   pos (adjust pos (-1,  0)) (adjust pos (-2,  0))
+        , hop   pos (adjust pos (-1, -1)) (adjust pos (-2, -2))
         ]
 
 
 allowedMove side board move =
     case move of
-        -- The destination is on board, and nothing else is there
-        Slide from to -> Board.pieceAt to board == Board.noPiece
+        -- There is space to land
+        Slide from to    -> Board.pieceAt to board == Board.noPiece
+
+        -- There is space to land, and we are hopping over
+        -- our own piece.
+        Hop from over to ->
+            (  Board.pieceAt to board == Board.noPiece
+            && Board.pieceAt over board == side
+            )
+
 
 
 whichCanMove : Board.Piece -> Board.Board -> List (Int, Int)

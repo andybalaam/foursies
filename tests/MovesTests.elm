@@ -19,6 +19,7 @@ all =
         , test "Normally all X pieces can move" allXPiecesCanMove
         , test "Generate forward moves with no jumps" forwardMovesNoJumps
         , test "Generate backward moves with no jumps" backwardMovesNoJumps
+        , test "Generate hops and slides" hopsAndSlides
         ]
 
 
@@ -77,6 +78,30 @@ backwardMovesNoJumps =
         "...."
         <| \board -> Utils.equalExceptOrder
             [ (Moves.slide (1, 1) (1, 0))
+            , (Moves.slide (1, 1) (2, 0))
+            , (Moves.slide (1, 1) (2, 1))
+            , (Moves.slide (1, 1) (2, 2))
+            , (Moves.slide (1, 1) (1, 2))
+            , (Moves.slide (1, 1) (0, 2))
+            , (Moves.slide (1, 1) (0, 1))
+            , (Moves.slide (1, 1) (0, 0))
+            ]
+            ( Moves.allowedMoves Board.xPiece board )
+
+
+hopsAndSlides: () -> Expect.Expectation
+hopsAndSlides =
+    Utils.forBoard
+        ".X.."
+        ".X.."
+        "...."
+        "...O"
+        <| \board -> Utils.equalExceptOrder
+            [ (Moves.slide (1, 0) (2, 0))
+            , (Moves.slide (1, 0) (2, 1))
+            , (Moves.slide (1, 0) (0, 1))
+            , (Moves.slide (1, 0) (0, 0))
+            , (Moves.hop   (1, 0) (1, 1) (1, 2))
             , (Moves.slide (1, 1) (2, 0))
             , (Moves.slide (1, 1) (2, 1))
             , (Moves.slide (1, 1) (2, 2))
