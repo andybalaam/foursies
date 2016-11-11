@@ -48,9 +48,10 @@ allowedMoves side board =
                 (\pos -> Board.pieceAt pos board == side)
                 Board.positions
     in
-        List.concat <| List.map
-            (movesForPos side board)
-            ourPieces
+        anyTakesMeansOnlyTakes
+            <| List.concat <| List.map
+                (movesForPos side board)
+                ourPieces
 
 
 movesForPos : Board.Piece -> Board.Board -> (Int, Int) -> List Move
@@ -112,6 +113,21 @@ allowedMove side board move =
             && Board.pieceAt over board == opposite side
             )
 
+
+anyTakesMeansOnlyTakes : List Move -> List Move
+anyTakesMeansOnlyTakes moves =
+    let
+        onlyTakes = List.filter
+            ( \move -> case move of
+                Take _ _ _ -> True
+                _ -> False
+            )
+            moves
+    in
+        if List.isEmpty onlyTakes then
+            moves
+        else
+            onlyTakes
 
 
 whichCanMove : Board.Piece -> Board.Board -> List (Int, Int)

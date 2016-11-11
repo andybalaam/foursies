@@ -24,6 +24,7 @@ all =
         , test "Generate all hops up-left" allHopsUpLeft
         , test "Generate all takes down-right" allTakesDownRight
         , test "Generate all takes up-left" allTakesUpLeft
+        , test "If a take exists only takes are offered" ifTakeOnlyTakes
         ]
 
 
@@ -130,9 +131,9 @@ allHopsDownRight =
             ".OO."
             "...."
             <| \board -> Utils.equalExceptOrder
-                [ (Moves.hop   (1, 1) (2, 1) (3, 1))
-                , (Moves.hop   (1, 1) (2, 2) (3, 3))
-                , (Moves.hop   (1, 1) (1, 2) (1, 3))
+                [ (Moves.hop (1, 1) (2, 1) (3, 1))
+                , (Moves.hop (1, 1) (2, 2) (3, 3))
+                , (Moves.hop (1, 1) (1, 2) (1, 3))
                 ]
                 ( List.filter hops11 <| Moves.allowedMoves Board.oPiece board )
 
@@ -150,9 +151,9 @@ allHopsUpLeft =
             ".XX."
             ".O.."
             <| \board -> Utils.equalExceptOrder
-                [ (Moves.hop   (2, 2) (2, 1) (2, 0))
-                , (Moves.hop   (2, 2) (1, 1) (0, 0))
-                , (Moves.hop   (2, 2) (1, 2) (0, 2))
+                [ (Moves.hop (2, 2) (2, 1) (2, 0))
+                , (Moves.hop (2, 2) (1, 1) (0, 0))
+                , (Moves.hop (2, 2) (1, 2) (0, 2))
                 ]
                 ( List.filter hops22 <| Moves.allowedMoves Board.xPiece board )
 
@@ -170,9 +171,9 @@ allTakesDownRight =
             ".XX."
             "...."
             <| \board -> Utils.equalExceptOrder
-                [ (Moves.take   (1, 1) (2, 1) (3, 1))
-                , (Moves.take   (1, 1) (2, 2) (3, 3))
-                , (Moves.take   (1, 1) (1, 2) (1, 3))
+                [ (Moves.take (1, 1) (2, 1) (3, 1))
+                , (Moves.take (1, 1) (2, 2) (3, 3))
+                , (Moves.take (1, 1) (1, 2) (1, 3))
                 ]
                 ( List.filter takes11 <| Moves.allowedMoves Board.oPiece board )
 
@@ -190,8 +191,23 @@ allTakesUpLeft =
             ".OX."
             "...."
             <| \board -> Utils.equalExceptOrder
-                [ (Moves.take   (2, 2) (2, 1) (2, 0))
-                , (Moves.take   (2, 2) (1, 1) (0, 0))
-                , (Moves.take   (2, 2) (1, 2) (0, 2))
+                [ (Moves.take (2, 2) (2, 1) (2, 0))
+                , (Moves.take (2, 2) (1, 1) (0, 0))
+                , (Moves.take (2, 2) (1, 2) (0, 2))
                 ]
                 ( List.filter takes22 <| Moves.allowedMoves Board.xPiece board )
+
+
+ifTakeOnlyTakes: () -> Expect.Expectation
+ifTakeOnlyTakes =
+    Utils.forBoard
+        ".OO."
+        ".XX."
+        "O..."
+        "...."
+        <| \board -> Utils.equalExceptOrder
+            [ (Moves.take (1, 0) (1, 1) (1, 2))
+            , (Moves.take (1, 0) (2, 1) (3, 2))
+            , (Moves.take (2, 0) (2, 1) (2, 2))
+            ]
+            ( Moves.allowedMoves Board.oPiece board )
