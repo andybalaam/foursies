@@ -17,6 +17,8 @@ all =
     describe "Tests of the move calculator"
         [ test "Normally all O pieces can move" allOPiecesCanMove
         , test "Normally all X pieces can move" allXPiecesCanMove
+        , test "Taking pieces only can move if any" takingPiecesOnlyCanMove
+        , test "No repeats in pieces that can move" noRepeatsInMovingPieces
         , test "Generate forward moves with no jumps" forwardMovesNoJumps
         , test "Generate backward moves with no jumps" backwardMovesNoJumps
         , test "Generate hops and slides" hopsAndSlides
@@ -35,7 +37,7 @@ allOPiecesCanMove =
         "...."
         "...."
         "O.O."
-        <| \board -> Expect.equal
+        <| \board -> Utils.equalExceptOrder
             [(0, 3), (2, 3)]
             ( Moves.whichCanMove Board.oPiece board )
 
@@ -47,9 +49,33 @@ allXPiecesCanMove =
         ".X.."
         "...."
         "O.O."
-        <| \board -> Expect.equal
+        <| \board -> Utils.equalExceptOrder
             [(1, 1)]
             ( Moves.whichCanMove Board.xPiece board )
+
+
+takingPiecesOnlyCanMove : () -> Expect.Expectation
+takingPiecesOnlyCanMove =
+    Utils.forBoard
+        "...."
+        ".X.."
+        "OO.."
+        "..O."
+        <| \board -> Utils.equalExceptOrder
+            [(0, 2), (1, 2)]
+            ( Moves.whichCanMove Board.oPiece board )
+
+
+noRepeatsInMovingPieces : () -> Expect.Expectation
+noRepeatsInMovingPieces =
+    Utils.forBoard
+        "...."
+        ".XX."
+        ".O.."
+        "..O."
+        <| \board -> Utils.equalExceptOrder
+            [(1, 2)]
+            ( Moves.whichCanMove Board.oPiece board )
 
 
 forwardMovesNoJumps : () -> Expect.Expectation
