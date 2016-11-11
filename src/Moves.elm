@@ -1,5 +1,6 @@
 module Moves exposing
     ( Move(Hop, Slide, Take)
+    , WhoCanMove(CanMovePositions, Won)
     , allowedMoves
     , hop
     , slide
@@ -19,6 +20,11 @@ type Move =
     Slide (Int, Int) (Int, Int)
     | Hop (Int, Int) (Int, Int) (Int, Int)
     | Take (Int, Int) (Int, Int) (Int, Int)
+
+
+type WhoCanMove =
+    CanMovePositions (List (Int, Int))
+    | Won Board.Piece
 
 
 slide : (Int, Int) -> (Int, Int) -> Move
@@ -43,16 +49,20 @@ adjust (pos0, pos1) (delta0, delta1) =
 
 allowedMoves : Board.Piece -> Board.Board -> List Move
 allowedMoves side board =
-    let
-        ourPieces =
-            List.filter
-                (\pos -> Board.pieceAt pos board == side)
-                Board.positions
-    in
-        anyTakesMeansOnlyTakes
-            <| List.concat <| List.map
-                (movesForPos side board)
-                ourPieces
+    case whoWon board of
+        Board.XPiece -> []
+        Board.OPiece -> []
+        default ->
+            let
+                ourPieces =
+                    List.filter
+                        (\pos -> Board.pieceAt pos board == side)
+                        Board.positions
+            in
+                anyTakesMeansOnlyTakes
+                    <| List.concat <| List.map
+                        (movesForPos side board)
+                        ourPieces
 
 
 movesForPos : Board.Piece -> Board.Board -> (Int, Int) -> List Move
@@ -131,13 +141,33 @@ anyTakesMeansOnlyTakes moves =
             onlyTakes
 
 
-whichCanMove : Board.Piece -> Board.Board -> List (Int, Int)
+whichCanMove : Board.Piece -> Board.Board -> WhoCanMove
 whichCanMove side board =
+    case whoWon board of
+        Board.XPiece -> Won Board.xPiece
+        Board.OPiece -> Won Board.oPiece
+        default ->
+            let
+                moves = allowedMoves side board
+                fromPos = \move -> case move of
+                    Slide from _ -> from
+                    Hop from _ _ -> from
+                    Take from _ _ -> from
+            in
+                CanMovePositions
+                    <|Set.toList <| Set.fromList <| List.map fromPos moves
+
+
+whoWon : Board.Board -> Board.Piece
+whoWon board =
     let
-        moves = allowedMoves side board
-        fromPos = \move -> case move of
-            Slide from _ -> from
-            Hop from _ _ -> from
-            Take from _ _ -> from
+        (rt, _, _, rb) = board.pieces
+        (t0, t1, t2, t3) = rt
+        (b0, b1, b2, b3) = rb
     in
-        Set.toList <| Set.fromList <| List.map fromPos moves
+        if List.member Board.oPiece [t0, t1, t2, t3] then
+            Board.oPiece
+        else if List.member Board.xPiece [b0, b1, b2, b3] then
+            Board.xPiece
+        else
+            Board.noPiece

@@ -19,6 +19,10 @@ all =
         , test "Normally all X pieces can move" allXPiecesCanMove
         , test "Taking pieces only can move if any" takingPiecesOnlyCanMove
         , test "No repeats in pieces that can move" noRepeatsInMovingPieces
+        , test "X wins if reached bottom (X to play)" xWinsIfReachedBottomX
+        , test "X wins if reached bottom (O to play)" xWinsIfReachedBottomO
+        , test "O wins if reached top (X to play)" oWinsIfReachedTopX
+        , test "O wins if reached top (O to play)" oWinsIfReachedTopO
         , test "Generate forward moves with no jumps" forwardMovesNoJumps
         , test "Generate backward moves with no jumps" backwardMovesNoJumps
         , test "Generate hops and slides" hopsAndSlides
@@ -27,6 +31,7 @@ all =
         , test "Generate all takes down-right" allTakesDownRight
         , test "Generate all takes up-left" allTakesUpLeft
         , test "If a take exists only takes are offered" ifTakeOnlyTakes
+        , test "No moves are offered if someone has won" noMovesIfSomeoneWon
         ]
 
 
@@ -37,8 +42,8 @@ allOPiecesCanMove =
         "...."
         "...."
         "O.O."
-        <| \board -> Utils.equalExceptOrder
-            [(0, 3), (2, 3)]
+        <| \board -> equalCanMovePositions
+            ( Moves.CanMovePositions [(0, 3), (2, 3)] )
             ( Moves.whichCanMove Board.oPiece board )
 
 
@@ -49,8 +54,8 @@ allXPiecesCanMove =
         ".X.."
         "...."
         "O.O."
-        <| \board -> Utils.equalExceptOrder
-            [(1, 1)]
+        <| \board -> equalCanMovePositions
+            ( Moves.CanMovePositions [(1, 1)] )
             ( Moves.whichCanMove Board.xPiece board )
 
 
@@ -61,8 +66,8 @@ takingPiecesOnlyCanMove =
         ".X.."
         "OO.."
         "..O."
-        <| \board -> Utils.equalExceptOrder
-            [(0, 2), (1, 2)]
+        <| \board -> equalCanMovePositions
+            ( Moves.CanMovePositions [(0, 2), (1, 2)] )
             ( Moves.whichCanMove Board.oPiece board )
 
 
@@ -73,8 +78,56 @@ noRepeatsInMovingPieces =
         ".XX."
         ".O.."
         "..O."
-        <| \board -> Utils.equalExceptOrder
-            [(1, 2)]
+        <| \board -> equalCanMovePositions
+            ( Moves.CanMovePositions [(1, 2)] )
+            ( Moves.whichCanMove Board.oPiece board )
+
+
+xWinsIfReachedBottomO : () -> Expect.Expectation
+xWinsIfReachedBottomO =
+    Utils.forBoard
+        "...."
+        ".XX."
+        ".O.."
+        "..X."
+        <| \board -> Expect.equal
+            ( Moves.Won Board.xPiece )
+            ( Moves.whichCanMove Board.oPiece board )
+
+
+xWinsIfReachedBottomX : () -> Expect.Expectation
+xWinsIfReachedBottomX =
+    Utils.forBoard
+        "...."
+        ".XX."
+        ".O.."
+        "..X."
+        <| \board -> Expect.equal
+            ( Moves.Won Board.xPiece )
+            ( Moves.whichCanMove Board.xPiece board )
+
+
+oWinsIfReachedTopX : () -> Expect.Expectation
+oWinsIfReachedTopX =
+    Utils.forBoard
+        "...O"
+        ".XX."
+        ".O.."
+        "...."
+        <| \board -> Expect.equal
+            ( Moves.Won Board.oPiece )
+            ( Moves.whichCanMove Board.xPiece board )
+
+
+oWinsIfReachedTopO : () -> Expect.Expectation
+oWinsIfReachedTopO =
+    Utils.forBoard
+        "...O"
+        ".XX."
+        ".O.."
+        "...."
+        <| \board -> Expect.equal
+            ( Moves.Won Board.oPiece )
             ( Moves.whichCanMove Board.oPiece board )
 
 
@@ -221,19 +274,42 @@ allTakesUpLeft =
                 , (Moves.take (2, 2) (1, 1) (0, 0))
                 , (Moves.take (2, 2) (1, 2) (0, 2))
                 ]
-                ( List.filter takes22 <| Moves.allowedMoves Board.xPiece board )
+                ( List.filter takes22
+                    <| Moves.allowedMoves Board.xPiece board )
 
 
 ifTakeOnlyTakes: () -> Expect.Expectation
 ifTakeOnlyTakes =
     Utils.forBoard
-        ".OO."
         ".XX."
-        "O..."
+        ".OO."
+        "X..."
         "...."
         <| \board -> Utils.equalExceptOrder
             [ (Moves.take (1, 0) (1, 1) (1, 2))
             , (Moves.take (1, 0) (2, 1) (3, 2))
             , (Moves.take (2, 0) (2, 1) (2, 2))
             ]
+            ( Moves.allowedMoves Board.xPiece board )
+
+
+noMovesIfSomeoneWon : () -> Expect.Expectation
+noMovesIfSomeoneWon  =
+    Utils.forBoard
+        ".OO."
+        ".XX."
+        "O..."
+        "..X."
+        <| \board -> Expect.equal
+            []
             ( Moves.allowedMoves Board.oPiece board )
+
+--
+
+equalCanMovePositions : Moves.WhoCanMove -> Moves.WhoCanMove
+    -> Expect.Expectation
+equalCanMovePositions exp act =
+    case (exp, act) of
+        (Moves.CanMovePositions e, Moves.CanMovePositions a) ->
+            Utils.equalExceptOrder e a
+        default -> Expect.equal exp act
