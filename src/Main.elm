@@ -11,20 +11,20 @@ import Update
 subscriptions : Model.Model -> Sub Msg.Msg
 subscriptions model =
     Sub.batch
-        [ Window.resizes (\size -> Resize size.width size.height)
+        [ Window.resizes (\size -> Msg.Resize size.width size.height)
         ]
 
 
-init : Flags -> (Model.Model, Cmd Update.Msg)
+init : Model.Flags -> (Model.Model, Cmd Msg.Msg)
 init flags =
     (Model.newModel flags, Cmd.none)
 
 
 main =
    programWithFlags
-     { init = Model.init
+     { init = init
      , view = View.view
      , update = Update.update
-     , subscriptions = Update.subscriptions
+     , subscriptions = subscriptions
      }
 

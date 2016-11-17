@@ -1,4 +1,4 @@
-module Model exposing (newModel, Model)
+module Model exposing (newModel, Flags, Model)
 
 type alias Flags =
     { width : Int
