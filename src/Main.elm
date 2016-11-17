@@ -1,4 +1,4 @@
-import Html.App exposing (programWithFlags)
+import Html exposing (programWithFlags)
 import Window
 
 

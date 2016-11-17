@@ -36,7 +36,9 @@ parseEmptyBoard =
                 Ok b ->
                     allEqual
                         Board.noPiece
-                        (List.map (\x -> Board.pieceAt (x, 0) b) [0..2])
+                        (List.map
+                            (\x -> Board.pieceAt (x, 0) b)
+                            (List.range 0 2))
 
 
 parseBoardWithLongRow : () -> Expect.Expectation
