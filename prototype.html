@@ -27,6 +27,14 @@
             margin-bottom: 0.5em;
             text-align: center;
         }
+        h2
+        {
+            font-size: 1.3em;
+            font-weight: normal;
+            margin-top: 0.2em;
+            margin-bottom: 0.3em;
+            text-align: center;
+        }
         p
         {
             text-align: center;
@@ -43,6 +51,7 @@
         {
             text-align: center;
             font-size: 0.6em;
+            margin: 2em 6em;
         }
         .chooseplayers
         {
@@ -71,6 +80,31 @@
             padding: 0.2em;
             background-color: #dddddd;
             border: 0.1em solid #777777;
+        }
+        .instr
+        {
+            clear: both;
+        }
+        .imgleft
+        {
+            float: left;
+            width: 5em;
+        }
+        .imgright
+        {
+            float: right;
+            width: 5em;
+        }
+        .paright
+        {
+            padding-top: 1.2em;
+            padding-left: 6em;
+        }
+        .parleft
+        {
+            padding-top: 1.2em;
+            padding-right: 6em;
+            text-align: right;
         }
     </style>
 </head>
@@ -128,11 +162,46 @@ vs.
             <image xlink:href="images/tick.svg" height="20" width="20" x="24.7" y="24.7"/>
             <image xlink:href="images/big-tick.svg" height="20" width="20" x="46.3" y="24.7"/>
             <image xlink:href="images/tick.svg" height="20" width="20" x="68.0" y="68.0"/>
-        </g>
+      </g>
     </g>
 </svg>
 </div>
-<address>Board graphics based on <a href="https://openclipart.org/detail/226774/grain-woody-texture-seamless-pattern-02">https://openclipart.org/detail/226774/grain-woody-texture-seamless-pattern-02</a> by yamachem</address>
+
+<div style="width: 23em; margin: auto;">
+<h2>How to play</h2>
+
+<div class="instr">
+<img class="imgleft" src="images/win.svg"/>
+<div class="paright" style="padding-top: 0.6em">To win, get a piece to the other side of the board (or capture all your opponent's pieces).</div>
+</div>
+
+<div class="instr">
+<img class="imgright" src="images/move-dirs.svg"/>
+<div class="parleft">Pieces can move 1 square in any direction, including diagonally.</div>
+</div>
+
+<div class="instr">
+<img class="imgleft" src="images/jump.svg"/>
+<div class="paright">Pieces can jump over other pieces of the same colour.</div>
+</div>
+
+<div class="instr">
+<img class="imgright" src="images/capture.svg"/>
+<div class="parleft">Jumping over the opponent's piece captures it.</div>
+</div>
+
+<div class="instr">
+<div style="padding-top: 0.6em;">If you can capture something, you <strong>must</strong> capture something.</div>
+</div>
+
+</div>
+
+<address>This game is Free Software, licensed under the GPLv3 licence.
+You can find the source code at
+<a href="https://github.com/andybalaam/foursies">https://github.com/andybalaam/foursies</a>.
+The wood board image is based on
+<a href="https://openclipart.org/detail/226774/grain-woody-texture-seamless-pattern-02">https://openclipart.org/detail/226774/grain-woody-texture-seamless-pattern-02</a>
+by yamachem</address>
 </body>
 <script>
 var playerChoosers = {
