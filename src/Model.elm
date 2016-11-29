@@ -49,6 +49,7 @@ type alias Model =
         { x : Player -- Top
         , o : Player -- Bottom
         }
+    , choosingSide : Maybe Side
     , turn : Side
     }
 
@@ -63,5 +64,6 @@ newModel flags =
         { x = BlackPlayer
         , o = WhitePlayer
         }
+    , choosingSide = Nothing
     , turn = XSide
     }

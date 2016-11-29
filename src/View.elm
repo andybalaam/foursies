@@ -1,4 +1,4 @@
-module View exposing (view)
+module View exposing (choosePlayersDiv, view)
 
 
 import Html
@@ -46,6 +46,14 @@ playerChoiceInput side player =
         []
 
 
+playerChoiceVisibility : Model.Model -> Model.Side -> String
+playerChoiceVisibility model side =
+    if model.choosingSide == Just side then
+        "visible"
+    else
+        "hidden"
+
+
 playerChoiceSpan : Model.Model -> Model.Side -> Html.Html Msg.Msg
 playerChoiceSpan model side =
     let
@@ -53,7 +61,8 @@ playerChoiceSpan model side =
     in
         Html.span
             [ Html.Attributes.class "choose-player"
-            , Html.Attributes.style [ ("visibility", "hidden") ]
+            , Html.Attributes.style
+                [ ("visibility", playerChoiceVisibility model side ) ]
             ]
             (
                 List.map (playerChoiceInput side) <|
@@ -74,21 +83,26 @@ choosePlayerInput model side =
         []
 
 
+choosePlayersDiv : Model.Model -> Html.Html Msg.Msg
+choosePlayersDiv model =
+    Html.div
+        [ Html.Attributes.class "chooseplayers" ]
+        [ text "Choose players:"
+        , choosePlayerInput model Model.XSide
+        , playerChoiceSpan model Model.XSide
+        , text "vs."
+        , choosePlayerInput model Model.OSide
+        , playerChoiceSpan model Model.OSide
+        ]
+
+
 view : Model.Model -> Html.Html Msg.Msg
 view model =
     Html.div
         []
         [ Html.h1 [] [ text "Foursies" ]
         , Html.p [] [ text "A deceptively simple two-player board game" ]
-        , Html.div
-            [ Html.Attributes.class "chooseplayers" ]
-            [ text "Choose players:"
-            , choosePlayerInput model Model.XSide
-            , playerChoiceSpan model Model.XSide
-            , text "vs."
-            , choosePlayerInput model Model.OSide
-            , playerChoiceSpan model Model.OSide
-            ]
+        , choosePlayersDiv model
             --svg
             --[ width  <| toString model.screen.width
             --, height <| toString model.screen.height
