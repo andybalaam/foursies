@@ -5,19 +5,105 @@
     <title>Foursies</title>
     <script src="foursies.js"></script>
     <style>
-        html, body, svg
+        html
+        {
+            font-family: Ubuntu, Verdana, Arial, sans-serif;
+        }
+        html, body
         {
             margin: 0px;
             padding: 0px;
             border: 0px;
-            overflow: hidden;
         }
-        svg {
+        body
+        {
+            font-size: 1.5em;
+        }
+        h1
+        {
+            font-size: 1.7em;
+            font-weight: normal;
+            margin-top: 0.3em;
+            margin-bottom: 0.5em;
+            text-align: center;
+        }
+        h2
+        {
+            font-size: 1.3em;
+            font-weight: normal;
+            margin-top: 0.2em;
+            margin-bottom: 0.3em;
+            text-align: center;
+        }
+        p
+        {
+            text-align: center;
+        }
+        svg
+        {
             cursor: default;
             -webkit-user-select: none;
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+        }
+        address
+        {
+            text-align: center;
+            font-size: 0.6em;
+            margin: 2em 6em;
+        }
+        .chooseplayers
+        {
+            text-align: center;
+        }
+        .player,.chplayer
+        {
+            background-size: 100%;
+            width: 3em;
+            height: 3em;
+        }
+        #msg
+        {
+            font-size: 80%;
+            font-family: monospace;
+            text-align: center;
+            background-color: #333333;
+            color: #00bb00;
+            padding: 0.2em;
+        }
+        .choose-player
+        {
+            position: absolute;
+            margin-left: -2.3em;
+            padding: 0.2em;
+            background-color: #dddddd;
+            border: 0.1em solid #777777;
+        }
+        .instr
+        {
+            clear: both;
+        }
+        .imgleft
+        {
+            float: left;
+            width: 5em;
+        }
+        .imgright
+        {
+            float: right;
+            width: 5em;
+        }
+        .paright
+        {
+            padding-top: 1.2em;
+            padding-left: 6em;
+        }
+        .parleft
+        {
+            padding-top: 1.2em;
+            padding-right: 6em;
+            text-align: right;
         }
     </style>
 </head>

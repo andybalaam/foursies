@@ -1,3 +1,8 @@
 module Msg exposing (Msg(..))
 
-type Msg = Resize Int Int
+import Model
+
+type Msg =
+    Resize Int Int
+    | ChoosePlayer Model.Side
+    | ChangePlayer Model.Side Model.Player
