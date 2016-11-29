@@ -14,12 +14,28 @@ all : Test
 all =
     describe "Tests for the update function"
         [ test "Resize updates model size" resizeUpdatesModelSize
+        , test "Choosing player updates model" choosingPlayerUpdatesModel
         ]
+
+
+modelEqual : Model.Model -> (Model.Model, Cmd Msg.Msg)
+    -> (() -> Expect.Expectation)
+modelEqual exp act =
+    \() -> Expect.equal (exp, Cmd.none) act
 
 
 resizeUpdatesModelSize : () -> Expect.Expectation
 resizeUpdatesModelSize =
-    \() ->
-        Expect.equal
-            ((Model.newModel {width=21, height=22}), Cmd.none)
-            (update (Msg.Resize 21 22) (Model.newModel {width=1, height=14}) )
+    modelEqual
+        (Model.newModel {width=21, height=22})
+        (update (Msg.Resize 21 22) (Model.newModel {width=1, height=14}))
+
+
+choosingPlayerUpdatesModel : () -> Expect.Expectation
+choosingPlayerUpdatesModel =
+    let
+        model = Model.newModel {width=10, height=10}
+    in
+        modelEqual
+            { model | choosingSide = Just Model.XSide }
+            (update (Msg.ChoosePlayer Model.XSide) model)

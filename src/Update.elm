@@ -10,7 +10,7 @@ update msg model =
     let m =
         case msg of
             Msg.Resize w h -> updateResize w h model
-            Msg.ChoosePlayer side -> model -- TODO
+            Msg.ChoosePlayer side -> { model | choosingSide = Just side }
             Msg.ChangePlayer side player -> model -- TODO
     in
         (m, Cmd.none)
