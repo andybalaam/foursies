@@ -65,6 +65,7 @@ rtsHtml =
                         Msg.ChangePlayer Model.XSide Model.BlackPlayer
                     ]
                     []
+                , Html.br [] []
                 , Html.input
                     [ Html.Attributes.type_ "button"
                     , Html.Attributes.class "chplayer"
@@ -78,6 +79,7 @@ rtsHtml =
                         Msg.ChangePlayer Model.XSide Model.GreenPlayer
                     ]
                     []
+                , Html.br [] []
                 , Html.input
                     [ Html.Attributes.type_ "button"
                     , Html.Attributes.class "chplayer"
@@ -91,6 +93,7 @@ rtsHtml =
                         Msg.ChangePlayer Model.XSide Model.BluePlayer
                     ]
                     []
+                , Html.br [] []
                 ]
             , text "vs."
             , Html.input
@@ -119,6 +122,7 @@ rtsHtml =
                         Msg.ChangePlayer Model.OSide Model.BlackPlayer
                     ]
                     []
+                , Html.br [] []
                 , Html.input
                     [ Html.Attributes.type_ "button"
                     , Html.Attributes.class "chplayer"
@@ -132,6 +136,7 @@ rtsHtml =
                         Msg.ChangePlayer Model.OSide Model.GreenPlayer
                     ]
                     []
+                , Html.br [] []
                 , Html.input
                     [ Html.Attributes.type_ "button"
                     , Html.Attributes.class "chplayer"
@@ -145,6 +150,7 @@ rtsHtml =
                         Msg.ChangePlayer Model.OSide Model.BluePlayer
                     ]
                     []
+                , Html.br [] []
                 ]
             ]
         ]
@@ -188,6 +194,7 @@ chooseXHtml =
                     Msg.ChangePlayer Model.XSide Model.BlackPlayer
                 ]
                 []
+            , Html.br [] []
             , Html.input
                 [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "chplayer"
@@ -201,6 +208,7 @@ chooseXHtml =
                     Msg.ChangePlayer Model.XSide Model.GreenPlayer
                 ]
                 []
+            , Html.br [] []
             , Html.input
                 [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "chplayer"
@@ -214,6 +222,7 @@ chooseXHtml =
                     Msg.ChangePlayer Model.XSide Model.BluePlayer
                 ]
                 []
+            , Html.br [] []
             ]
         , text "vs."
         , Html.input
@@ -242,6 +251,7 @@ chooseXHtml =
                     Msg.ChangePlayer Model.OSide Model.BlackPlayer
                 ]
                 []
+            , Html.br [] []
             , Html.input
                 [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "chplayer"
@@ -255,6 +265,7 @@ chooseXHtml =
                     Msg.ChangePlayer Model.OSide Model.WhitePlayer
                 ]
                 []
+            , Html.br [] []
             , Html.input
                 [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "chplayer"
@@ -268,6 +279,7 @@ chooseXHtml =
                     Msg.ChangePlayer Model.OSide Model.BluePlayer
                 ]
                 []
+            , Html.br [] []
             ]
         ]
 
@@ -319,6 +331,7 @@ chooseOHtml =
                     Msg.ChangePlayer Model.XSide Model.BlackPlayer
                 ]
                 []
+            , Html.br [] []
             , Html.input
                 [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "chplayer"
@@ -332,6 +345,7 @@ chooseOHtml =
                     Msg.ChangePlayer Model.XSide Model.WhitePlayer
                 ]
                 []
+            , Html.br [] []
             , Html.input
                 [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "chplayer"
@@ -345,6 +359,7 @@ chooseOHtml =
                     Msg.ChangePlayer Model.XSide Model.GreenPlayer
                 ]
                 []
+            , Html.br [] []
             ]
         , text "vs."
         , Html.input
@@ -373,6 +388,7 @@ chooseOHtml =
                     Msg.ChangePlayer Model.OSide Model.BlackPlayer
                 ]
                 []
+            , Html.br [] []
             , Html.input
                 [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "chplayer"
@@ -386,6 +402,7 @@ chooseOHtml =
                     Msg.ChangePlayer Model.OSide Model.GreenPlayer
                 ]
                 []
+            , Html.br [] []
             , Html.input
                 [ Html.Attributes.type_ "button"
                 , Html.Attributes.class "chplayer"
@@ -399,6 +416,7 @@ chooseOHtml =
                     Msg.ChangePlayer Model.OSide Model.BluePlayer
                 ]
                 []
+            , Html.br [] []
             ]
         ]
 

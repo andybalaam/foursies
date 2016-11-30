@@ -34,9 +34,9 @@ playerStyle player =
     [ ("background-image", "url('" ++ (playerImage player) ++ "')") ]
 
 
-playerChoiceInput : Model.Side -> Model.Player -> Html.Html Msg.Msg
+playerChoiceInput : Model.Side -> Model.Player -> List (Html.Html Msg.Msg)
 playerChoiceInput side player =
-    Html.input
+    [ Html.input
         [ Html.Attributes.type_ "button"
         , Html.Attributes.class "chplayer"
         , Html.Attributes.style <| playerStyle player
@@ -44,6 +44,8 @@ playerChoiceInput side player =
             Msg.ChangePlayer side player
         ]
         []
+    , Html.br [] []
+    ]
 
 
 playerChoiceVisibility : Model.Model -> Model.Side -> String
@@ -65,10 +67,12 @@ playerChoiceSpan model side =
                 [ ("visibility", playerChoiceVisibility model side ) ]
             ]
             (
-                List.map (playerChoiceInput side) <|
-                    List.filter
-                        (\p -> p /= sidePlayer model oppSide)
-                        Model.allPlayers
+                List.concat
+                    ( List.map (playerChoiceInput side) <|
+                        List.filter
+                            (\p -> p /= sidePlayer model oppSide)
+                            Model.allPlayers
+                    )
             )
 
 
