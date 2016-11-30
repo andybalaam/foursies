@@ -8515,6 +8515,15 @@ var _elm_lang$window$Window$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
 
+var _andybalaam$foursies$Model$sidePlayer = F2(
+	function (model, side) {
+		var _p0 = side;
+		if (_p0.ctor === 'XSide') {
+			return model.chosenPlayers.x;
+		} else {
+			return model.chosenPlayers.o;
+		}
+	});
 var _andybalaam$foursies$Model$Flags = F2(
 	function (a, b) {
 		return {width: a, height: b};
@@ -8526,8 +8535,8 @@ var _andybalaam$foursies$Model$Model = F4(
 var _andybalaam$foursies$Model$OSide = {ctor: 'OSide'};
 var _andybalaam$foursies$Model$XSide = {ctor: 'XSide'};
 var _andybalaam$foursies$Model$oppositeSide = function (side) {
-	var _p0 = side;
-	if (_p0.ctor === 'XSide') {
+	var _p1 = side;
+	if (_p1.ctor === 'XSide') {
 		return _andybalaam$foursies$Model$OSide;
 	} else {
 		return _andybalaam$foursies$Model$XSide;
@@ -9415,18 +9424,9 @@ var _andybalaam$foursies$View$playerChoiceVisibility = F2(
 			model.choosingSide,
 			_elm_lang$core$Maybe$Just(side)) ? 'visible' : 'hidden';
 	});
-var _andybalaam$foursies$View$sidePlayer = F2(
-	function (model, side) {
-		var _p0 = side;
-		if (_p0.ctor === 'XSide') {
-			return model.chosenPlayers.x;
-		} else {
-			return model.chosenPlayers.o;
-		}
-	});
 var _andybalaam$foursies$View$playerImage = function (player) {
-	var _p1 = player;
-	switch (_p1.ctor) {
+	var _p0 = player;
+	switch (_p0.ctor) {
 		case 'BlackPlayer':
 			return 'images/piece-black.svg';
 		case 'WhitePlayer':
@@ -9456,28 +9456,39 @@ var _andybalaam$foursies$View$playerStyle = function (player) {
 };
 var _andybalaam$foursies$View$playerChoiceInput = F2(
 	function (side, player) {
-		return A2(
-			_elm_lang$html$Html$input,
-			{
-				ctor: '::',
-				_0: _elm_lang$html$Html_Attributes$type_('button'),
-				_1: {
+		return {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$input,
+				{
 					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$class('chplayer'),
+					_0: _elm_lang$html$Html_Attributes$type_('button'),
 					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$style(
-							_andybalaam$foursies$View$playerStyle(player)),
+						_0: _elm_lang$html$Html_Attributes$class('chplayer'),
 						_1: {
 							ctor: '::',
-							_0: _elm_lang$html$Html_Events$onClick(
-								A2(_andybalaam$foursies$Msg$ChangePlayer, side, player)),
-							_1: {ctor: '[]'}
+							_0: _elm_lang$html$Html_Attributes$style(
+								_andybalaam$foursies$View$playerStyle(player)),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Events$onClick(
+									A2(_andybalaam$foursies$Msg$ChangePlayer, side, player)),
+								_1: {ctor: '[]'}
+							}
 						}
 					}
-				}
-			},
-			{ctor: '[]'});
+				},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$br,
+					{ctor: '[]'},
+					{ctor: '[]'}),
+				_1: {ctor: '[]'}
+			}
+		};
 	});
 var _andybalaam$foursies$View$playerChoiceSpan = F2(
 	function (model, side) {
@@ -9502,17 +9513,18 @@ var _andybalaam$foursies$View$playerChoiceSpan = F2(
 					_1: {ctor: '[]'}
 				}
 			},
-			A2(
-				_elm_lang$core$List$map,
-				_andybalaam$foursies$View$playerChoiceInput(side),
+			_elm_lang$core$List$concat(
 				A2(
-					_elm_lang$core$List$filter,
-					function (p) {
-						return !_elm_lang$core$Native_Utils.eq(
-							p,
-							A2(_andybalaam$foursies$View$sidePlayer, model, oppSide));
-					},
-					_andybalaam$foursies$Model$allPlayers)));
+					_elm_lang$core$List$map,
+					_andybalaam$foursies$View$playerChoiceInput(side),
+					A2(
+						_elm_lang$core$List$filter,
+						function (p) {
+							return !_elm_lang$core$Native_Utils.eq(
+								p,
+								A2(_andybalaam$foursies$Model$sidePlayer, model, oppSide));
+						},
+						_andybalaam$foursies$Model$allPlayers))));
 	});
 var _andybalaam$foursies$View$choosePlayerInput = F2(
 	function (model, side) {
@@ -9528,7 +9540,7 @@ var _andybalaam$foursies$View$choosePlayerInput = F2(
 						ctor: '::',
 						_0: _elm_lang$html$Html_Attributes$style(
 							_andybalaam$foursies$View$playerStyle(
-								A2(_andybalaam$foursies$View$sidePlayer, model, side))),
+								A2(_andybalaam$foursies$Model$sidePlayer, model, side))),
 						_1: {
 							ctor: '::',
 							_0: _elm_lang$html$Html_Events$onClick(
@@ -9607,6 +9619,38 @@ var _andybalaam$foursies$View$view = function (model) {
 		});
 };
 
+var _andybalaam$foursies$Update$oppositePlayer = F2(
+	function (model, side) {
+		return A2(
+			_andybalaam$foursies$Model$sidePlayer,
+			model,
+			_andybalaam$foursies$Model$oppositeSide(side));
+	});
+var _andybalaam$foursies$Update$updatePlayer = F3(
+	function (model, side, player) {
+		var chpl_ = model.chosenPlayers;
+		var chpl = function () {
+			if (_elm_lang$core$Native_Utils.eq(
+				A2(_andybalaam$foursies$Update$oppositePlayer, model, side),
+				player)) {
+				return chpl_;
+			} else {
+				var _p0 = side;
+				if (_p0.ctor === 'XSide') {
+					return _elm_lang$core$Native_Utils.update(
+						chpl_,
+						{x: player});
+				} else {
+					return _elm_lang$core$Native_Utils.update(
+						chpl_,
+						{o: player});
+				}
+			}
+		}();
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{choosingSide: _elm_lang$core$Maybe$Nothing, chosenPlayers: chpl});
+	});
 var _andybalaam$foursies$Update$updateResize = F3(
 	function (w, h, model) {
 		var scr = model.screen;
@@ -9621,18 +9665,18 @@ var _andybalaam$foursies$Update$updateResize = F3(
 var _andybalaam$foursies$Update$update = F2(
 	function (msg, model) {
 		var m = function () {
-			var _p0 = msg;
-			switch (_p0.ctor) {
+			var _p1 = msg;
+			switch (_p1.ctor) {
 				case 'Resize':
-					return A3(_andybalaam$foursies$Update$updateResize, _p0._0, _p0._1, model);
+					return A3(_andybalaam$foursies$Update$updateResize, _p1._0, _p1._1, model);
 				case 'ChoosePlayer':
 					return _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							choosingSide: _elm_lang$core$Maybe$Just(_p0._0)
+							choosingSide: _elm_lang$core$Maybe$Just(_p1._0)
 						});
 				default:
-					return model;
+					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p1._0, _p1._1);
 			}
 		}();
 		return {ctor: '_Tuple2', _0: m, _1: _elm_lang$core$Platform_Cmd$none};
