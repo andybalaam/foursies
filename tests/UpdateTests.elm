@@ -16,6 +16,9 @@ all =
         [ test "Resize updates model size" resizeUpdatesModelSize
         , test "Choosing player updates model" choosingPlayerUpdatesModel
         , test "Choosing other player updates model" choosingOtherPlayer
+        , test "Changing X player updates" changingXPlayerUpdates
+        , test "Changing O player updates" changingOPlayerUpdates
+        , test "Impossible to have identical players" playersNotIdentical
         ]
 
 
@@ -51,3 +54,47 @@ choosingOtherPlayer =
         modelEqual
             { model | choosingSide = Just Model.OSide }
             (update (Msg.ChoosePlayer Model.OSide) model)
+
+
+changingXPlayerUpdates : () -> Expect.Expectation
+changingXPlayerUpdates =
+    let
+        model_ = Model.newModel {width=10, height=10}
+        model = { model_ | choosingSide = Just Model.XSide }
+        chpl = model.chosenPlayers
+    in
+        modelEqual
+            { model
+            | choosingSide = Nothing
+            , chosenPlayers = {chpl | x = Model.GreenPlayer } }
+            (update (Msg.ChangePlayer Model.XSide Model.GreenPlayer) model)
+
+
+changingOPlayerUpdates : () -> Expect.Expectation
+changingOPlayerUpdates =
+    let
+        model_ = Model.newModel {width=10, height=10}
+        model = { model_ | choosingSide = Just Model.OSide }
+        chpl = model.chosenPlayers
+    in
+        modelEqual
+            { model
+            | choosingSide = Nothing
+            , chosenPlayers = {chpl | o = Model.BluePlayer } }
+            (update (Msg.ChangePlayer Model.OSide Model.BluePlayer) model)
+
+
+playersNotIdentical : () -> Expect.Expectation
+playersNotIdentical =
+    let
+        model_ = Model.newModel {width=10, height=10}
+        model =
+            { model_
+            | choosingSide = Just Model.OSide
+            , chosenPlayers = { x = Model.GreenPlayer, o = Model.BlackPlayer }
+            }
+    in
+        -- chosenPlayers didn't change because this change is illegal
+        modelEqual
+            { model | choosingSide = Nothing }
+            (update (Msg.ChangePlayer Model.XSide Model.BlackPlayer) model)

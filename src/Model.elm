@@ -2,6 +2,7 @@ module Model exposing
     ( allPlayers
     , newModel
     , oppositeSide
+    , sidePlayer
     , Flags
     , Model
     , Side(..)
@@ -38,6 +39,13 @@ allPlayers =
     , GreenPlayer
     , BluePlayer
     ]
+
+
+sidePlayer : Model -> Side -> Player
+sidePlayer model side =
+    case side of
+        XSide -> model.chosenPlayers.x
+        OSide -> model.chosenPlayers.o
 
 
 type alias Model =

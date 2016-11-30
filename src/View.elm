@@ -22,13 +22,6 @@ playerImage player =
         Model.BluePlayer -> "images/piece-blue.svg"
 
 
-sidePlayer : Model.Model -> Model.Side -> Model.Player
-sidePlayer model side =
-    case side of
-        Model.XSide -> model.chosenPlayers.x
-        Model.OSide -> model.chosenPlayers.o
-
-
 playerStyle : Model.Player -> List ( String, String )
 playerStyle player =
     [ ("background-image", "url('" ++ (playerImage player) ++ "')") ]
@@ -70,7 +63,7 @@ playerChoiceSpan model side =
                 List.concat
                     ( List.map (playerChoiceInput side) <|
                         List.filter
-                            (\p -> p /= sidePlayer model oppSide)
+                            (\p -> p /= Model.sidePlayer model oppSide)
                             Model.allPlayers
                     )
             )
@@ -81,7 +74,7 @@ choosePlayerInput model side =
     Html.input
         [ Html.Attributes.type_ "button"
         , Html.Attributes.class "player"
-        , Html.Attributes.style <| playerStyle <| sidePlayer model side
+        , Html.Attributes.style <| playerStyle <| Model.sidePlayer model side
         , Html.Events.onClick <| Msg.ChoosePlayer side
         ]
         []

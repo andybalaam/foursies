@@ -11,7 +11,7 @@ update msg model =
         case msg of
             Msg.Resize w h -> updateResize w h model
             Msg.ChoosePlayer side -> { model | choosingSide = Just side }
-            Msg.ChangePlayer side player -> model -- TODO
+            Msg.ChangePlayer side player -> updatePlayer model side player
     in
         (m, Cmd.none)
 
@@ -25,3 +25,26 @@ updateResize w h model =
             width = w,
             height = h
         }}
+
+
+oppositePlayer : Model.Model -> Model.Side -> Model.Player
+oppositePlayer model side =
+    Model.sidePlayer model (Model.oppositeSide side)
+
+
+updatePlayer : Model.Model -> Model.Side -> Model.Player -> Model.Model
+updatePlayer model side player =
+    let
+        chpl_ = model.chosenPlayers
+        chpl =
+            if oppositePlayer model side == player then
+                chpl_
+            else
+                case side of
+                    Model.XSide -> { chpl_ | x = player }
+                    Model.OSide -> { chpl_ | o = player }
+    in
+        { model
+        | choosingSide = Nothing
+        , chosenPlayers = chpl
+        }
