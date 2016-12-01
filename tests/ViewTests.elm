@@ -30,6 +30,11 @@ equalHtml exp act =
     \() -> Expect.equal (toString exp) (toString act)
 
 
+filterAtt : String -> Svg.Attribute Msg.Msg
+filterAtt =
+    Svg.Attributes.filter
+
+
 rtsHtml : Html.Html Msg.Msg
 rtsHtml =
     Html.div
@@ -226,6 +231,76 @@ rtsHtml =
                         [ x1 "195", y1 "5", x2 "195", y2 "195"
                         , strokeWidth "3", stroke "black"
                         , strokeLinecap "square", opacity "0.4" ] []
+                    , g
+                        [ transform "scale(2.2, 2.2)" ]
+                        [ Svg.filter
+                            [ id "blur" ]
+                            [ feGaussianBlur
+                                [ stdDeviation "0.5" ]
+                                []
+                            ]
+                        , circle
+                            [ cx "14.5", cy "14.5", r "10", fill "black"
+                            , opacity "0.6", filterAtt "url(#blur)" ] []
+                        , image
+                            [ x "3.1", y "3.1", height "20", width "20"
+                            , xlinkHref "images/piece-black.svg" ] []
+                        , circle
+                            [ cx "36.1", cy "14.5", r "10", fill "black"
+                            , opacity "0.6", filterAtt "url(#blur)" ] []
+                        , image
+                            [ x "24.700000000000003", y "3.1", height "20", width "20"
+                            , xlinkHref "images/piece-black.svg" ] []
+                        , circle
+                            [ cx "57.7", cy "14.5", r "10", fill "black"
+                            , opacity "0.6", filterAtt "url(#blur)" ] []
+                        , image
+                            [ x "46.300000000000004", y "3.1", height "20", width "20"
+                            , xlinkHref "images/piece-black.svg" ] []
+                        , circle
+                            [ cx "79.30000000000001", cy "14.5", r "10", fill "black"
+                            , opacity "0.6", filterAtt "url(#blur)" ] []
+                        , image
+                            [ x "67.9", y "3.1", height "20", width "20"
+                            , xlinkHref "images/piece-black.svg" ] []
+                        , circle
+                            [ cx "14.5", cy "79.30000000000001", r "10", fill "black"
+                            , opacity "0.6", filterAtt "url(#blur)" ] []
+                        , image
+                            [ x "3.1", y "67.9", height "20", width "20"
+                            , xlinkHref "images/piece-white.svg" ] []
+                        , circle
+                            [ cx "36.1", cy "79.30000000000001", r "10", fill "black"
+                            , opacity "0.6", filterAtt "url(#blur)" ] []
+                        , image
+                            [ x "24.700000000000003", y "67.9", height "20", width "20"
+                            , xlinkHref "images/piece-white.svg" ] []
+                        , circle
+                            [ cx "57.7", cy "79.30000000000001", r "10", fill "black"
+                            , opacity "0.6", filterAtt "url(#blur)" ] []
+                        , image
+                            [ x "46.300000000000004", y "67.9", height "20", width "20"
+                            , xlinkHref "images/piece-white.svg" ] []
+                        , circle
+                            [ cx "79.30000000000001", cy "79.30000000000001", r "10", fill "black"
+                            , opacity "0.6", filterAtt "url(#blur)" ] []
+                        , image
+                            [ x "67.9", y "67.9", height "20", width "20"
+                            , xlinkHref "images/piece-white.svg" ] []
+
+--                        , image
+--                            [ x "3.1", y "3.1", height "20", width "20"
+--                            , xlinkHref "images/tick.svg" ] []
+--                        , image
+--                            [ x "24.700000000000003", y "3.1", height "20", width "20"
+--                            , xlinkHref "images/tick.svg" ] []
+--                        , image
+--                            [ x "46.300000000000004", y "3.1", height "20", width "20"
+--                            , xlinkHref "images/tick.svg" ] []
+--                        , image
+--                            [ x "67.9", y "3.1", height "20", width "20"
+--                            , xlinkHref "images/tick.svg" ] []
+                        ]
                     ]
                 ]
             ]

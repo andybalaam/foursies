@@ -156,6 +156,52 @@ boardLines =
     )
 
 
+filterAtt : String -> Svg.Attribute Msg.Msg
+filterAtt =
+    Svg.Attributes.filter
+
+
+boardPiece : Int -> Int -> Model.Player -> List (Html.Html Msg.Msg)
+boardPiece xpos ypos player =
+    let
+        scale = \start val -> toString (start + (21.6 * (toFloat val)))
+        cx_ = scale 14.5 xpos
+        cy_ = scale 14.5 ypos
+        x_  = scale  3.1 xpos
+        y_  = scale  3.1 ypos
+    in
+        [ circle
+            [ cx cx_, cy cy_, r "10", fill "black"
+            , opacity "0.6", filterAtt "url(#blur)" ] []
+        , image
+            [ x x_, y y_, height "20", width "20"
+            , xlinkHref (playerImage player) ] []
+        ]
+
+
+boardPieces : Model.Model -> Html.Html Msg.Msg
+boardPieces model =
+    g
+        [ transform "scale(2.2, 2.2)" ]
+        (
+            [ Svg.filter
+                [ id "blur" ]
+                [ feGaussianBlur
+                    [ stdDeviation "0.5" ]
+                    []
+                ]
+            ]
+            ++ (boardPiece 0 0 <| Model.sidePlayer model Model.XSide)
+            ++ (boardPiece 1 0 <| Model.sidePlayer model Model.XSide)
+            ++ (boardPiece 2 0 <| Model.sidePlayer model Model.XSide)
+            ++ (boardPiece 3 0 <| Model.sidePlayer model Model.XSide)
+            ++ (boardPiece 0 3 <| Model.sidePlayer model Model.OSide)
+            ++ (boardPiece 1 3 <| Model.sidePlayer model Model.OSide)
+            ++ (boardPiece 2 3 <| Model.sidePlayer model Model.OSide)
+            ++ (boardPiece 3 3 <| Model.sidePlayer model Model.OSide)
+        )
+
+
 boardSvg : Model.Model -> Html.Html Msg.Msg
 boardSvg model =
     let
@@ -180,6 +226,7 @@ boardSvg model =
                         []
                     ]
                     ++ boardLines
+                    ++ [ boardPieces model ]
                 )
             ]
 
