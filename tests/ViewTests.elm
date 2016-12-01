@@ -173,6 +173,21 @@ rtsHtml =
                 , Html.br [] []
                 , Html.text "Ticks tell you what you can move."
                 ]
+            , svg
+                [ width "360"
+                , height "360"                ]
+                [ g
+                    [ transform "scale(1.8,1.8)" ]
+                    [ image
+                        [ xlinkHref "images/board.svg"
+                        , x "0"
+                        , y "0"
+                        , width "200"
+                        , height "200"
+                        ]
+                        []
+                    ]
+                ]
             ]
         ]
 

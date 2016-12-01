@@ -93,12 +93,12 @@ choosePlayersDiv model =
         ]
 
 
-boardWidth : Model.Model -> String
+boardWidth : Model.Model -> Int
 boardWidth model =
     let
         minD = Basics.min model.screen.width model.screen.height
     in
-        toString <| round <| (toFloat minD) * 0.9
+        round <| (toFloat minD) * 0.9
 
 
 boardMessage : Model.Model -> List (Html.Html Msg.Msg)
@@ -120,17 +120,43 @@ boardMessage model =
     ]
 
 
+boardSvg : Model.Model -> Html.Html Msg.Msg
+boardSvg model =
+    let
+        w = boardWidth model
+        scale = toString <| (toFloat w) / 200
+        wstr = toString w
+    in
+        svg
+            [ width wstr
+            , height wstr
+            ]
+            [ g
+                [ transform <| "scale(" ++ scale ++ "," ++ scale ++")" ]
+                [ image
+                    [ xlinkHref "images/board.svg"
+                    , x "0"
+                    , y "0"
+                    , width "200"
+                    , height "200"
+                    ]
+                    []
+                ]
+            ]
+
+
 boardDiv : Model.Model -> Html.Html Msg.Msg
 boardDiv model =
     Html.div
         [ Html.Attributes.style
-            [ ("width", (boardWidth model) ++ "px")
+            [ ("width", (toString (boardWidth model)) ++ "px")
             , ("margin", "1em auto")
             ]
         ]
         [ Html.div
             [ Html.Attributes.id "msg" ]
             (boardMessage model)
+        , boardSvg model
         ]
 
 
