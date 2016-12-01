@@ -10,6 +10,10 @@ module Model exposing
     , Player(..)
     )
 
+
+import Board
+
+
 type alias Flags =
     { width : Int
     , height : Int
@@ -65,6 +69,7 @@ type alias Model =
         }
     , choosingSide : Maybe Side
     , turn : Side
+    , board : Board.Board
     }
 
 
@@ -81,4 +86,9 @@ newModel flags =
         }
     , choosingSide = Nothing
     , turn = XSide
+    , board = Board.newBoard
+        Board.xPiece  Board.xPiece  Board.xPiece  Board.xPiece
+        Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+        Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+        Board.oPiece  Board.oPiece  Board.oPiece  Board.oPiece
     }

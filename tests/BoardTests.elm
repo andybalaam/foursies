@@ -15,9 +15,31 @@ all =
         , test "Parsing a board with a long row" parseBoardWithShortRow
         , test "Parsing a board with a bad char" parseBoardWithInvalidChar
         , test "Parsing + formatting a non-empty board" roundTripRandomBoard
+        , test "Create a board programmatically" createABoard
         , test "Enumerating all positions" enumerateAllPositions
         , describe "pieceAt for various positions" piecesAtVariousPositions
         ]
+
+
+createABoard : () -> Expect.Expectation
+createABoard =
+    \() ->
+        let
+            board1 = Board.newBoard
+                Board.xPiece  Board.noPiece Board.oPiece  Board.noPiece
+                Board.noPiece Board.xPiece  Board.noPiece Board.oPiece
+                Board.xPiece  Board.noPiece Board.oPiece  Board.noPiece
+                Board.noPiece Board.xPiece  Board.noPiece Board.oPiece
+            board2 = Board.parse <| Board.strings
+                "X.O."
+                ".X.O"
+                "X.O."
+                ".X.O"
+        in
+            case board2 of
+                Err e -> Expect.fail e
+                Ok b ->
+                    Expect.equal board1 b
 
 
 parseEmptyBoard : () -> Expect.Expectation

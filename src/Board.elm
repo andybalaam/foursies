@@ -1,7 +1,8 @@
 module Board exposing
     ( Board
-    , Piece(OPiece, XPiece)
+    , Piece(NoPiece, OffBoard, OPiece, XPiece)
     , Row
+    , newBoard
     , noPiece
     , offBoard
     , oPiece
@@ -30,6 +31,22 @@ type alias Board =
         , Row
         , Row
         , Row
+        )
+    }
+
+
+newBoard :
+       Piece -> Piece -> Piece -> Piece
+    -> Piece -> Piece -> Piece -> Piece
+    -> Piece -> Piece -> Piece -> Piece
+    -> Piece -> Piece -> Piece -> Piece
+    -> Board
+newBoard p11 p21 p31 p41 p12 p22 p32 p42 p13 p23 p33 p43 p14 p24 p34 p44 =
+    { pieces =
+        ( (p11, p21, p31, p41)
+        , (p12, p22, p32, p42)
+        , (p13, p23, p33, p43)
+        , (p14, p24, p34, p44)
         )
     }
 

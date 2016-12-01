@@ -9,6 +9,7 @@ import Svg.Attributes exposing (..)
 import Svg.Events exposing (..)
 
 
+import Board
 import Model
 import Msg
 
@@ -161,8 +162,8 @@ filterAtt =
     Svg.Attributes.filter
 
 
-boardPiece : Int -> Int -> Model.Player -> List (Html.Html Msg.Msg)
-boardPiece xpos ypos player =
+boardSide : Model.Model -> Model.Side -> (Int, Int) -> List (Html.Html Msg.Msg)
+boardSide model side (xpos, ypos) =
     let
         scale = \start val -> toString (start + (21.6 * (toFloat val)))
         cx_ = scale 14.5 xpos
@@ -175,8 +176,20 @@ boardPiece xpos ypos player =
             , opacity "0.6", filterAtt "url(#blur)" ] []
         , image
             [ x x_, y y_, height "20", width "20"
-            , xlinkHref (playerImage player) ] []
+            , xlinkHref (playerImage (Model.sidePlayer model side)) ] []
         ]
+
+
+boardPiece : Model.Model -> (Int, Int) -> List (Html.Html Msg.Msg)
+boardPiece model pos =
+    let
+        piece = Board.pieceAt pos model.board
+    in
+        case piece of
+            Board.NoPiece -> []
+            Board.OffBoard -> []
+            Board.XPiece -> boardSide model Model.XSide pos
+            Board.OPiece -> boardSide model Model.OSide pos
 
 
 boardPieces : Model.Model -> Html.Html Msg.Msg
@@ -191,14 +204,9 @@ boardPieces model =
                     []
                 ]
             ]
-            ++ (boardPiece 0 0 <| Model.sidePlayer model Model.XSide)
-            ++ (boardPiece 1 0 <| Model.sidePlayer model Model.XSide)
-            ++ (boardPiece 2 0 <| Model.sidePlayer model Model.XSide)
-            ++ (boardPiece 3 0 <| Model.sidePlayer model Model.XSide)
-            ++ (boardPiece 0 3 <| Model.sidePlayer model Model.OSide)
-            ++ (boardPiece 1 3 <| Model.sidePlayer model Model.OSide)
-            ++ (boardPiece 2 3 <| Model.sidePlayer model Model.OSide)
-            ++ (boardPiece 3 3 <| Model.sidePlayer model Model.OSide)
+            ++ (
+                List.concat <| List.map (boardPiece model) Board.positions
+            )
         )
 
 
