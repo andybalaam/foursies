@@ -8528,9 +8528,9 @@ var _andybalaam$foursies$Model$Flags = F2(
 	function (a, b) {
 		return {width: a, height: b};
 	});
-var _andybalaam$foursies$Model$Model = F4(
-	function (a, b, c, d) {
-		return {screen: a, chosenPlayers: b, choosingSide: c, turn: d};
+var _andybalaam$foursies$Model$Model = F5(
+	function (a, b, c, d, e) {
+		return {screen: a, message: b, chosenPlayers: c, choosingSide: d, turn: e};
 	});
 var _andybalaam$foursies$Model$OSide = {ctor: 'OSide'};
 var _andybalaam$foursies$Model$XSide = {ctor: 'XSide'};
@@ -8563,9 +8563,11 @@ var _andybalaam$foursies$Model$allPlayers = {
 		}
 	}
 };
+var _andybalaam$foursies$Model$MessageNormal = {ctor: 'MessageNormal'};
 var _andybalaam$foursies$Model$newModel = function (flags) {
 	return {
 		screen: {width: flags.width, height: flags.height},
+		message: _andybalaam$foursies$Model$MessageNormal,
 		chosenPlayers: {x: _andybalaam$foursies$Model$BlackPlayer, o: _andybalaam$foursies$Model$WhitePlayer},
 		choosingSide: _elm_lang$core$Maybe$Nothing,
 		turn: _andybalaam$foursies$Model$XSide
@@ -9418,6 +9420,77 @@ var _elm_lang$svg$Svg_Events$onMouseOut = _elm_lang$svg$Svg_Events$simpleOn('mou
 var _elm_lang$svg$Svg_Events$onMouseOver = _elm_lang$svg$Svg_Events$simpleOn('mouseover');
 var _elm_lang$svg$Svg_Events$onMouseUp = _elm_lang$svg$Svg_Events$simpleOn('mouseup');
 
+var _andybalaam$foursies$View$boardWidth = function (model) {
+	var minD = A2(_elm_lang$core$Basics$min, model.screen.width, model.screen.height);
+	return _elm_lang$core$Basics$round(
+		_elm_lang$core$Basics$toFloat(minD) * 0.9);
+};
+var _andybalaam$foursies$View$boardSvg = function (model) {
+	var w = _andybalaam$foursies$View$boardWidth(model);
+	var scale = _elm_lang$core$Basics$toString(
+		_elm_lang$core$Basics$toFloat(w) / 200);
+	var wstr = _elm_lang$core$Basics$toString(w);
+	return A2(
+		_elm_lang$svg$Svg$svg,
+		{
+			ctor: '::',
+			_0: _elm_lang$svg$Svg_Attributes$width(wstr),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$height(wstr),
+				_1: {ctor: '[]'}
+			}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$svg$Svg$g,
+				{
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$transform(
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							'scale(',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								scale,
+								A2(
+									_elm_lang$core$Basics_ops['++'],
+									',',
+									A2(_elm_lang$core$Basics_ops['++'], scale, ')'))))),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$svg$Svg$image,
+						{
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$xlinkHref('images/board.svg'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$x('0'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$y('0'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$width('200'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$height('200'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}),
+			_1: {ctor: '[]'}
+		});
+};
 var _andybalaam$foursies$View$playerChoiceVisibility = F2(
 	function (model, side) {
 		return _elm_lang$core$Native_Utils.eq(
@@ -9586,6 +9659,93 @@ var _andybalaam$foursies$View$choosePlayersDiv = function (model) {
 			}
 		});
 };
+var _andybalaam$foursies$View$boardMessage = function (model) {
+	var _p1 = model.message;
+	return {
+		ctor: '::',
+		_0: _elm_lang$html$Html$text('Drag the pieces to move. To play: '),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$img,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'height', _1: '1.2em'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'bottom'},
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$src(
+							_andybalaam$foursies$View$playerImage(
+								A2(_andybalaam$foursies$Model$sidePlayer, model, model.turn))),
+						_1: {ctor: '[]'}
+					}
+				},
+				{ctor: '[]'}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$br,
+					{ctor: '[]'},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('Ticks tell you what you can move.'),
+					_1: {ctor: '[]'}
+				}
+			}
+		}
+	};
+};
+var _andybalaam$foursies$View$boardDiv = function (model) {
+	return A2(
+		_elm_lang$html$Html$div,
+		{
+			ctor: '::',
+			_0: _elm_lang$html$Html_Attributes$style(
+				{
+					ctor: '::',
+					_0: {
+						ctor: '_Tuple2',
+						_0: 'width',
+						_1: A2(
+							_elm_lang$core$Basics_ops['++'],
+							_elm_lang$core$Basics$toString(
+								_andybalaam$foursies$View$boardWidth(model)),
+							'px')
+					},
+					_1: {
+						ctor: '::',
+						_0: {ctor: '_Tuple2', _0: 'margin', _1: '1em auto'},
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {ctor: '[]'}
+		},
+		{
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$id('msg'),
+					_1: {ctor: '[]'}
+				},
+				_andybalaam$foursies$View$boardMessage(model)),
+			_1: {
+				ctor: '::',
+				_0: _andybalaam$foursies$View$boardSvg(model),
+				_1: {ctor: '[]'}
+			}
+		});
+};
 var _andybalaam$foursies$View$view = function (model) {
 	return A2(
 		_elm_lang$html$Html$div,
@@ -9613,7 +9773,11 @@ var _andybalaam$foursies$View$view = function (model) {
 				_1: {
 					ctor: '::',
 					_0: _andybalaam$foursies$View$choosePlayersDiv(model),
-					_1: {ctor: '[]'}
+					_1: {
+						ctor: '::',
+						_0: _andybalaam$foursies$View$boardDiv(model),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
 		});
