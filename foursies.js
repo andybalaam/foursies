@@ -10110,7 +10110,7 @@ var _andybalaam$foursies$View$boardPieces = function (model) {
 		_elm_lang$svg$Svg$g,
 		{
 			ctor: '::',
-			_0: _elm_lang$svg$Svg_Attributes$transform('scale(2.2, 2.2)'),
+			_0: _elm_lang$svg$Svg_Attributes$transform('scale(2.198, 2.198)'),
 			_1: {ctor: '[]'}
 		},
 		A2(
