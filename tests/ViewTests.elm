@@ -232,7 +232,7 @@ rtsHtml =
                         , strokeWidth "3", stroke "black"
                         , strokeLinecap "square", opacity "0.4" ] []
                     , g
-                        [ transform "scale(2.2, 2.2)" ]
+                        [ transform "scale(2.198, 2.198)" ]
                         [ Svg.filter
                             [ id "blur" ]
                             [ feGaussianBlur

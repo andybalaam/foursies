@@ -195,7 +195,7 @@ boardPiece model pos =
 boardPieces : Model.Model -> Html.Html Msg.Msg
 boardPieces model =
     g
-        [ transform "scale(2.2, 2.2)" ]
+        [ transform "scale(2.198, 2.198)" ]
         (
             [ Svg.filter
                 [ id "blur" ]
