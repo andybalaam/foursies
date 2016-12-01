@@ -4,6 +4,7 @@ module Model exposing
     , oppositeSide
     , sidePlayer
     , Flags
+    , Message(..)
     , Model
     , Side(..)
     , Player(..)
@@ -48,11 +49,16 @@ sidePlayer model side =
         OSide -> model.chosenPlayers.o
 
 
+type Message =
+    MessageNormal
+
+
 type alias Model =
     { screen :
         { width : Int
         , height : Int
         }
+    , message : Message
     , chosenPlayers :
         { x : Player -- Top
         , o : Player -- Bottom
@@ -68,6 +74,7 @@ newModel flags =
         { width = flags.width
         , height = flags.height
         }
+    , message = MessageNormal
     , chosenPlayers =
         { x = BlackPlayer
         , o = WhitePlayer

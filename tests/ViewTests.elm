@@ -153,6 +153,27 @@ rtsHtml =
                 , Html.br [] []
                 ]
             ]
+        , Html.div
+            [ Html.Attributes.style
+                [ ("width", "360px")
+                , ("margin", "1em auto")
+                ]
+            ]
+            [ Html.div
+                [ Html.Attributes.id "msg" ]
+                [ Html.text "Drag the pieces to move. To play: "
+                , Html.img
+                    [ Html.Attributes.style
+                        [ ("height", "1.2em")
+                        , ("vertical-align", "bottom")
+                        ]
+                    , Html.Attributes.src "images/piece-black.svg"
+                    ]
+                    []
+                , Html.br [] []
+                , Html.text "Ticks tell you what you can move."
+                ]
+            ]
         ]
 
 
@@ -160,7 +181,7 @@ readyToStart : () -> Expect.Expectation
 readyToStart =
     equalHtml
         rtsHtml
-        (View.view <| Model.newModel {height=10, width=10})
+        (View.view <| Model.newModel {height=400, width=400})
 
 
 chooseXHtml : Html.Html Msg.Msg

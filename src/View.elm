@@ -93,6 +93,47 @@ choosePlayersDiv model =
         ]
 
 
+boardWidth : Model.Model -> String
+boardWidth model =
+    let
+        minD = Basics.min model.screen.width model.screen.height
+    in
+        toString <| round <| (toFloat minD) * 0.9
+
+
+boardMessage : Model.Model -> List (Html.Html Msg.Msg)
+boardMessage model =
+    case model.message of
+        Model.MessageNormal ->
+            [ Html.text "Drag the pieces to move. To play: "
+            , Html.img
+                [ Html.Attributes.style
+                    [ ("height", "1.2em")
+                    , ("vertical-align", "bottom")
+                    ]
+                , Html.Attributes.src
+                    <| playerImage <| Model.sidePlayer model model.turn
+                ]
+                []
+            , Html.br [] []
+            , Html.text "Ticks tell you what you can move."
+    ]
+
+
+boardDiv : Model.Model -> Html.Html Msg.Msg
+boardDiv model =
+    Html.div
+        [ Html.Attributes.style
+            [ ("width", (boardWidth model) ++ "px")
+            , ("margin", "1em auto")
+            ]
+        ]
+        [ Html.div
+            [ Html.Attributes.id "msg" ]
+            (boardMessage model)
+        ]
+
+
 view : Model.Model -> Html.Html Msg.Msg
 view model =
     Html.div
@@ -100,6 +141,7 @@ view model =
         [ Html.h1 [] [ text "Foursies" ]
         , Html.p [] [ text "A deceptively simple two-player board game" ]
         , choosePlayersDiv model
+        , boardDiv model
             --svg
             --[ width  <| toString model.screen.width
             --, height <| toString model.screen.height
