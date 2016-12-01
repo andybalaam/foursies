@@ -186,6 +186,46 @@ rtsHtml =
                         , height "200"
                         ]
                         []
+                    , line
+                        [ x1 "5", y1 "5", x2 "195", y2 "5"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "5", y1 "52.5", x2 "195", y2 "52.5"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "5", y1 "100", x2 "195", y2 "100"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "5", y1 "147.5", x2 "195", y2 "147.5"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "5", y1 "195", x2 "195", y2 "195"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "5", y1 "5", x2 "5", y2 "195"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "52.5", y1 "5", x2 "52.5", y2 "195"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "100", y1 "5", x2 "100", y2 "195"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "147.5", y1 "5", x2 "147.5", y2 "195"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
+                    , line
+                        [ x1 "195", y1 "5", x2 "195", y2 "195"
+                        , strokeWidth "3", stroke "black"
+                        , strokeLinecap "square", opacity "0.4" ] []
                     ]
                 ]
             ]

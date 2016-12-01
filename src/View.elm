@@ -120,6 +120,42 @@ boardMessage model =
     ]
 
 
+boardLine : String -> String -> String -> String -> Html.Html Msg.Msg
+boardLine x1_ y1_ x2_ y2_ =
+    line
+        [ x1 x1_, y1 y1_, x2 x2_, y2 y2_
+        , strokeWidth "3", stroke "black"
+        , strokeLinecap "square", opacity "0.4" ] []
+
+
+lineOffset : Int -> String
+lineOffset i =
+    toString <| 5 + (47.5 * (toFloat i))
+
+
+boardLineX : Int -> Html.Html Msg.Msg
+boardLineX i =
+    let
+        x = lineOffset i
+    in
+        boardLine x "5" x "195"
+
+
+boardLineY : Int -> Html.Html Msg.Msg
+boardLineY i =
+    let
+        y = lineOffset i
+    in
+        boardLine "5" y "195" y
+
+
+boardLines : List (Html.Html Msg.Msg)
+boardLines =
+    (  List.map boardLineY (List.range 0 4)
+    ++ (List.map boardLineX (List.range 0 4))
+    )
+
+
 boardSvg : Model.Model -> Html.Html Msg.Msg
 boardSvg model =
     let
@@ -133,15 +169,18 @@ boardSvg model =
             ]
             [ g
                 [ transform <| "scale(" ++ scale ++ "," ++ scale ++")" ]
-                [ image
-                    [ xlinkHref "images/board.svg"
-                    , x "0"
-                    , y "0"
-                    , width "200"
-                    , height "200"
+                (
+                    [ image
+                        [ xlinkHref "images/board.svg"
+                        , x "0"
+                        , y "0"
+                        , width "200"
+                        , height "200"
+                        ]
+                        []
                     ]
-                    []
-                ]
+                    ++ boardLines
+                )
             ]
 
 
@@ -168,10 +207,4 @@ view model =
         , Html.p [] [ text "A deceptively simple two-player board game" ]
         , choosePlayersDiv model
         , boardDiv model
-            --svg
-            --[ width  <| toString model.screen.width
-            --, height <| toString model.screen.height
-            --]
-            --[
-            --]
         ]
