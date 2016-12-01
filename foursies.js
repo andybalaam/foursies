@@ -9420,6 +9420,67 @@ var _elm_lang$svg$Svg_Events$onMouseOut = _elm_lang$svg$Svg_Events$simpleOn('mou
 var _elm_lang$svg$Svg_Events$onMouseOver = _elm_lang$svg$Svg_Events$simpleOn('mouseover');
 var _elm_lang$svg$Svg_Events$onMouseUp = _elm_lang$svg$Svg_Events$simpleOn('mouseup');
 
+var _andybalaam$foursies$View$lineOffset = function (i) {
+	return _elm_lang$core$Basics$toString(
+		5 + (47.5 * _elm_lang$core$Basics$toFloat(i)));
+};
+var _andybalaam$foursies$View$boardLine = F4(
+	function (x1_, y1_, x2_, y2_) {
+		return A2(
+			_elm_lang$svg$Svg$line,
+			{
+				ctor: '::',
+				_0: _elm_lang$svg$Svg_Attributes$x1(x1_),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$y1(y1_),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$x2(x2_),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$y2(y2_),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$strokeWidth('3'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$stroke('black'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$svg$Svg_Attributes$strokeLinecap('square'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Attributes$opacity('0.4'),
+											_1: {ctor: '[]'}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			{ctor: '[]'});
+	});
+var _andybalaam$foursies$View$boardLineX = function (i) {
+	var x = _andybalaam$foursies$View$lineOffset(i);
+	return A4(_andybalaam$foursies$View$boardLine, x, '5', x, '195');
+};
+var _andybalaam$foursies$View$boardLineY = function (i) {
+	var y = _andybalaam$foursies$View$lineOffset(i);
+	return A4(_andybalaam$foursies$View$boardLine, '5', y, '195', y);
+};
+var _andybalaam$foursies$View$boardLines = A2(
+	_elm_lang$core$Basics_ops['++'],
+	A2(
+		_elm_lang$core$List$map,
+		_andybalaam$foursies$View$boardLineY,
+		A2(_elm_lang$core$List$range, 0, 4)),
+	A2(
+		_elm_lang$core$List$map,
+		_andybalaam$foursies$View$boardLineX,
+		A2(_elm_lang$core$List$range, 0, 4)));
 var _andybalaam$foursies$View$boardWidth = function (model) {
 	var minD = A2(_elm_lang$core$Basics$min, model.screen.width, model.screen.height);
 	return _elm_lang$core$Basics$round(
@@ -9460,34 +9521,37 @@ var _andybalaam$foursies$View$boardSvg = function (model) {
 									A2(_elm_lang$core$Basics_ops['++'], scale, ')'))))),
 					_1: {ctor: '[]'}
 				},
-				{
-					ctor: '::',
-					_0: A2(
-						_elm_lang$svg$Svg$image,
-						{
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$xlinkHref('images/board.svg'),
-							_1: {
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$svg$Svg$image,
+							{
 								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$x('0'),
+								_0: _elm_lang$svg$Svg_Attributes$xlinkHref('images/board.svg'),
 								_1: {
 									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$y('0'),
+									_0: _elm_lang$svg$Svg_Attributes$x('0'),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$svg$Svg_Attributes$width('200'),
+										_0: _elm_lang$svg$Svg_Attributes$y('0'),
 										_1: {
 											ctor: '::',
-											_0: _elm_lang$svg$Svg_Attributes$height('200'),
-											_1: {ctor: '[]'}
+											_0: _elm_lang$svg$Svg_Attributes$width('200'),
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$svg$Svg_Attributes$height('200'),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								}
-							}
-						},
-						{ctor: '[]'}),
-					_1: {ctor: '[]'}
-				}),
+							},
+							{ctor: '[]'}),
+						_1: {ctor: '[]'}
+					},
+					_andybalaam$foursies$View$boardLines)),
 			_1: {ctor: '[]'}
 		});
 };
