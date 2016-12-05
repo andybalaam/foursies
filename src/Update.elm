@@ -13,10 +13,14 @@ update msg model =
             Msg.ChoosePlayer side -> { model | choosingSide = Just side }
             Msg.ChangePlayer side player -> updatePlayer model side player
             Msg.MouseMove pos -> model
-            Msg.DragStart xpos ypos -> { model | message = Model.MessageDragging xpos ypos }
+            Msg.DragStart xpos ypos -> updateDragStart xpos ypos model
     in
         (m, Cmd.none)
 
+
+updateDragStart : Int -> Int -> Model.Model -> Model.Model
+updateDragStart xpos ypos model =
+    { model | dragging = Just <| Model.DragState xpos ypos 0 0 }
 
 updateResize : Int -> Int -> Model.Model -> Model.Model
 updateResize w h model =

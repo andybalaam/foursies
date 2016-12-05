@@ -19,6 +19,7 @@ all =
         , test "Changing X player updates" changingXPlayerUpdates
         , test "Changing O player updates" changingOPlayerUpdates
         , test "Impossible to have identical players" playersNotIdentical
+        , test "Start dragging a piece" startDragging
         ]
 
 
@@ -98,3 +99,13 @@ playersNotIdentical =
         modelEqual
             { model | choosingSide = Nothing }
             (update (Msg.ChangePlayer Model.XSide Model.BlackPlayer) model)
+
+
+startDragging : () -> Expect.Expectation
+startDragging =
+    let
+        model = Model.newModel {width=10, height=10}
+    in
+        modelEqual
+            { model | dragging = Just <| Model.DragState 1 0 0 0 }
+            (update (Msg.DragStart 1 0) model)

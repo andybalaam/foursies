@@ -3,6 +3,7 @@ module Model exposing
     , newModel
     , oppositeSide
     , sidePlayer
+    , Drag(..)
     , Flags
     , Message(..)
     , Model
@@ -58,6 +59,10 @@ type Message =
     | MessageDragging Int Int
 
 
+type Drag =
+    DragState Int Int Int Int
+
+
 type alias Model =
     { screen :
         { width : Int
@@ -71,6 +76,7 @@ type alias Model =
     , choosingSide : Maybe Side
     , turn : Side
     , board : Board.Board
+    , dragging : Maybe Drag
     }
 
 
@@ -92,4 +98,5 @@ newModel flags =
         Board.noPiece Board.noPiece Board.noPiece Board.noPiece
         Board.noPiece Board.noPiece Board.noPiece Board.noPiece
         Board.oPiece  Board.oPiece  Board.oPiece  Board.oPiece
+    , dragging = Nothing
     }
