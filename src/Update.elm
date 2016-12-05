@@ -12,6 +12,8 @@ update msg model =
             Msg.Resize w h -> updateResize w h model
             Msg.ChoosePlayer side -> { model | choosingSide = Just side }
             Msg.ChangePlayer side player -> updatePlayer model side player
+            Msg.MouseMove pos -> model
+            Msg.DragStart xpos ypos -> { model | message = Model.MessageDragging xpos ypos }
     in
         (m, Cmd.none)
 

@@ -1,4 +1,5 @@
 import Html exposing (programWithFlags)
+import Mouse
 import Window
 
 
@@ -12,6 +13,7 @@ subscriptions : Model.Model -> Sub Msg.Msg
 subscriptions model =
     Sub.batch
         [ Window.resizes (\size -> Msg.Resize size.width size.height)
+        , Mouse.moves (\pos -> Msg.MouseMove pos)
         ]
 
 

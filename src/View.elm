@@ -118,7 +118,10 @@ boardMessage model =
                 []
             , Html.br [] []
             , Html.text "Ticks tell you what you can move."
-    ]
+            ]
+        Model.MessageDragging xpos ypos ->
+            [ Html.text <| "Dragging " ++ (toString xpos) ++ ", " ++ (toString ypos)
+            ]
 
 
 boardLine : String -> String -> String -> String -> Html.Html Msg.Msg
@@ -176,7 +179,9 @@ boardSide model side (xpos, ypos) =
             , opacity "0.6", filterAtt "url(#blur)" ] []
         , image
             [ x x_, y y_, height "20", width "20"
-            , xlinkHref (playerImage (Model.sidePlayer model side)) ] []
+            , xlinkHref (playerImage (Model.sidePlayer model side))
+            , onMouseDown <| Msg.DragStart xpos ypos
+            ] []
         ]
 
 

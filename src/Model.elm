@@ -55,6 +55,7 @@ sidePlayer model side =
 
 type Message =
     MessageNormal
+    | MessageDragging Int Int
 
 
 type alias Model =
