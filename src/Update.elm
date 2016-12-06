@@ -20,7 +20,10 @@ update msg model =
 
 updateDragStart : Int -> Int -> Model.Model -> Model.Model
 updateDragStart xpos ypos model =
-    { model | dragging = Just <| Model.DragState xpos ypos 0 0 }
+    { model
+        | dragging = Just <| Model.DragState xpos ypos model.mousePos
+    }
+
 
 updateResize : Int -> Int -> Model.Model -> Model.Model
 updateResize w h model =

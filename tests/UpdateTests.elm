@@ -118,8 +118,12 @@ movingMouseUpdates =
 startDragging : () -> Expect.Expectation
 startDragging =
     let
-        model = Model.newModel {width=10, height=10}
+        model_ = Model.newModel {width=10, height=10}
+        model = { model_ | mousePos = Mouse.Position 21 23 }
     in
         modelEqual
-            { model | dragging = Just <| Model.DragState 1 0 0 0 }
+            { model
+                | dragging = Just
+                    <| Model.DragState 1 0 (Mouse.Position 21 23)
+            }
             (update (Msg.DragStart 1 0) model)
