@@ -16,3 +16,6 @@ setup:
 	sudo npm install -g elm@0.18
 	sudo npm install -g elm-test@0.18
 	elm-package install -y
+
+clean:
+	rm -rf elm-stuff tests/elm-stuff foursies.js repl-temp-*
