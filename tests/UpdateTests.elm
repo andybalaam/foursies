@@ -5,6 +5,9 @@ import Test exposing (describe,test,Test)
 import Expect
 
 
+import Mouse
+
+
 import Model
 import Msg
 import Update exposing (update)
@@ -19,6 +22,7 @@ all =
         , test "Changing X player updates" changingXPlayerUpdates
         , test "Changing O player updates" changingOPlayerUpdates
         , test "Impossible to have identical players" playersNotIdentical
+        , test "Moving mouse updates" movingMouseUpdates
         , test "Start dragging a piece" startDragging
         ]
 
@@ -99,6 +103,16 @@ playersNotIdentical =
         modelEqual
             { model | choosingSide = Nothing }
             (update (Msg.ChangePlayer Model.XSide Model.BlackPlayer) model)
+
+
+movingMouseUpdates : () -> Expect.Expectation
+movingMouseUpdates =
+    let
+        model = Model.newModel {width=10, height=10}
+    in
+        modelEqual
+            { model | mousePos = Mouse.Position 45 76 }
+            (update (Msg.MouseMove (Mouse.Position 45 76)) model)
 
 
 startDragging : () -> Expect.Expectation

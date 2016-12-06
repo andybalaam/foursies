@@ -12,7 +12,7 @@ update msg model =
             Msg.Resize w h -> updateResize w h model
             Msg.ChoosePlayer side -> { model | choosingSide = Just side }
             Msg.ChangePlayer side player -> updatePlayer model side player
-            Msg.MouseMove pos -> model
+            Msg.MouseMove pos -> { model | mousePos = pos }
             Msg.DragStart xpos ypos -> updateDragStart xpos ypos model
     in
         (m, Cmd.none)

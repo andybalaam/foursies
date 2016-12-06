@@ -12,6 +12,9 @@ module Model exposing
     )
 
 
+import Mouse
+
+
 import Board
 
 
@@ -77,6 +80,7 @@ type alias Model =
     , turn : Side
     , board : Board.Board
     , dragging : Maybe Drag
+    , mousePos : Mouse.Position
     }
 
 
@@ -99,4 +103,5 @@ newModel flags =
         Board.noPiece Board.noPiece Board.noPiece Board.noPiece
         Board.oPiece  Board.oPiece  Board.oPiece  Board.oPiece
     , dragging = Nothing
+    , mousePos = Mouse.Position 0 0
     }
