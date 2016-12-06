@@ -1,4 +1,4 @@
-module View exposing (choosePlayersDiv, view)
+module View exposing (boardSide, choosePlayersDiv, view)
 
 
 import Html
@@ -165,14 +165,34 @@ filterAtt =
     Svg.Attributes.filter
 
 
+beingDraggedOffsets : Model.Model -> (Float, Float, Float, Float)
+beingDraggedOffsets model =
+    (-1, -1, 0, 0)
+
+
+-- Given a model and the x and y position of the piece, return its
+-- scaled offset and that of its shadow, based on whether it is being
+-- dragged, and if so, where the mouse has moved.
+offsets : Model.Model -> Int -> Int -> (Float, Float, Float, Float)
+offsets model xpos ypos =
+    case model.dragging of
+        Nothing -> (0, 0, 0, 0)
+        Just (Model.DragState dx dy dMousePos) ->
+            if dx /= xpos || dy /= ypos then
+                (0, 0, 0, 0)
+            else
+                beingDraggedOffsets model
+
+
 boardSide : Model.Model -> Model.Side -> (Int, Int) -> List (Html.Html Msg.Msg)
 boardSide model side (xpos, ypos) =
     let
-        scale = \start val -> toString (start + (21.6 * (toFloat val)))
-        cx_ = scale 14.5 xpos
-        cy_ = scale 14.5 ypos
-        x_  = scale  3.1 xpos
-        y_  = scale  3.1 ypos
+        (pieceX, pieceY, shadowX, shadowY) = offsets model xpos ypos
+        scale = \start val -> start + (21.6 * (toFloat val))
+        cx_ = toString <| shadowX + (scale 14.5 xpos)
+        cy_ = toString <| shadowY + (scale 14.5 ypos)
+        x_  = toString <| pieceX  + (scale  3.1 xpos)
+        y_  = toString <| pieceY  + (scale  3.1 ypos)
     in
         [ circle
             [ cx cx_, cy cy_, r "10", fill "black"
@@ -197,10 +217,17 @@ boardPiece model pos =
             Board.OPiece -> boardSide model Model.OSide pos
 
 
+boardScale : Float
+boardScale = 2.198
+
+
 boardPieces : Model.Model -> Html.Html Msg.Msg
 boardPieces model =
     g
-        [ transform "scale(2.198, 2.198)" ]
+        [ transform <|
+            "scale(" ++ (toString boardScale)
+            ++ ", "  ++ (toString boardScale) ++ ")"
+        ]
         (
             [ Svg.filter
                 [ id "blur" ]
@@ -227,7 +254,7 @@ boardSvg model =
             , height wstr
             ]
             [ g
-                [ transform <| "scale(" ++ scale ++ "," ++ scale ++")" ]
+                [ transform <| "scale(" ++ scale ++ "," ++ scale ++ ")" ]
                 (
                     [ image
                         [ xlinkHref "images/board.svg"

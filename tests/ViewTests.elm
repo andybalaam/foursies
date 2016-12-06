@@ -6,6 +6,7 @@ import Expect
 import Html
 import Html.Attributes
 import Html.Events
+import Mouse
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Svg.Events exposing (..)
@@ -22,6 +23,7 @@ all =
         [ test "Ready to start" readyToStart
         , test "Choosing X player shows choices" choosingXPlayerShowsChoice
         , test "Choosing O player shows choices" choosingOPlayerShowsChoice
+        , test "Start dragging piece is offset" startDraggingPieceOffset
         ]
 
 
@@ -607,3 +609,31 @@ choosingOPlayerShowsChoice =
         equalHtml
             chooseOHtml
             (View.choosePlayersDiv model)
+
+
+pieceOffsetHtml : List (Html.Html Msg.Msg)
+pieceOffsetHtml =
+    [ circle
+        [ cx "36.1", cy "14.5", r "10", fill "black"
+        , opacity "0.6", filterAtt "url(#blur)" ] []
+    , image
+        [ x "23.700000000000003", y "2.1", height "20", width "20"
+        , xlinkHref "images/piece-black.svg"
+        , onMouseDown <| Msg.DragStart 1 0
+        ] []
+    ]
+
+
+startDraggingPieceOffset : () -> Expect.Expectation
+startDraggingPieceOffset =
+    let
+        model_ = Model.newModel {height=100, width=100}
+        model =
+            { model_
+            | dragging = Just <| Model.DragState 1 0 (Mouse.Position 34 36)
+            , mousePos = Mouse.Position 34 36  -- Mouse not moved
+            }
+    in
+        \() -> Expect.equal
+            pieceOffsetHtml
+            (View.boardSide model Model.XSide (1, 0))
