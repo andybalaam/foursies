@@ -24,6 +24,7 @@ all =
         , test "Choosing X player shows choices" choosingXPlayerShowsChoice
         , test "Choosing O player shows choices" choosingOPlayerShowsChoice
         , test "Start dragging piece is offset" startDraggingPieceOffset
+        , test "Continue dragging piece is moved" continueDraggingPieceMoved
         ]
 
 
@@ -636,4 +637,33 @@ startDraggingPieceOffset =
     in
         \() -> Expect.equal
             pieceOffsetHtml
+            (View.boardSide model Model.XSide (1, 0))
+
+
+pieceMovedHtml : List (Html.Html Msg.Msg)
+pieceMovedHtml =
+    [ circle
+        [ cx "41.155100596501875", cy "34.72040238600748", r "10", fill "black"
+        , opacity "0.6", filterAtt "url(#blur)" ] []
+    , image
+        [ x "28.755100596501872", y "22.320402386007483"
+        , height "20", width "20"
+        , xlinkHref "images/piece-black.svg"
+        , onMouseDown <| Msg.DragStart 1 0
+        ] []
+    ]
+
+
+continueDraggingPieceMoved : () -> Expect.Expectation
+continueDraggingPieceMoved =
+    let
+        model_ = Model.newModel {height=100, width=100}
+        model =
+            { model_
+            | dragging = Just <| Model.DragState 1 0 (Mouse.Position 34 36)
+            , mousePos = Mouse.Position 39 56  -- Mouse moved
+            }
+    in
+        \() -> Expect.equal
+            pieceMovedHtml
             (View.boardSide model Model.XSide (1, 0))

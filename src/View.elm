@@ -4,6 +4,7 @@ module View exposing (boardSide, choosePlayersDiv, view)
 import Html
 import Html.Attributes
 import Html.Events
+import Mouse
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
 import Svg.Events exposing (..)
@@ -165,9 +166,18 @@ filterAtt =
     Svg.Attributes.filter
 
 
-beingDraggedOffsets : Model.Model -> (Float, Float, Float, Float)
-beingDraggedOffsets model =
-    (-1, -1, 0, 0)
+beingDraggedOffsets : Model.Model -> Mouse.Position
+    -> (Float, Float, Float, Float)
+beingDraggedOffsets model dMousePos =
+    let
+        offsetX = -1
+        offsetY = -1
+        pixelsMovedX = model.mousePos.x - dMousePos.x
+        pixelsMovedY = model.mousePos.y - dMousePos.y
+        movedX = (toFloat pixelsMovedX) / ((boardScale model) * piecesScale)
+        movedY = (toFloat pixelsMovedY) / ((boardScale model) * piecesScale)
+    in
+        (offsetX + movedX, offsetY + movedY, movedX, movedY)
 
 
 -- Given a model and the x and y position of the piece, return its
@@ -181,7 +191,7 @@ offsets model xpos ypos =
             if dx /= xpos || dy /= ypos then
                 (0, 0, 0, 0)
             else
-                beingDraggedOffsets model
+                beingDraggedOffsets model dMousePos
 
 
 boardSide : Model.Model -> Model.Side -> (Int, Int) -> List (Html.Html Msg.Msg)
@@ -193,6 +203,8 @@ boardSide model side (xpos, ypos) =
         cy_ = toString <| shadowY + (scale 14.5 ypos)
         x_  = toString <| pieceX  + (scale  3.1 xpos)
         y_  = toString <| pieceY  + (scale  3.1 ypos)
+        -- TODO: blur shadow more
+        -- TODO: draw the image later, so it's on top
     in
         [ circle
             [ cx cx_, cy cy_, r "10", fill "black"
@@ -203,6 +215,7 @@ boardSide model side (xpos, ypos) =
             , onMouseDown <| Msg.DragStart xpos ypos
             ] []
         ]
+        -- TODO: style [ ("cursor", "move") ]
 
 
 boardPiece : Model.Model -> (Int, Int) -> List (Html.Html Msg.Msg)
@@ -217,16 +230,21 @@ boardPiece model pos =
             Board.OPiece -> boardSide model Model.OSide pos
 
 
-boardScale : Float
-boardScale = 2.198
+piecesScale : Float
+piecesScale = 2.198
+
+
+boardScale : Model.Model -> Float
+boardScale model =
+    (toFloat (boardWidth model)) / 200
 
 
 boardPieces : Model.Model -> Html.Html Msg.Msg
 boardPieces model =
     g
         [ transform <|
-            "scale(" ++ (toString boardScale)
-            ++ ", "  ++ (toString boardScale) ++ ")"
+            "scale(" ++ (toString piecesScale)
+            ++ ", "  ++ (toString piecesScale) ++ ")"
         ]
         (
             [ Svg.filter
@@ -245,9 +263,8 @@ boardPieces model =
 boardSvg : Model.Model -> Html.Html Msg.Msg
 boardSvg model =
     let
-        w = boardWidth model
-        scale = toString <| (toFloat w) / 200
-        wstr = toString w
+        scale = toString <| boardScale model
+        wstr = toString <| boardWidth model
     in
         svg
             [ width wstr
