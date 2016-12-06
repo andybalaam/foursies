@@ -14,6 +14,7 @@ subscriptions model =
     Sub.batch
         [ Window.resizes (\size -> Msg.Resize size.width size.height)
         , Mouse.moves (\pos -> Msg.MouseMove pos)
+        , Mouse.ups (\pos -> Msg.DragStop)
         ]
 
 

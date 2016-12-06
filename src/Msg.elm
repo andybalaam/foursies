@@ -10,3 +10,4 @@ type Msg =
     | ChangePlayer Model.Side Model.Player
     | MouseMove Mouse.Position
     | DragStart Int Int
+    | DragStop

@@ -14,6 +14,7 @@ update msg model =
             Msg.ChangePlayer side player -> updatePlayer model side player
             Msg.MouseMove pos -> { model | mousePos = pos }
             Msg.DragStart xpos ypos -> updateDragStart xpos ypos model
+            Msg.DragStop -> { model | dragging = Nothing }
     in
         (m, Cmd.none)
 

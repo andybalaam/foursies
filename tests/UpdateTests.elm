@@ -24,6 +24,7 @@ all =
         , test "Impossible to have identical players" playersNotIdentical
         , test "Moving mouse updates" movingMouseUpdates
         , test "Start dragging a piece" startDragging
+        , test "Stop dragging a piece" stopDragging
         ]
 
 
@@ -127,3 +128,18 @@ startDragging =
                     <| Model.DragState 1 0 (Mouse.Position 21 23)
             }
             (update (Msg.DragStart 1 0) model)
+
+
+stopDragging : () -> Expect.Expectation
+stopDragging =
+    let
+        model_ = Model.newModel {width=10, height=10}
+        model =
+            { model_
+            | mousePos = Mouse.Position 21 23
+            , dragging = Just <| Model.DragState 2 2 (Mouse.Position 5 5)
+            }
+    in
+        modelEqual
+            { model | dragging = Nothing }
+            (update Msg.DragStop model)
