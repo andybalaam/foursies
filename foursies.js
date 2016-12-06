@@ -8487,21 +8487,6 @@ _elm_lang$core$Native_Platform.effectManagers['Task'] = {pkg: 'elm-lang/core', i
 var _elm_lang$dom$Dom_LowLevel$onWindow = _elm_lang$dom$Native_Dom.onWindow;
 var _elm_lang$dom$Dom_LowLevel$onDocument = _elm_lang$dom$Native_Dom.onDocument;
 
-var _elm_lang$window$Native_Window = function()
-{
-
-var size = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)	{
-	callback(_elm_lang$core$Native_Scheduler.succeed({
-		width: window.innerWidth,
-		height: window.innerHeight
-	}));
-});
-
-return {
-	size: size
-};
-
-}();
 //import Native.Scheduler //
 
 var _elm_lang$core$Native_Time = function() {
@@ -8721,6 +8706,204 @@ var _elm_lang$core$Process$kill = _elm_lang$core$Native_Scheduler.kill;
 var _elm_lang$core$Process$sleep = _elm_lang$core$Native_Scheduler.sleep;
 var _elm_lang$core$Process$spawn = _elm_lang$core$Native_Scheduler.spawn;
 
+var _elm_lang$mouse$Mouse_ops = _elm_lang$mouse$Mouse_ops || {};
+_elm_lang$mouse$Mouse_ops['&>'] = F2(
+	function (t1, t2) {
+		return A2(
+			_elm_lang$core$Task$andThen,
+			function (_p0) {
+				return t2;
+			},
+			t1);
+	});
+var _elm_lang$mouse$Mouse$onSelfMsg = F3(
+	function (router, _p1, state) {
+		var _p2 = _p1;
+		var _p3 = A2(_elm_lang$core$Dict$get, _p2.category, state);
+		if (_p3.ctor === 'Nothing') {
+			return _elm_lang$core$Task$succeed(state);
+		} else {
+			var send = function (tagger) {
+				return A2(
+					_elm_lang$core$Platform$sendToApp,
+					router,
+					tagger(_p2.position));
+			};
+			return A2(
+				_elm_lang$mouse$Mouse_ops['&>'],
+				_elm_lang$core$Task$sequence(
+					A2(_elm_lang$core$List$map, send, _p3._0.taggers)),
+				_elm_lang$core$Task$succeed(state));
+		}
+	});
+var _elm_lang$mouse$Mouse$init = _elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty);
+var _elm_lang$mouse$Mouse$categorizeHelpHelp = F2(
+	function (value, maybeValues) {
+		var _p4 = maybeValues;
+		if (_p4.ctor === 'Nothing') {
+			return _elm_lang$core$Maybe$Just(
+				{
+					ctor: '::',
+					_0: value,
+					_1: {ctor: '[]'}
+				});
+		} else {
+			return _elm_lang$core$Maybe$Just(
+				{ctor: '::', _0: value, _1: _p4._0});
+		}
+	});
+var _elm_lang$mouse$Mouse$categorizeHelp = F2(
+	function (subs, subDict) {
+		categorizeHelp:
+		while (true) {
+			var _p5 = subs;
+			if (_p5.ctor === '[]') {
+				return subDict;
+			} else {
+				var _v4 = _p5._1,
+					_v5 = A3(
+					_elm_lang$core$Dict$update,
+					_p5._0._0,
+					_elm_lang$mouse$Mouse$categorizeHelpHelp(_p5._0._1),
+					subDict);
+				subs = _v4;
+				subDict = _v5;
+				continue categorizeHelp;
+			}
+		}
+	});
+var _elm_lang$mouse$Mouse$categorize = function (subs) {
+	return A2(_elm_lang$mouse$Mouse$categorizeHelp, subs, _elm_lang$core$Dict$empty);
+};
+var _elm_lang$mouse$Mouse$subscription = _elm_lang$core$Native_Platform.leaf('Mouse');
+var _elm_lang$mouse$Mouse$Position = F2(
+	function (a, b) {
+		return {x: a, y: b};
+	});
+var _elm_lang$mouse$Mouse$position = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_elm_lang$mouse$Mouse$Position,
+	A2(_elm_lang$core$Json_Decode$field, 'pageX', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'pageY', _elm_lang$core$Json_Decode$int));
+var _elm_lang$mouse$Mouse$Watcher = F2(
+	function (a, b) {
+		return {taggers: a, pid: b};
+	});
+var _elm_lang$mouse$Mouse$Msg = F2(
+	function (a, b) {
+		return {category: a, position: b};
+	});
+var _elm_lang$mouse$Mouse$onEffects = F3(
+	function (router, newSubs, oldState) {
+		var rightStep = F3(
+			function (category, taggers, task) {
+				var tracker = A3(
+					_elm_lang$dom$Dom_LowLevel$onDocument,
+					category,
+					_elm_lang$mouse$Mouse$position,
+					function (_p6) {
+						return A2(
+							_elm_lang$core$Platform$sendToSelf,
+							router,
+							A2(_elm_lang$mouse$Mouse$Msg, category, _p6));
+					});
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (state) {
+						return A2(
+							_elm_lang$core$Task$andThen,
+							function (pid) {
+								return _elm_lang$core$Task$succeed(
+									A3(
+										_elm_lang$core$Dict$insert,
+										category,
+										A2(_elm_lang$mouse$Mouse$Watcher, taggers, pid),
+										state));
+							},
+							_elm_lang$core$Process$spawn(tracker));
+					},
+					task);
+			});
+		var bothStep = F4(
+			function (category, _p7, taggers, task) {
+				var _p8 = _p7;
+				return A2(
+					_elm_lang$core$Task$andThen,
+					function (state) {
+						return _elm_lang$core$Task$succeed(
+							A3(
+								_elm_lang$core$Dict$insert,
+								category,
+								A2(_elm_lang$mouse$Mouse$Watcher, taggers, _p8.pid),
+								state));
+					},
+					task);
+			});
+		var leftStep = F3(
+			function (category, _p9, task) {
+				var _p10 = _p9;
+				return A2(
+					_elm_lang$mouse$Mouse_ops['&>'],
+					_elm_lang$core$Process$kill(_p10.pid),
+					task);
+			});
+		return A6(
+			_elm_lang$core$Dict$merge,
+			leftStep,
+			bothStep,
+			rightStep,
+			oldState,
+			_elm_lang$mouse$Mouse$categorize(newSubs),
+			_elm_lang$core$Task$succeed(_elm_lang$core$Dict$empty));
+	});
+var _elm_lang$mouse$Mouse$MySub = F2(
+	function (a, b) {
+		return {ctor: 'MySub', _0: a, _1: b};
+	});
+var _elm_lang$mouse$Mouse$clicks = function (tagger) {
+	return _elm_lang$mouse$Mouse$subscription(
+		A2(_elm_lang$mouse$Mouse$MySub, 'click', tagger));
+};
+var _elm_lang$mouse$Mouse$moves = function (tagger) {
+	return _elm_lang$mouse$Mouse$subscription(
+		A2(_elm_lang$mouse$Mouse$MySub, 'mousemove', tagger));
+};
+var _elm_lang$mouse$Mouse$downs = function (tagger) {
+	return _elm_lang$mouse$Mouse$subscription(
+		A2(_elm_lang$mouse$Mouse$MySub, 'mousedown', tagger));
+};
+var _elm_lang$mouse$Mouse$ups = function (tagger) {
+	return _elm_lang$mouse$Mouse$subscription(
+		A2(_elm_lang$mouse$Mouse$MySub, 'mouseup', tagger));
+};
+var _elm_lang$mouse$Mouse$subMap = F2(
+	function (func, _p11) {
+		var _p12 = _p11;
+		return A2(
+			_elm_lang$mouse$Mouse$MySub,
+			_p12._0,
+			function (_p13) {
+				return func(
+					_p12._1(_p13));
+			});
+	});
+_elm_lang$core$Native_Platform.effectManagers['Mouse'] = {pkg: 'elm-lang/mouse', init: _elm_lang$mouse$Mouse$init, onEffects: _elm_lang$mouse$Mouse$onEffects, onSelfMsg: _elm_lang$mouse$Mouse$onSelfMsg, tag: 'sub', subMap: _elm_lang$mouse$Mouse$subMap};
+
+var _elm_lang$window$Native_Window = function()
+{
+
+var size = _elm_lang$core$Native_Scheduler.nativeBinding(function(callback)	{
+	callback(_elm_lang$core$Native_Scheduler.succeed({
+		width: window.innerWidth,
+		height: window.innerHeight
+	}));
+});
+
+return {
+	size: size
+};
+
+}();
 var _elm_lang$window$Window_ops = _elm_lang$window$Window_ops || {};
 _elm_lang$window$Window_ops['&>'] = F2(
 	function (task1, task2) {
@@ -8841,9 +9024,9 @@ var _andybalaam$foursies$Model$Flags = F2(
 	function (a, b) {
 		return {width: a, height: b};
 	});
-var _andybalaam$foursies$Model$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {screen: a, message: b, chosenPlayers: c, choosingSide: d, turn: e, board: f};
+var _andybalaam$foursies$Model$Model = F8(
+	function (a, b, c, d, e, f, g, h) {
+		return {screen: a, message: b, chosenPlayers: c, choosingSide: d, turn: e, board: f, dragging: g, mousePos: h};
 	});
 var _andybalaam$foursies$Model$OSide = {ctor: 'OSide'};
 var _andybalaam$foursies$Model$XSide = {ctor: 'XSide'};
@@ -8876,6 +9059,10 @@ var _andybalaam$foursies$Model$allPlayers = {
 		}
 	}
 };
+var _andybalaam$foursies$Model$MessageDragging = F2(
+	function (a, b) {
+		return {ctor: 'MessageDragging', _0: a, _1: b};
+	});
 var _andybalaam$foursies$Model$MessageNormal = {ctor: 'MessageNormal'};
 var _andybalaam$foursies$Model$newModel = function (flags) {
 	return {
@@ -8884,10 +9071,23 @@ var _andybalaam$foursies$Model$newModel = function (flags) {
 		chosenPlayers: {x: _andybalaam$foursies$Model$BlackPlayer, o: _andybalaam$foursies$Model$WhitePlayer},
 		choosingSide: _elm_lang$core$Maybe$Nothing,
 		turn: _andybalaam$foursies$Model$XSide,
-		board: _andybalaam$foursies$Board$newBoard(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)
+		board: _andybalaam$foursies$Board$newBoard(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece),
+		dragging: _elm_lang$core$Maybe$Nothing,
+		mousePos: A2(_elm_lang$mouse$Mouse$Position, 0, 0)
 	};
 };
+var _andybalaam$foursies$Model$DragState = F3(
+	function (a, b, c) {
+		return {ctor: 'DragState', _0: a, _1: b, _2: c};
+	});
 
+var _andybalaam$foursies$Msg$DragStart = F2(
+	function (a, b) {
+		return {ctor: 'DragStart', _0: a, _1: b};
+	});
+var _andybalaam$foursies$Msg$MouseMove = function (a) {
+	return {ctor: 'MouseMove', _0: a};
+};
 var _andybalaam$foursies$Msg$ChangePlayer = F2(
 	function (a, b) {
 		return {ctor: 'ChangePlayer', _0: a, _1: b};
@@ -9734,6 +9934,19 @@ var _elm_lang$svg$Svg_Events$onMouseOut = _elm_lang$svg$Svg_Events$simpleOn('mou
 var _elm_lang$svg$Svg_Events$onMouseOver = _elm_lang$svg$Svg_Events$simpleOn('mouseover');
 var _elm_lang$svg$Svg_Events$onMouseUp = _elm_lang$svg$Svg_Events$simpleOn('mouseup');
 
+var _andybalaam$foursies$View$boardScale = 2.198;
+var _andybalaam$foursies$View$beingDraggedOffsets = function (model) {
+	return {ctor: '_Tuple4', _0: -1, _1: -1, _2: 0, _3: 0};
+};
+var _andybalaam$foursies$View$offsets = F3(
+	function (model, xpos, ypos) {
+		var _p0 = model.dragging;
+		if (_p0.ctor === 'Nothing') {
+			return {ctor: '_Tuple4', _0: 0, _1: 0, _2: 0, _3: 0};
+		} else {
+			return ((!_elm_lang$core$Native_Utils.eq(_p0._0._0, xpos)) || (!_elm_lang$core$Native_Utils.eq(_p0._0._1, ypos))) ? {ctor: '_Tuple4', _0: 0, _1: 0, _2: 0, _3: 0} : _andybalaam$foursies$View$beingDraggedOffsets(model);
+		}
+	});
 var _andybalaam$foursies$View$filterAtt = _elm_lang$svg$Svg_Attributes$filter;
 var _andybalaam$foursies$View$lineOffset = function (i) {
 	return _elm_lang$core$Basics$toString(
@@ -9808,8 +10021,8 @@ var _andybalaam$foursies$View$playerChoiceVisibility = F2(
 			_elm_lang$core$Maybe$Just(side)) ? 'visible' : 'hidden';
 	});
 var _andybalaam$foursies$View$playerImage = function (player) {
-	var _p0 = player;
-	switch (_p0.ctor) {
+	var _p1 = player;
+	switch (_p1.ctor) {
 		case 'BlackPlayer':
 			return 'images/piece-black.svg';
 		case 'WhitePlayer':
@@ -9970,64 +10183,90 @@ var _andybalaam$foursies$View$choosePlayersDiv = function (model) {
 		});
 };
 var _andybalaam$foursies$View$boardMessage = function (model) {
-	var _p1 = model.message;
-	return {
-		ctor: '::',
-		_0: _elm_lang$html$Html$text('Drag the pieces to move. To play: '),
-		_1: {
+	var _p2 = model.message;
+	if (_p2.ctor === 'MessageNormal') {
+		return {
 			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$img,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$style(
-						{
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'height', _1: '1.2em'},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'bottom'},
-								_1: {ctor: '[]'}
-							}
-						}),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$src(
-							_andybalaam$foursies$View$playerImage(
-								A2(_andybalaam$foursies$Model$sidePlayer, model, model.turn))),
-						_1: {ctor: '[]'}
-					}
-				},
-				{ctor: '[]'}),
+			_0: _elm_lang$html$Html$text('Drag the pieces to move. To play: '),
 			_1: {
 				ctor: '::',
 				_0: A2(
-					_elm_lang$html$Html$br,
-					{ctor: '[]'},
+					_elm_lang$html$Html$img,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'height', _1: '1.2em'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'bottom'},
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$src(
+								_andybalaam$foursies$View$playerImage(
+									A2(_andybalaam$foursies$Model$sidePlayer, model, model.turn))),
+							_1: {ctor: '[]'}
+						}
+					},
 					{ctor: '[]'}),
 				_1: {
 					ctor: '::',
-					_0: _elm_lang$html$Html$text('Ticks tell you what you can move.'),
-					_1: {ctor: '[]'}
+					_0: A2(
+						_elm_lang$html$Html$br,
+						{ctor: '[]'},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text('Ticks tell you what you can move.'),
+						_1: {ctor: '[]'}
+					}
 				}
 			}
-		}
-	};
+		};
+	} else {
+		return {
+			ctor: '::',
+			_0: _elm_lang$html$Html$text(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'Dragging ',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(_p2._0),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							', ',
+							_elm_lang$core$Basics$toString(_p2._1))))),
+			_1: {ctor: '[]'}
+		};
+	}
 };
 var _andybalaam$foursies$View$boardSide = F3(
-	function (model, side, _p2) {
-		var _p3 = _p2;
-		var _p5 = _p3._1;
-		var _p4 = _p3._0;
+	function (model, side, _p3) {
+		var _p4 = _p3;
+		var _p7 = _p4._1;
+		var _p6 = _p4._0;
 		var scale = F2(
 			function (start, val) {
-				return _elm_lang$core$Basics$toString(
-					start + (21.6 * _elm_lang$core$Basics$toFloat(val)));
+				return start + (21.6 * _elm_lang$core$Basics$toFloat(val));
 			});
-		var cx_ = A2(scale, 14.5, _p4);
-		var cy_ = A2(scale, 14.5, _p5);
-		var x_ = A2(scale, 3.1, _p4);
-		var y_ = A2(scale, 3.1, _p5);
+		var _p5 = A3(_andybalaam$foursies$View$offsets, model, _p6, _p7);
+		var pieceX = _p5._0;
+		var pieceY = _p5._1;
+		var shadowX = _p5._2;
+		var shadowY = _p5._3;
+		var cx_ = _elm_lang$core$Basics$toString(
+			shadowX + A2(scale, 14.5, _p6));
+		var cy_ = _elm_lang$core$Basics$toString(
+			shadowY + A2(scale, 14.5, _p7));
+		var x_ = _elm_lang$core$Basics$toString(
+			pieceX + A2(scale, 3.1, _p6));
+		var y_ = _elm_lang$core$Basics$toString(
+			pieceY + A2(scale, 3.1, _p7));
 		return {
 			ctor: '::',
 			_0: A2(
@@ -10079,7 +10318,12 @@ var _andybalaam$foursies$View$boardSide = F3(
 										_0: _elm_lang$svg$Svg_Attributes$xlinkHref(
 											_andybalaam$foursies$View$playerImage(
 												A2(_andybalaam$foursies$Model$sidePlayer, model, side))),
-										_1: {ctor: '[]'}
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$svg$Svg_Events$onMouseDown(
+												A2(_andybalaam$foursies$Msg$DragStart, _p6, _p7)),
+											_1: {ctor: '[]'}
+										}
 									}
 								}
 							}
@@ -10093,8 +10337,8 @@ var _andybalaam$foursies$View$boardSide = F3(
 var _andybalaam$foursies$View$boardPiece = F2(
 	function (model, pos) {
 		var piece = A2(_andybalaam$foursies$Board$pieceAt, pos, model.board);
-		var _p6 = piece;
-		switch (_p6.ctor) {
+		var _p8 = piece;
+		switch (_p8.ctor) {
 			case 'NoPiece':
 				return {ctor: '[]'};
 			case 'OffBoard':
@@ -10110,7 +10354,20 @@ var _andybalaam$foursies$View$boardPieces = function (model) {
 		_elm_lang$svg$Svg$g,
 		{
 			ctor: '::',
-			_0: _elm_lang$svg$Svg_Attributes$transform('scale(2.198, 2.198)'),
+			_0: _elm_lang$svg$Svg_Attributes$transform(
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					'scale(',
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						_elm_lang$core$Basics$toString(_andybalaam$foursies$View$boardScale),
+						A2(
+							_elm_lang$core$Basics_ops['++'],
+							', ',
+							A2(
+								_elm_lang$core$Basics_ops['++'],
+								_elm_lang$core$Basics$toString(_andybalaam$foursies$View$boardScale),
+								')'))))),
 			_1: {ctor: '[]'}
 		},
 		A2(
@@ -10342,6 +10599,15 @@ var _andybalaam$foursies$Update$updateResize = F3(
 					{width: w, height: h})
 			});
 	});
+var _andybalaam$foursies$Update$updateDragStart = F3(
+	function (xpos, ypos, model) {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				dragging: _elm_lang$core$Maybe$Just(
+					A3(_andybalaam$foursies$Model$DragState, xpos, ypos, model.mousePos))
+			});
+	});
 var _andybalaam$foursies$Update$update = F2(
 	function (msg, model) {
 		var m = function () {
@@ -10355,8 +10621,14 @@ var _andybalaam$foursies$Update$update = F2(
 						{
 							choosingSide: _elm_lang$core$Maybe$Just(_p1._0)
 						});
-				default:
+				case 'ChangePlayer':
 					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p1._0, _p1._1);
+				case 'MouseMove':
+					return _elm_lang$core$Native_Utils.update(
+						model,
+						{mousePos: _p1._0});
+				default:
+					return A3(_andybalaam$foursies$Update$updateDragStart, _p1._0, _p1._1, model);
 			}
 		}();
 		return {ctor: '_Tuple2', _0: m, _1: _elm_lang$core$Platform_Cmd$none};
@@ -10377,7 +10649,14 @@ var _andybalaam$foursies$Main$subscriptions = function (model) {
 				function (size) {
 					return A2(_andybalaam$foursies$Msg$Resize, size.width, size.height);
 				}),
-			_1: {ctor: '[]'}
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$mouse$Mouse$moves(
+					function (pos) {
+						return _andybalaam$foursies$Msg$MouseMove(pos);
+					}),
+				_1: {ctor: '[]'}
+			}
 		});
 };
 var _andybalaam$foursies$Main$main = _elm_lang$html$Html$programWithFlags(
