@@ -27,6 +27,7 @@ all =
         , test "Start dragging piece is offset" startDraggingPieceOffset
         , test "Continue dragging piece is moved" continueDraggingPieceMoved
         , test "Ticks where piece can land" ticksWherePieceCanLand
+        , test "Big ticks where piece will land" bigTickWherePieceWillLand
         ]
 
 
@@ -704,7 +705,6 @@ continueDraggingPieceMoved =
             (View.boardSide model Model.XSide (1, 0))
 
 
-
 ticksWhereLand : Board.Board -> Expect.Expectation
 ticksWhereLand board =
     let
@@ -762,3 +762,63 @@ ticksWherePieceCanLand =
                 Err e -> Expect.fail e
                 Ok b ->
                     ticksWhereLand b
+
+
+bigTick : Board.Board -> Expect.Expectation
+bigTick board =
+    let
+        model_ = Model.newModel {width=100, height=100}
+        model =
+            { model_
+            | board = board
+            , turn = Model.OSide
+            , dragging = Just <| Model.DragState 3 1 (Mouse.Position 67 100)
+            , mousePos = Mouse.Position 67 85
+            }
+    in
+        Expect.equal
+            ( toString
+                [ image
+                    [ x "67.9", y "3.1"
+                    , height "20", width "20"
+                    , xlinkHref "images/big-tick.svg"
+                    ] []
+                , image
+                    [ x "67.9", y "46.300000000000004"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                , image
+                    [ x "46.300000000000004", y "46.300000000000004"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                , image
+                    [ x "46.300000000000004", y "24.700000000000003"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                , image
+                    [ x "46.300000000000004", y "3.1"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                ]
+            )
+            (toString (View.boardTicks model))
+
+
+bigTickWherePieceWillLand : () -> Expect.Expectation
+bigTickWherePieceWillLand =
+    let
+        board = Board.parse <| Board.strings
+            ".X.."
+            "...O"
+            ".O.."
+            "...."
+    in
+        \() ->
+            case board of
+                Err e -> Expect.fail e
+                Ok b ->
+                    bigTick b

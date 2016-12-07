@@ -239,8 +239,36 @@ boardScale model =
     (toFloat (boardWidth model)) / 200
 
 
-boardTick : Bool -> (Int, Int) -> Html.Html Msg.Msg
-boardTick handleMouseDown (xpos, ypos) =
+-- Given a grid pos, a mouse start and mouse end return the grid pos we have
+-- moved to by moving from the mouse start to the mouse end.
+dragged : Model.Model -> (Int, Int) -> Mouse.Position -> Mouse.Position
+    -> (Int, Int)
+dragged model (dx, dy) dragMouseStart mouseEnd =
+    let
+        movedX = mouseEnd.x - dragMouseStart.x
+        movedY = mouseEnd.y - dragMouseStart.y
+        sc = 20 * (boardScale model) * piecesScale
+        scale = \d moved -> d + (round ((toFloat moved) / sc))
+    in
+        (scale dx movedX, scale dy movedY)
+
+
+tickImage : Model.Model -> Int -> Int -> String
+tickImage model xpos ypos =
+    case model.dragging of
+        Nothing -> "images/tick.svg"
+        Just (Model.DragState dx dy dragMouseStart) ->
+            let (draggedX, draggedY) =
+                dragged model (dx, dy) dragMouseStart model.mousePos
+            in
+                if (draggedX, draggedY) == (xpos, ypos) then
+                    "images/big-tick.svg"
+                else
+                    "images/tick.svg"
+
+
+boardTick : Model.Model -> Bool -> (Int, Int) -> Html.Html Msg.Msg
+boardTick model handleMouseDown (xpos, ypos) =
     let
         scale = \start val -> start + (21.6 * (toFloat val))
         x_  = toString <| (scale  3.1 xpos)
@@ -249,7 +277,7 @@ boardTick handleMouseDown (xpos, ypos) =
         image
             (
                 [ x x_, y y_, height "20", width "20"
-                , xlinkHref "images/tick.svg"
+                , xlinkHref <| tickImage model xpos ypos
                 ] ++
                     if handleMouseDown then
                         [ onMouseDown <| Msg.DragStart xpos ypos ]
@@ -277,11 +305,11 @@ boardTicks model =
                 case Moves.whichCanMove piece model.board of
                     Moves.Won wonPiece -> [] -- TODO: say you won
                     Moves.CanMovePositions posList ->
-                        List.map (boardTick True) posList
+                        List.map (boardTick model True) posList
 
             Just (Model.DragState xpos ypos _) ->
                 List.map
-                    (boardTick False)
+                    (boardTick model False)
                     (Moves.allowedEnds piece model.board (xpos, ypos))
 
 
