@@ -26,19 +26,19 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="18.35"
-     inkscape:cx="9.9999992"
+     inkscape:cx="0.35422263"
      inkscape:cy="10"
      inkscape:document-units="px"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="a4151"
      showgrid="false"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1024"
-     inkscape:window-height="550"
+     inkscape:window-width="1920"
+     inkscape:window-height="1016"
      inkscape:window-x="0"
-     inkscape:window-y="25"
+     inkscape:window-y="27"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7">
@@ -65,7 +65,7 @@
          inkscape:connector-curvature="0"
          id="path4149"
          d="m 10.456604,1038.8026 2.29544,2.17 4.042614,-3.9331 0.589539,0.5543 -4.686649,5.2861 -2.8337881,-3.4877 z"
-         style="fill:#008000;fill-opacity:1;fill-rule:evenodd;stroke:#fafafa;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="fill:#00b800;fill-opacity:1;fill-rule:evenodd;stroke:#fafafa;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;opacity:0.5" />
     </a>
   </g>
 </svg>
