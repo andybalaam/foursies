@@ -12,6 +12,7 @@ import Svg.Events exposing (..)
 
 import Board
 import Model
+import Moves
 import Msg
 
 
@@ -212,7 +213,6 @@ boardSide model side (xpos, ypos) =
         , image
             [ x x_, y y_, height "20", width "20"
             , xlinkHref (playerImage (Model.sidePlayer model side))
-            , onMouseDown <| Msg.DragStart xpos ypos
             ] []
         ]
         -- TODO: style [ ("cursor", "move") ]
@@ -239,6 +239,34 @@ boardScale model =
     (toFloat (boardWidth model)) / 200
 
 
+boardTick : (Int, Int) -> Html.Html Msg.Msg
+boardTick (xpos, ypos) =
+    let
+        scale = \start val -> start + (21.6 * (toFloat val))
+        x_  = toString <| (scale  3.1 xpos)
+        y_  = toString <| (scale  3.1 ypos)
+    in
+        image
+            [ x x_, y y_, height "20", width "20"
+            , xlinkHref "images/tick.svg"
+            , onMouseDown <| Msg.DragStart xpos ypos
+            ] []
+
+
+sidePiece : Model.Side -> Board.Piece
+sidePiece side =
+    case side of
+        Model.XSide -> Board.XPiece
+        Model.OSide -> Board.OPiece
+
+
+boardTicks : Model.Model -> List (Html.Html Msg.Msg)
+boardTicks model =
+    case Moves.whichCanMove (sidePiece model.turn) model.board of
+        Moves.Won wonPiece -> []
+        Moves.CanMovePositions posList -> List.map boardTick posList
+
+
 boardPieces : Model.Model -> Html.Html Msg.Msg
 boardPieces model =
     g
@@ -254,9 +282,8 @@ boardPieces model =
                     []
                 ]
             ]
-            ++ (
-                List.concat <| List.map (boardPiece model) Board.positions
-            )
+            ++ ( List.concat <| List.map (boardPiece model) Board.positions )
+            ++ ( boardTicks model )
         )
 
 

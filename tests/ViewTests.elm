@@ -249,77 +249,69 @@ rtsHtml =
                         , image
                             [ x "3.1", y "3.1", height "20", width "20"
                             , xlinkHref "images/piece-black.svg"
-                            , onMouseDown <| Msg.DragStart 0 0
                             ] []
                         , circle
                             [ cx "36.1", cy "14.5", r "10", fill "black"
                             , opacity "0.6", filterAtt "url(#blur)" ] []
                         , image
                             [ x "24.700000000000003", y "3.1", height "20", width "20"
-                            , xlinkHref "images/piece-black.svg"
-                            , onMouseDown <| Msg.DragStart 1 0
-                            ] []
+                            , xlinkHref "images/piece-black.svg" ] []
                         , circle
                             [ cx "57.7", cy "14.5", r "10", fill "black"
                             , opacity "0.6", filterAtt "url(#blur)" ] []
                         , image
                             [ x "46.300000000000004", y "3.1", height "20", width "20"
-                            , xlinkHref "images/piece-black.svg"
-                            , onMouseDown <| Msg.DragStart 2 0
-                            ] []
+                            , xlinkHref "images/piece-black.svg" ] []
                         , circle
                             [ cx "79.30000000000001", cy "14.5", r "10", fill "black"
                             , opacity "0.6", filterAtt "url(#blur)" ] []
                         , image
                             [ x "67.9", y "3.1", height "20", width "20"
-                            , xlinkHref "images/piece-black.svg"
-                            , onMouseDown <| Msg.DragStart 3 0
-                            ] []
+                            , xlinkHref "images/piece-black.svg" ] []
                         , circle
                             [ cx "14.5", cy "79.30000000000001", r "10", fill "black"
                             , opacity "0.6", filterAtt "url(#blur)" ] []
                         , image
                             [ x "3.1", y "67.9", height "20", width "20"
-                            , xlinkHref "images/piece-white.svg"
-                            , onMouseDown <| Msg.DragStart 0 3
-                            ] []
+                            , xlinkHref "images/piece-white.svg" ] []
                         , circle
                             [ cx "36.1", cy "79.30000000000001", r "10", fill "black"
                             , opacity "0.6", filterAtt "url(#blur)" ] []
                         , image
                             [ x "24.700000000000003", y "67.9", height "20", width "20"
-                            , xlinkHref "images/piece-white.svg"
-                            , onMouseDown <| Msg.DragStart 1 3
-                            ] []
+                            , xlinkHref "images/piece-white.svg" ] []
                         , circle
                             [ cx "57.7", cy "79.30000000000001", r "10", fill "black"
                             , opacity "0.6", filterAtt "url(#blur)" ] []
                         , image
                             [ x "46.300000000000004", y "67.9", height "20", width "20"
-                            , xlinkHref "images/piece-white.svg"
-                            , onMouseDown <| Msg.DragStart 2 3
-                            ] []
+                            , xlinkHref "images/piece-white.svg" ] []
                         , circle
                             [ cx "79.30000000000001", cy "79.30000000000001", r "10", fill "black"
                             , opacity "0.6", filterAtt "url(#blur)" ] []
                         , image
                             [ x "67.9", y "67.9", height "20", width "20"
-                            , xlinkHref "images/piece-white.svg"
-                            , onMouseDown <| Msg.DragStart 3 3
+                            , xlinkHref "images/piece-white.svg" ] []
+                        , image
+                            [ x "3.1", y "3.1", height "20", width "20"
+                            , xlinkHref "images/tick.svg"
+                            , onMouseDown <| Msg.DragStart 0 0
                             ] []
-
---                        , image
---                            [ x "3.1", y "3.1", height "20", width "20"
---                            , xlinkHref "images/tick.svg" ] []
---                        , image
---                            [ x "24.700000000000003", y "3.1", height "20", width "20"
---                            , xlinkHref "images/tick.svg" ] []
---                        , image
---                            [ x "46.300000000000004", y "3.1", height "20", width "20"
---                            , xlinkHref "images/tick.svg" ] []
---                        , image
---                            [ x "67.9", y "3.1", height "20", width "20"
---                            , xlinkHref "images/tick.svg" ] []
+                        , image
+                            [ x "24.700000000000003", y "3.1", height "20", width "20"
+                            , xlinkHref "images/tick.svg"
+                            , onMouseDown <| Msg.DragStart 1 0
+                            ] []
+                        , image
+                            [ x "46.300000000000004", y "3.1", height "20", width "20"
+                            , xlinkHref "images/tick.svg"
+                            , onMouseDown <| Msg.DragStart 2 0
+                            ] []
+                        , image
+                            [ x "67.9", y "3.1", height "20", width "20"
+                            , xlinkHref "images/tick.svg"
+                            , onMouseDown <| Msg.DragStart 3 0
+                            ] []
                         ]
                     ]
                 ]

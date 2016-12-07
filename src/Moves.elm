@@ -13,6 +13,7 @@ import Set
 import String
 
 
+-- TODO: consider Model.Side instead of Board.Piece everywhere
 import Board
 
 
