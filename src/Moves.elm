@@ -1,6 +1,7 @@
 module Moves exposing
     ( Move(Hop, Slide, Take)
     , WhoCanMove(CanMovePositions, Won)
+    , allowedEnds
     , allowedMoves
     , hop
     , slide
@@ -46,6 +47,38 @@ take from over to =
 adjust : (Int, Int) -> (Int, Int) -> (Int, Int)
 adjust (pos0, pos1) (delta0, delta1) =
     (pos0 + delta0, pos1 + delta1)
+
+
+from : Move -> (Int, Int)
+from move =
+    case move of
+        Slide from   _ -> from
+        Hop   from _ _ -> from
+        Take  from _ _ -> from
+
+
+to : Move -> (Int, Int)
+to move =
+    case move of
+        Slide _   to -> to
+        Hop   _ _ to -> to
+        Take  _ _ to -> to
+
+
+-- Return where the piece specified could move to (if anywhere)
+allowedEnds : Board.Piece -> Board.Board -> (Int, Int) -> List (Int, Int)
+allowedEnds side board (xpos, ypos) =
+    List.map
+        to
+        ( List.filter
+            ( \move ->
+                let
+                    (x, y) = from move
+                in
+                    x == xpos && y == ypos
+            )
+            ( allowedMoves side board )
+        )
 
 
 allowedMoves : Board.Piece -> Board.Board -> List Move
@@ -142,21 +175,18 @@ anyTakesMeansOnlyTakes moves =
             onlyTakes
 
 
+unique : List comparable -> List comparable
+unique = Set.toList << Set.fromList
+
+
 whichCanMove : Board.Piece -> Board.Board -> WhoCanMove
 whichCanMove side board =
     case whoWon board of
         Board.XPiece -> Won Board.xPiece
         Board.OPiece -> Won Board.oPiece
         default ->
-            let
-                moves = allowedMoves side board
-                fromPos = \move -> case move of
-                    Slide from _ -> from
-                    Hop from _ _ -> from
-                    Take from _ _ -> from
-            in
-                CanMovePositions
-                    <|Set.toList <| Set.fromList <| List.map fromPos moves
+            CanMovePositions
+                <| unique <| List.map from <| allowedMoves side board
 
 
 whoWon : Board.Board -> Board.Piece

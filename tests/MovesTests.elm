@@ -32,6 +32,11 @@ all =
         , test "Generate all takes up-left" allTakesUpLeft
         , test "If a take exists only takes are offered" ifTakeOnlyTakes
         , test "No moves are offered if someone has won" noMovesIfSomeoneWon
+        , test "Allowed ends restricted to this piece" allowedEndsJustPiece
+        , test "Allowed ends shows none if can't move" allowedEndsIfCantMove
+        , test "Allowed ends shows none if no piece" allowedEndsIfNoPiece
+        , test "Allowed ends shows none if we have won" allowedEndsIfWon
+        , test "Allowed ends shows none if we have lost" allowedEndsIfLost
         ]
 
 
@@ -304,7 +309,69 @@ noMovesIfSomeoneWon  =
             []
             ( Moves.allowedMoves Board.oPiece board )
 
+
+allowedEndsJustPiece : () -> Expect.Expectation
+allowedEndsJustPiece =
+    Utils.forBoard
+        ".XX."
+        "...."
+        "O..."
+        "...."
+        <| \board -> Utils.equalExceptOrder
+            [(0, 1), (1, 1), (1, 2), (0, 3), (1, 3)]
+            ( Moves.allowedEnds Board.oPiece board (0, 2) )
+
+
+allowedEndsIfCantMove : () -> Expect.Expectation
+allowedEndsIfCantMove =
+    Utils.forBoard
+        ".X.." -- Must take
+        ".O.."
+        "...X" -- So this piece has no moves
+        "...."
+        <| \board -> Expect.equal
+            []
+            ( Moves.allowedEnds Board.xPiece board (3, 2) )
+
+
+allowedEndsIfNoPiece : () -> Expect.Expectation
+allowedEndsIfNoPiece =
+    Utils.forBoard
+        "...."
+        ".O.."
+        "...X"
+        "...."
+        <| \board -> Expect.equal
+            []
+            ( Moves.allowedEnds Board.xPiece board (0, 0) )
+
+
+allowedEndsIfWon : () -> Expect.Expectation
+allowedEndsIfWon =
+    Utils.forBoard
+        "...."
+        ".O.."
+        "...X"
+        "..X." -- X has won
+        <| \board -> Expect.equal
+            []
+            ( Moves.allowedEnds Board.xPiece board (2, 3) )
+
+
+allowedEndsIfLost : () -> Expect.Expectation
+allowedEndsIfLost =
+    Utils.forBoard
+        "...."
+        ".O.."
+        "...X"
+        "..X." -- X has won
+        <| \board -> Expect.equal
+            []
+            ( Moves.allowedEnds Board.oPiece board (2, 3) )
+
+
 --
+
 
 equalCanMovePositions : Moves.WhoCanMove -> Moves.WhoCanMove
     -> Expect.Expectation

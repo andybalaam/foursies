@@ -26,6 +26,7 @@ all =
         , test "Choosing O player shows choices" choosingOPlayerShowsChoice
         , test "Start dragging piece is offset" startDraggingPieceOffset
         , test "Continue dragging piece is moved" continueDraggingPieceMoved
+        , test "Ticks where piece can land" ticksWherePieceCanLand
         ]
 
 
@@ -701,3 +702,63 @@ continueDraggingPieceMoved =
         \() -> Expect.equal
             pieceMovedHtml
             (View.boardSide model Model.XSide (1, 0))
+
+
+
+ticksWhereLand : Board.Board -> Expect.Expectation
+ticksWhereLand board =
+    let
+        model_ = Model.newModel {width=100, height=100}
+        model =
+            { model_
+            | board = board
+            , turn = Model.OSide
+            , dragging = Just <| Model.DragState 3 1 (Mouse.Position 0 0)
+            }
+    in
+        Expect.equal
+            ( toString
+                [ image
+                    [ x "67.9", y "3.1"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                , image
+                    [ x "67.9", y "46.300000000000004"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                , image
+                    [ x "46.300000000000004", y "46.300000000000004"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                , image
+                    [ x "46.300000000000004", y "24.700000000000003"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                , image
+                    [ x "46.300000000000004", y "3.1"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    ] []
+                ]
+            )
+            (toString (View.boardTicks model))
+
+
+ticksWherePieceCanLand : () -> Expect.Expectation
+ticksWherePieceCanLand =
+    let
+        board = Board.parse <| Board.strings
+            ".X.."
+            "...O"
+            ".O.."
+            "...."
+    in
+        \() ->
+            case board of
+                Err e -> Expect.fail e
+                Ok b ->
+                    ticksWhereLand b

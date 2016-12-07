@@ -239,18 +239,24 @@ boardScale model =
     (toFloat (boardWidth model)) / 200
 
 
-boardTick : (Int, Int) -> Html.Html Msg.Msg
-boardTick (xpos, ypos) =
+boardTick : Bool -> (Int, Int) -> Html.Html Msg.Msg
+boardTick handleMouseDown (xpos, ypos) =
     let
         scale = \start val -> start + (21.6 * (toFloat val))
         x_  = toString <| (scale  3.1 xpos)
         y_  = toString <| (scale  3.1 ypos)
     in
         image
-            [ x x_, y y_, height "20", width "20"
-            , xlinkHref "images/tick.svg"
-            , onMouseDown <| Msg.DragStart xpos ypos
-            ] []
+            (
+                [ x x_, y y_, height "20", width "20"
+                , xlinkHref "images/tick.svg"
+                ] ++
+                    if handleMouseDown then
+                        [ onMouseDown <| Msg.DragStart xpos ypos ]
+                    else
+                        []
+            )
+            []
 
 
 sidePiece : Model.Side -> Board.Piece
@@ -262,9 +268,21 @@ sidePiece side =
 
 boardTicks : Model.Model -> List (Html.Html Msg.Msg)
 boardTicks model =
-    case Moves.whichCanMove (sidePiece model.turn) model.board of
-        Moves.Won wonPiece -> []
-        Moves.CanMovePositions posList -> List.map boardTick posList
+    let
+        piece = sidePiece model.turn
+    in
+        case model.dragging of
+
+            Nothing ->
+                case Moves.whichCanMove piece model.board of
+                    Moves.Won wonPiece -> [] -- TODO: say you won
+                    Moves.CanMovePositions posList ->
+                        List.map (boardTick True) posList
+
+            Just (Model.DragState xpos ypos _) ->
+                List.map
+                    (boardTick False)
+                    (Moves.allowedEnds piece model.board (xpos, ypos))
 
 
 boardPieces : Model.Model -> Html.Html Msg.Msg
