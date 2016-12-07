@@ -21,6 +21,7 @@ all : Test
 all =
     describe "Tests of the view code"
         [ test "Ready to start" readyToStart
+        , test "Ticks on moveable pieces" ticksOnMoveablePieces
         , test "Choosing X player shows choices" choosingXPlayerShowsChoice
         , test "Choosing O player shows choices" choosingOPlayerShowsChoice
         , test "Start dragging piece is offset" startDraggingPieceOffset
@@ -324,6 +325,47 @@ readyToStart =
     equalHtml
         rtsHtml
         (View.view <| Model.newModel {height=400, width=400})
+
+
+ticksOnPlaces : Board.Board -> Expect.Expectation
+ticksOnPlaces board =
+    let
+        model_ = Model.newModel {height=100, width=100}
+        model = { model_ | board = board, turn = Model.OSide }
+    in
+        Expect.equal
+            ( toString
+                [ image
+                    [ x "24.700000000000003", y "46.300000000000004"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    , onMouseDown <| Msg.DragStart 3 1
+                    ] []
+                , image
+                    [ x "67.9", y "24.700000000000003"
+                    , height "20", width "20"
+                    , xlinkHref "images/tick.svg"
+                    , onMouseDown <| Msg.DragStart 1 2
+                    ] []
+                ]
+            )
+            (toString (View.boardTicks model))
+
+
+ticksOnMoveablePieces : () -> Expect.Expectation
+ticksOnMoveablePieces =
+    let
+        board = Board.parse <| Board.strings
+            ".X.."
+            "...O"
+            ".O.."
+            "...."
+    in
+        \() ->
+            case board of
+                Err e -> Expect.fail e
+                Ok b ->
+                    ticksOnPlaces b
 
 
 chooseXHtml : Html.Html Msg.Msg

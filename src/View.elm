@@ -1,4 +1,4 @@
-module View exposing (boardSide, choosePlayersDiv, view)
+module View exposing (boardSide, boardTicks, choosePlayersDiv, view)
 
 
 import Html
