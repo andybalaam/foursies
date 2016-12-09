@@ -9011,10 +9011,18 @@ var _elm_lang$window$Window$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
 
+var _andybalaam$foursies$Model$sidePiece = function (side) {
+	var _p0 = side;
+	if (_p0.ctor === 'XSide') {
+		return _andybalaam$foursies$Board$XPiece;
+	} else {
+		return _andybalaam$foursies$Board$OPiece;
+	}
+};
 var _andybalaam$foursies$Model$sidePlayer = F2(
 	function (model, side) {
-		var _p0 = side;
-		if (_p0.ctor === 'XSide') {
+		var _p1 = side;
+		if (_p1.ctor === 'XSide') {
 			return model.chosenPlayers.x;
 		} else {
 			return model.chosenPlayers.o;
@@ -9031,8 +9039,8 @@ var _andybalaam$foursies$Model$Model = F8(
 var _andybalaam$foursies$Model$OSide = {ctor: 'OSide'};
 var _andybalaam$foursies$Model$XSide = {ctor: 'XSide'};
 var _andybalaam$foursies$Model$oppositeSide = function (side) {
-	var _p1 = side;
-	if (_p1.ctor === 'XSide') {
+	var _p2 = side;
+	if (_p2.ctor === 'XSide') {
 		return _andybalaam$foursies$Model$OSide;
 	} else {
 		return _andybalaam$foursies$Model$XSide;
@@ -9059,10 +9067,7 @@ var _andybalaam$foursies$Model$allPlayers = {
 		}
 	}
 };
-var _andybalaam$foursies$Model$MessageDragging = F2(
-	function (a, b) {
-		return {ctor: 'MessageDragging', _0: a, _1: b};
-	});
+var _andybalaam$foursies$Model$MessageMoveNotAllowed = {ctor: 'MessageMoveNotAllowed'};
 var _andybalaam$foursies$Model$MessageNormal = {ctor: 'MessageNormal'};
 var _andybalaam$foursies$Model$newModel = function (flags) {
 	return {
@@ -10199,6 +10204,65 @@ var _andybalaam$foursies$Moves$adjust = F2(
 		var _p12 = _p9;
 		return {ctor: '_Tuple2', _0: _p11._0 + _p12._0, _1: _p11._1 + _p12._1};
 	});
+var _andybalaam$foursies$Moves$movePiecePiece = F4(
+	function (board, pos, piece, move) {
+		return _elm_lang$core$Native_Utils.eq(
+			_andybalaam$foursies$Moves$from(move),
+			pos) ? _andybalaam$foursies$Board$noPiece : (_elm_lang$core$Native_Utils.eq(
+			_andybalaam$foursies$Moves$to(move),
+			pos) ? A2(
+			_andybalaam$foursies$Board$pieceAt,
+			_andybalaam$foursies$Moves$from(move),
+			board) : piece);
+	});
+var _andybalaam$foursies$Moves$movePieceRow = F4(
+	function (board, ypos, _p13, move) {
+		var _p14 = _p13;
+		return {
+			ctor: '_Tuple4',
+			_0: A4(
+				_andybalaam$foursies$Moves$movePiecePiece,
+				board,
+				{ctor: '_Tuple2', _0: 0, _1: ypos},
+				_p14._0,
+				move),
+			_1: A4(
+				_andybalaam$foursies$Moves$movePiecePiece,
+				board,
+				{ctor: '_Tuple2', _0: 1, _1: ypos},
+				_p14._1,
+				move),
+			_2: A4(
+				_andybalaam$foursies$Moves$movePiecePiece,
+				board,
+				{ctor: '_Tuple2', _0: 2, _1: ypos},
+				_p14._2,
+				move),
+			_3: A4(
+				_andybalaam$foursies$Moves$movePiecePiece,
+				board,
+				{ctor: '_Tuple2', _0: 3, _1: ypos},
+				_p14._3,
+				move)
+		};
+	});
+var _andybalaam$foursies$Moves$movePieceRows = F3(
+	function (board, _p15, move) {
+		var _p16 = _p15;
+		return {
+			ctor: '_Tuple4',
+			_0: A4(_andybalaam$foursies$Moves$movePieceRow, board, 0, _p16._0, move),
+			_1: A4(_andybalaam$foursies$Moves$movePieceRow, board, 1, _p16._1, move),
+			_2: A4(_andybalaam$foursies$Moves$movePieceRow, board, 2, _p16._2, move),
+			_3: A4(_andybalaam$foursies$Moves$movePieceRow, board, 3, _p16._3, move)
+		};
+	});
+var _andybalaam$foursies$Moves$movePiece = F2(
+	function (board, move) {
+		return {
+			pieces: A3(_andybalaam$foursies$Moves$movePieceRows, board, board.pieces, move)
+		};
+	});
 var _andybalaam$foursies$Moves$Take = F3(
 	function (a, b, c) {
 		return {ctor: 'Take', _0: a, _1: b, _2: c};
@@ -10536,8 +10600,8 @@ var _andybalaam$foursies$Moves$movesForPos = F3(
 	});
 var _andybalaam$foursies$Moves$allowedMoves = F2(
 	function (side, board) {
-		var _p13 = _andybalaam$foursies$Moves$whoWon(board);
-		switch (_p13.ctor) {
+		var _p17 = _andybalaam$foursies$Moves$whoWon(board);
+		switch (_p17.ctor) {
 			case 'XPiece':
 				return {ctor: '[]'};
 			case 'OPiece':
@@ -10560,18 +10624,18 @@ var _andybalaam$foursies$Moves$allowedMoves = F2(
 		}
 	});
 var _andybalaam$foursies$Moves$allowedEnds = F3(
-	function (side, board, _p14) {
-		var _p15 = _p14;
+	function (side, board, _p18) {
+		var _p19 = _p18;
 		return A2(
 			_elm_lang$core$List$map,
 			_andybalaam$foursies$Moves$to,
 			A2(
 				_elm_lang$core$List$filter,
 				function (move) {
-					var _p16 = _andybalaam$foursies$Moves$from(move);
-					var x = _p16._0;
-					var y = _p16._1;
-					return _elm_lang$core$Native_Utils.eq(x, _p15._0) && _elm_lang$core$Native_Utils.eq(y, _p15._1);
+					var _p20 = _andybalaam$foursies$Moves$from(move);
+					var x = _p20._0;
+					var y = _p20._1;
+					return _elm_lang$core$Native_Utils.eq(x, _p19._0) && _elm_lang$core$Native_Utils.eq(y, _p19._1);
 				},
 				A2(_andybalaam$foursies$Moves$allowedMoves, side, board)));
 	});
@@ -10583,8 +10647,8 @@ var _andybalaam$foursies$Moves$CanMovePositions = function (a) {
 };
 var _andybalaam$foursies$Moves$whichCanMove = F2(
 	function (side, board) {
-		var _p17 = _andybalaam$foursies$Moves$whoWon(board);
-		switch (_p17.ctor) {
+		var _p21 = _andybalaam$foursies$Moves$whoWon(board);
+		switch (_p21.ctor) {
 			case 'XPiece':
 				return _andybalaam$foursies$Moves$Won(_andybalaam$foursies$Board$xPiece);
 			case 'OPiece':
@@ -10599,15 +10663,164 @@ var _andybalaam$foursies$Moves$whichCanMove = F2(
 		}
 	});
 
-var _andybalaam$foursies$View$sidePiece = function (side) {
-	var _p0 = side;
-	if (_p0.ctor === 'XSide') {
-		return _andybalaam$foursies$Board$XPiece;
+var _andybalaam$foursies$PixelScale$piecesScale = 2.198;
+var _andybalaam$foursies$PixelScale$boardWidth = function (model) {
+	var minD = A2(_elm_lang$core$Basics$min, model.screen.width, model.screen.height);
+	return _elm_lang$core$Basics$round(
+		_elm_lang$core$Basics$toFloat(minD) * 0.9);
+};
+var _andybalaam$foursies$PixelScale$boardScale = function (model) {
+	return _elm_lang$core$Basics$toFloat(
+		_andybalaam$foursies$PixelScale$boardWidth(model)) / 200;
+};
+var _andybalaam$foursies$PixelScale$boardDistance = F3(
+	function (model, startPx, endPx) {
+		var pixelsMovedY = endPx.y - startPx.y;
+		var pixelsMovedX = endPx.x - startPx.x;
+		var sc = _andybalaam$foursies$PixelScale$boardScale(model) * _andybalaam$foursies$PixelScale$piecesScale;
+		var movedX = _elm_lang$core$Basics$toFloat(pixelsMovedX) / sc;
+		var movedY = _elm_lang$core$Basics$toFloat(pixelsMovedY) / sc;
+		return {ctor: '_Tuple2', _0: movedX, _1: movedY};
+	});
+var _andybalaam$foursies$PixelScale$gridDistance = F3(
+	function (model, startPx, endPx) {
+		var w = _elm_lang$core$Basics$toFloat(
+			_andybalaam$foursies$PixelScale$boardWidth(model));
+		var _p0 = A3(_andybalaam$foursies$PixelScale$boardDistance, model, startPx, endPx);
+		var xPx = _p0._0;
+		var yPx = _p0._1;
+		return {
+			ctor: '_Tuple2',
+			_0: _elm_lang$core$Basics$round(xPx / w),
+			_1: _elm_lang$core$Basics$round(yPx / w)
+		};
+	});
+
+var _andybalaam$foursies$View$dragged = F4(
+	function (model, _p0, dragMouseStart, mouseEnd) {
+		var _p1 = _p0;
+		var sc = (20 * _andybalaam$foursies$PixelScale$boardScale(model)) * _andybalaam$foursies$PixelScale$piecesScale;
+		var scale = F2(
+			function (d, moved) {
+				return d + _elm_lang$core$Basics$round(
+					_elm_lang$core$Basics$toFloat(moved) / sc);
+			});
+		var movedY = mouseEnd.y - dragMouseStart.y;
+		var movedX = mouseEnd.x - dragMouseStart.x;
+		return {
+			ctor: '_Tuple2',
+			_0: A2(scale, _p1._0, movedX),
+			_1: A2(scale, _p1._1, movedY)
+		};
+	});
+var _andybalaam$foursies$View$tickImage = F3(
+	function (model, xpos, ypos) {
+		var _p2 = model.dragging;
+		if (_p2.ctor === 'Nothing') {
+			return 'images/tick.svg';
+		} else {
+			var _p3 = A4(
+				_andybalaam$foursies$View$dragged,
+				model,
+				{ctor: '_Tuple2', _0: _p2._0._0, _1: _p2._0._1},
+				_p2._0._2,
+				model.mousePos);
+			var draggedX = _p3._0;
+			var draggedY = _p3._1;
+			return _elm_lang$core$Native_Utils.eq(
+				{ctor: '_Tuple2', _0: draggedX, _1: draggedY},
+				{ctor: '_Tuple2', _0: xpos, _1: ypos}) ? 'images/big-tick.svg' : 'images/tick.svg';
+		}
+	});
+var _andybalaam$foursies$View$boardTick = F3(
+	function (model, handleMouseDown, _p4) {
+		var _p5 = _p4;
+		var _p7 = _p5._1;
+		var _p6 = _p5._0;
+		var scale = F2(
+			function (start, val) {
+				return start + (21.6 * _elm_lang$core$Basics$toFloat(val));
+			});
+		var x_ = _elm_lang$core$Basics$toString(
+			A2(scale, 3.1, _p6));
+		var y_ = _elm_lang$core$Basics$toString(
+			A2(scale, 3.1, _p7));
+		return A2(
+			_elm_lang$svg$Svg$image,
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Attributes$x(x_),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$svg$Svg_Attributes$y(y_),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$svg$Svg_Attributes$height('20'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$svg$Svg_Attributes$width('20'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$svg$Svg_Attributes$xlinkHref(
+										A3(_andybalaam$foursies$View$tickImage, model, _p6, _p7)),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					}
+				},
+				handleMouseDown ? {
+					ctor: '::',
+					_0: _elm_lang$svg$Svg_Events$onMouseDown(
+						A2(_andybalaam$foursies$Msg$DragStart, _p6, _p7)),
+					_1: {ctor: '[]'}
+				} : {ctor: '[]'}),
+			{ctor: '[]'});
+	});
+var _andybalaam$foursies$View$boardTicks = function (model) {
+	var piece = _andybalaam$foursies$Model$sidePiece(model.turn);
+	var _p8 = model.dragging;
+	if (_p8.ctor === 'Nothing') {
+		var _p9 = A2(_andybalaam$foursies$Moves$whichCanMove, piece, model.board);
+		if (_p9.ctor === 'Won') {
+			return {ctor: '[]'};
+		} else {
+			return A2(
+				_elm_lang$core$List$map,
+				A2(_andybalaam$foursies$View$boardTick, model, true),
+				_p9._0);
+		}
 	} else {
-		return _andybalaam$foursies$Board$OPiece;
+		return A2(
+			_elm_lang$core$List$map,
+			A2(_andybalaam$foursies$View$boardTick, model, false),
+			A3(
+				_andybalaam$foursies$Moves$allowedEnds,
+				piece,
+				model.board,
+				{ctor: '_Tuple2', _0: _p8._0._0, _1: _p8._0._1}));
 	}
 };
-var _andybalaam$foursies$View$piecesScale = 2.198;
+var _andybalaam$foursies$View$beingDraggedOffsets = F2(
+	function (model, dMousePos) {
+		var _p10 = A3(_andybalaam$foursies$PixelScale$boardDistance, model, dMousePos, model.mousePos);
+		var movedX = _p10._0;
+		var movedY = _p10._1;
+		var offsetY = -1;
+		var offsetX = -1;
+		return {ctor: '_Tuple4', _0: offsetX + movedX, _1: offsetY + movedY, _2: movedX, _3: movedY};
+	});
+var _andybalaam$foursies$View$offsets = F3(
+	function (model, xpos, ypos) {
+		var _p11 = model.dragging;
+		if (_p11.ctor === 'Nothing') {
+			return {ctor: '_Tuple4', _0: 0, _1: 0, _2: 0, _3: 0};
+		} else {
+			return ((!_elm_lang$core$Native_Utils.eq(_p11._0._0, xpos)) || (!_elm_lang$core$Native_Utils.eq(_p11._0._1, ypos))) ? {ctor: '_Tuple4', _0: 0, _1: 0, _2: 0, _3: 0} : A2(_andybalaam$foursies$View$beingDraggedOffsets, model, _p11._0._2);
+		}
+	});
 var _andybalaam$foursies$View$filterAtt = _elm_lang$svg$Svg_Attributes$filter;
 var _andybalaam$foursies$View$lineOffset = function (i) {
 	return _elm_lang$core$Basics$toString(
@@ -10670,141 +10883,6 @@ var _andybalaam$foursies$View$boardLines = A2(
 		_elm_lang$core$List$map,
 		_andybalaam$foursies$View$boardLineX,
 		A2(_elm_lang$core$List$range, 0, 4)));
-var _andybalaam$foursies$View$boardWidth = function (model) {
-	var minD = A2(_elm_lang$core$Basics$min, model.screen.width, model.screen.height);
-	return _elm_lang$core$Basics$round(
-		_elm_lang$core$Basics$toFloat(minD) * 0.9);
-};
-var _andybalaam$foursies$View$boardScale = function (model) {
-	return _elm_lang$core$Basics$toFloat(
-		_andybalaam$foursies$View$boardWidth(model)) / 200;
-};
-var _andybalaam$foursies$View$beingDraggedOffsets = F2(
-	function (model, dMousePos) {
-		var pixelsMovedY = model.mousePos.y - dMousePos.y;
-		var movedY = _elm_lang$core$Basics$toFloat(pixelsMovedY) / (_andybalaam$foursies$View$boardScale(model) * _andybalaam$foursies$View$piecesScale);
-		var pixelsMovedX = model.mousePos.x - dMousePos.x;
-		var movedX = _elm_lang$core$Basics$toFloat(pixelsMovedX) / (_andybalaam$foursies$View$boardScale(model) * _andybalaam$foursies$View$piecesScale);
-		var offsetY = -1;
-		var offsetX = -1;
-		return {ctor: '_Tuple4', _0: offsetX + movedX, _1: offsetY + movedY, _2: movedX, _3: movedY};
-	});
-var _andybalaam$foursies$View$offsets = F3(
-	function (model, xpos, ypos) {
-		var _p1 = model.dragging;
-		if (_p1.ctor === 'Nothing') {
-			return {ctor: '_Tuple4', _0: 0, _1: 0, _2: 0, _3: 0};
-		} else {
-			return ((!_elm_lang$core$Native_Utils.eq(_p1._0._0, xpos)) || (!_elm_lang$core$Native_Utils.eq(_p1._0._1, ypos))) ? {ctor: '_Tuple4', _0: 0, _1: 0, _2: 0, _3: 0} : A2(_andybalaam$foursies$View$beingDraggedOffsets, model, _p1._0._2);
-		}
-	});
-var _andybalaam$foursies$View$dragged = F4(
-	function (model, _p2, dragMouseStart, mouseEnd) {
-		var _p3 = _p2;
-		var sc = (20 * _andybalaam$foursies$View$boardScale(model)) * _andybalaam$foursies$View$piecesScale;
-		var scale = F2(
-			function (d, moved) {
-				return d + _elm_lang$core$Basics$round(
-					_elm_lang$core$Basics$toFloat(moved) / sc);
-			});
-		var movedY = mouseEnd.y - dragMouseStart.y;
-		var movedX = mouseEnd.x - dragMouseStart.x;
-		return {
-			ctor: '_Tuple2',
-			_0: A2(scale, _p3._0, movedX),
-			_1: A2(scale, _p3._1, movedY)
-		};
-	});
-var _andybalaam$foursies$View$tickImage = F3(
-	function (model, xpos, ypos) {
-		var _p4 = model.dragging;
-		if (_p4.ctor === 'Nothing') {
-			return 'images/tick.svg';
-		} else {
-			var _p5 = A4(
-				_andybalaam$foursies$View$dragged,
-				model,
-				{ctor: '_Tuple2', _0: _p4._0._0, _1: _p4._0._1},
-				_p4._0._2,
-				model.mousePos);
-			var draggedX = _p5._0;
-			var draggedY = _p5._1;
-			return _elm_lang$core$Native_Utils.eq(
-				{ctor: '_Tuple2', _0: draggedX, _1: draggedY},
-				{ctor: '_Tuple2', _0: xpos, _1: ypos}) ? 'images/big-tick.svg' : 'images/tick.svg';
-		}
-	});
-var _andybalaam$foursies$View$boardTick = F3(
-	function (model, handleMouseDown, _p6) {
-		var _p7 = _p6;
-		var _p9 = _p7._1;
-		var _p8 = _p7._0;
-		var scale = F2(
-			function (start, val) {
-				return start + (21.6 * _elm_lang$core$Basics$toFloat(val));
-			});
-		var x_ = _elm_lang$core$Basics$toString(
-			A2(scale, 3.1, _p8));
-		var y_ = _elm_lang$core$Basics$toString(
-			A2(scale, 3.1, _p9));
-		return A2(
-			_elm_lang$svg$Svg$image,
-			A2(
-				_elm_lang$core$Basics_ops['++'],
-				{
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Attributes$x(x_),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$svg$Svg_Attributes$y(y_),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$svg$Svg_Attributes$height('20'),
-							_1: {
-								ctor: '::',
-								_0: _elm_lang$svg$Svg_Attributes$width('20'),
-								_1: {
-									ctor: '::',
-									_0: _elm_lang$svg$Svg_Attributes$xlinkHref(
-										A3(_andybalaam$foursies$View$tickImage, model, _p8, _p9)),
-									_1: {ctor: '[]'}
-								}
-							}
-						}
-					}
-				},
-				handleMouseDown ? {
-					ctor: '::',
-					_0: _elm_lang$svg$Svg_Events$onMouseDown(
-						A2(_andybalaam$foursies$Msg$DragStart, _p8, _p9)),
-					_1: {ctor: '[]'}
-				} : {ctor: '[]'}),
-			{ctor: '[]'});
-	});
-var _andybalaam$foursies$View$boardTicks = function (model) {
-	var piece = _andybalaam$foursies$View$sidePiece(model.turn);
-	var _p10 = model.dragging;
-	if (_p10.ctor === 'Nothing') {
-		var _p11 = A2(_andybalaam$foursies$Moves$whichCanMove, piece, model.board);
-		if (_p11.ctor === 'Won') {
-			return {ctor: '[]'};
-		} else {
-			return A2(
-				_elm_lang$core$List$map,
-				A2(_andybalaam$foursies$View$boardTick, model, true),
-				_p11._0);
-		}
-	} else {
-		return A2(
-			_elm_lang$core$List$map,
-			A2(_andybalaam$foursies$View$boardTick, model, false),
-			A3(
-				_andybalaam$foursies$Moves$allowedEnds,
-				piece,
-				model.board,
-				{ctor: '_Tuple2', _0: _p10._0._0, _1: _p10._0._1}));
-	}
-};
 var _andybalaam$foursies$View$playerChoiceVisibility = F2(
 	function (model, side) {
 		return _elm_lang$core$Native_Utils.eq(
@@ -10973,68 +11051,62 @@ var _andybalaam$foursies$View$choosePlayersDiv = function (model) {
 			}
 		});
 };
-var _andybalaam$foursies$View$boardMessage = function (model) {
-	var _p13 = model.message;
-	if (_p13.ctor === 'MessageNormal') {
-		return {
+var _andybalaam$foursies$View$toPlay = function (model) {
+	return {
+		ctor: '::',
+		_0: _elm_lang$html$Html$text(' To play:'),
+		_1: {
 			ctor: '::',
-			_0: _elm_lang$html$Html$text('Drag the pieces to move. To play: '),
-			_1: {
-				ctor: '::',
-				_0: A2(
-					_elm_lang$html$Html$img,
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$style(
-							{
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'height', _1: '1.2em'},
-								_1: {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'bottom'},
-									_1: {ctor: '[]'}
-								}
-							}),
-						_1: {
-							ctor: '::',
-							_0: _elm_lang$html$Html_Attributes$src(
-								_andybalaam$foursies$View$playerImage(
-									A2(_andybalaam$foursies$Model$sidePlayer, model, model.turn))),
-							_1: {ctor: '[]'}
-						}
-					},
-					{ctor: '[]'}),
-				_1: {
+			_0: A2(
+				_elm_lang$html$Html$img,
+				{
 					ctor: '::',
-					_0: A2(
-						_elm_lang$html$Html$br,
-						{ctor: '[]'},
-						{ctor: '[]'}),
+					_0: _elm_lang$html$Html_Attributes$style(
+						{
+							ctor: '::',
+							_0: {ctor: '_Tuple2', _0: 'height', _1: '1.2em'},
+							_1: {
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'bottom'},
+								_1: {ctor: '[]'}
+							}
+						}),
 					_1: {
 						ctor: '::',
-						_0: _elm_lang$html$Html$text('Ticks tell you what you can move.'),
+						_0: _elm_lang$html$Html_Attributes$src(
+							_andybalaam$foursies$View$playerImage(
+								A2(_andybalaam$foursies$Model$sidePlayer, model, model.turn))),
 						_1: {ctor: '[]'}
 					}
-				}
-			}
-		};
-	} else {
-		return {
-			ctor: '::',
-			_0: _elm_lang$html$Html$text(
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					'Dragging ',
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_p13._0),
-						A2(
-							_elm_lang$core$Basics_ops['++'],
-							', ',
-							_elm_lang$core$Basics$toString(_p13._1))))),
+				},
+				{ctor: '[]'}),
 			_1: {ctor: '[]'}
-		};
-	}
+		}
+	};
+};
+var _andybalaam$foursies$View$boardMessage = function (model) {
+	var mainMsg = function () {
+		var _p13 = model.message;
+		if (_p13.ctor === 'MessageNormal') {
+			return {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(
+					A2(_elm_lang$core$Basics_ops['++'], 'Drag the pieces to move. ', 'Ticks tell you what you can move.')),
+				_1: {ctor: '[]'}
+			};
+		} else {
+			return {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(
+					A2(_elm_lang$core$Basics_ops['++'], 'You are not allowed to move to there.', 'Drop the piece where there is a tick.')),
+				_1: {ctor: '[]'}
+			};
+		}
+	}();
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		mainMsg,
+		_andybalaam$foursies$View$toPlay(model));
 };
 var _andybalaam$foursies$View$boardSide = F3(
 	function (model, side, _p14) {
@@ -11146,13 +11218,13 @@ var _andybalaam$foursies$View$boardPieces = function (model) {
 					'scale(',
 					A2(
 						_elm_lang$core$Basics_ops['++'],
-						_elm_lang$core$Basics$toString(_andybalaam$foursies$View$piecesScale),
+						_elm_lang$core$Basics$toString(_andybalaam$foursies$PixelScale$piecesScale),
 						A2(
 							_elm_lang$core$Basics_ops['++'],
 							', ',
 							A2(
 								_elm_lang$core$Basics_ops['++'],
-								_elm_lang$core$Basics$toString(_andybalaam$foursies$View$piecesScale),
+								_elm_lang$core$Basics$toString(_andybalaam$foursies$PixelScale$piecesScale),
 								')'))))),
 			_1: {ctor: '[]'}
 		},
@@ -11192,9 +11264,9 @@ var _andybalaam$foursies$View$boardPieces = function (model) {
 };
 var _andybalaam$foursies$View$boardSvg = function (model) {
 	var wstr = _elm_lang$core$Basics$toString(
-		_andybalaam$foursies$View$boardWidth(model));
+		_andybalaam$foursies$PixelScale$boardWidth(model));
 	var scale = _elm_lang$core$Basics$toString(
-		_andybalaam$foursies$View$boardScale(model));
+		_andybalaam$foursies$PixelScale$boardScale(model));
 	return A2(
 		_elm_lang$svg$Svg$svg,
 		{
@@ -11280,7 +11352,7 @@ var _andybalaam$foursies$View$boardDiv = function (model) {
 						_1: A2(
 							_elm_lang$core$Basics_ops['++'],
 							_elm_lang$core$Basics$toString(
-								_andybalaam$foursies$View$boardWidth(model)),
+								_andybalaam$foursies$PixelScale$boardWidth(model)),
 							'px')
 					},
 					_1: {
@@ -11397,31 +11469,86 @@ var _andybalaam$foursies$Update$updateDragStart = F3(
 					A3(_andybalaam$foursies$Model$DragState, xpos, ypos, model.mousePos))
 			});
 	});
+var _andybalaam$foursies$Update$NotAllowed = function (a) {
+	return {ctor: 'NotAllowed', _0: a};
+};
+var _andybalaam$foursies$Update$YesAllowed = function (a) {
+	return {ctor: 'YesAllowed', _0: a};
+};
+var _andybalaam$foursies$Update$moveAllowed = function (model) {
+	var _p1 = model.dragging;
+	if (_p1.ctor === 'Nothing') {
+		return _andybalaam$foursies$Update$NotAllowed(_andybalaam$foursies$Model$MessageNormal);
+	} else {
+		var _p2 = A3(_andybalaam$foursies$PixelScale$gridDistance, model, _p1._0._2, model.mousePos);
+		var moveX = _p2._0;
+		var moveY = _p2._1;
+		if (_elm_lang$core$Native_Utils.eq(moveX, 0) && _elm_lang$core$Native_Utils.eq(moveY, 0)) {
+			return _andybalaam$foursies$Update$NotAllowed(_andybalaam$foursies$Model$MessageNormal);
+		} else {
+			var endy = _p1._0._1 + moveY;
+			var endx = _p1._0._0 + moveX;
+			var thisMove = A2(
+				_elm_lang$core$List$filter,
+				function (move) {
+					return _elm_lang$core$Native_Utils.eq(
+						_andybalaam$foursies$Moves$to(move),
+						{ctor: '_Tuple2', _0: endx, _1: endy});
+				},
+				A2(
+					_andybalaam$foursies$Moves$allowedMoves,
+					_andybalaam$foursies$Model$sidePiece(model.turn),
+					model.board));
+			var _p3 = _elm_lang$core$List$head(thisMove);
+			if (_p3.ctor === 'Nothing') {
+				return _andybalaam$foursies$Update$NotAllowed(_andybalaam$foursies$Model$MessageMoveNotAllowed);
+			} else {
+				return _andybalaam$foursies$Update$YesAllowed(_p3._0);
+			}
+		}
+	}
+};
+var _andybalaam$foursies$Update$updateDragStop = function (model) {
+	var allowed = _andybalaam$foursies$Update$moveAllowed(model);
+	var _p4 = allowed;
+	if (_p4.ctor === 'YesAllowed') {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{
+				dragging: _elm_lang$core$Maybe$Nothing,
+				message: _andybalaam$foursies$Model$MessageNormal,
+				board: A2(_andybalaam$foursies$Moves$movePiece, model.board, _p4._0),
+				turn: _andybalaam$foursies$Model$oppositeSide(model.turn)
+			});
+	} else {
+		return _elm_lang$core$Native_Utils.update(
+			model,
+			{dragging: _elm_lang$core$Maybe$Nothing, message: _p4._0});
+	}
+};
 var _andybalaam$foursies$Update$update = F2(
 	function (msg, model) {
 		var m = function () {
-			var _p1 = msg;
-			switch (_p1.ctor) {
+			var _p5 = msg;
+			switch (_p5.ctor) {
 				case 'Resize':
-					return A3(_andybalaam$foursies$Update$updateResize, _p1._0, _p1._1, model);
+					return A3(_andybalaam$foursies$Update$updateResize, _p5._0, _p5._1, model);
 				case 'ChoosePlayer':
 					return _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							choosingSide: _elm_lang$core$Maybe$Just(_p1._0)
+							choosingSide: _elm_lang$core$Maybe$Just(_p5._0)
 						});
 				case 'ChangePlayer':
-					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p1._0, _p1._1);
+					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p5._0, _p5._1);
 				case 'MouseMove':
 					return _elm_lang$core$Native_Utils.update(
 						model,
-						{mousePos: _p1._0});
+						{mousePos: _p5._0});
 				case 'DragStart':
-					return A3(_andybalaam$foursies$Update$updateDragStart, _p1._0, _p1._1, model);
+					return A3(_andybalaam$foursies$Update$updateDragStart, _p5._0, _p5._1, model);
 				default:
-					return _elm_lang$core$Native_Utils.update(
-						model,
-						{dragging: _elm_lang$core$Maybe$Nothing});
+					return _andybalaam$foursies$Update$updateDragStop(model);
 			}
 		}();
 		return {ctor: '_Tuple2', _0: m, _1: _elm_lang$core$Platform_Cmd$none};
