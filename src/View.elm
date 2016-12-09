@@ -14,6 +14,7 @@ import Board
 import Model
 import Moves
 import Msg
+import PixelScale
 
 
 playerImage : Model.Player -> String
@@ -96,34 +97,37 @@ choosePlayersDiv model =
         ]
 
 
-boardWidth : Model.Model -> Int
-boardWidth model =
-    let
-        minD = Basics.min model.screen.width model.screen.height
-    in
-        round <| (toFloat minD) * 0.9
+toPlay : Model.Model -> List (Html.Html Msg.Msg)
+toPlay model =
+    [ Html.text " To play:"
+    , Html.img
+        [ Html.Attributes.style
+            [ ("height", "1.2em")
+            , ("vertical-align", "bottom")
+            ]
+        , Html.Attributes.src
+            <| playerImage <| Model.sidePlayer model model.turn
+        ]
+        []
+    ]
 
 
 boardMessage : Model.Model -> List (Html.Html Msg.Msg)
 boardMessage model =
-    case model.message of
-        Model.MessageNormal ->
-            [ Html.text "Drag the pieces to move. To play: "
-            , Html.img
-                [ Html.Attributes.style
-                    [ ("height", "1.2em")
-                    , ("vertical-align", "bottom")
-                    ]
-                , Html.Attributes.src
-                    <| playerImage <| Model.sidePlayer model model.turn
+    let mainMsg =
+        case model.message of
+            Model.MessageNormal ->
+                [ Html.text <|
+                    "Drag the pieces to move. "
+                    ++ "Ticks tell you what you can move."
                 ]
-                []
-            , Html.br [] []
-            , Html.text "Ticks tell you what you can move."
-            ]
-        Model.MessageDragging xpos ypos ->
-            [ Html.text <| "Dragging " ++ (toString xpos) ++ ", " ++ (toString ypos)
-            ]
+            Model.MessageMoveNotAllowed ->
+                [ Html.text <|
+                    "You are not allowed to move to there."
+                    ++ "Drop the piece where there is a tick."
+                ]
+    in
+        mainMsg ++ (toPlay model)
 
 
 boardLine : String -> String -> String -> String -> Html.Html Msg.Msg
@@ -171,12 +175,10 @@ beingDraggedOffsets : Model.Model -> Mouse.Position
     -> (Float, Float, Float, Float)
 beingDraggedOffsets model dMousePos =
     let
-        offsetX = -1
+        offsetX = -1 -- How much a piece floats off the board when dragged
         offsetY = -1
-        pixelsMovedX = model.mousePos.x - dMousePos.x
-        pixelsMovedY = model.mousePos.y - dMousePos.y
-        movedX = (toFloat pixelsMovedX) / ((boardScale model) * piecesScale)
-        movedY = (toFloat pixelsMovedY) / ((boardScale model) * piecesScale)
+        (movedX, movedY) =
+            PixelScale.boardDistance model dMousePos model.mousePos
     in
         (offsetX + movedX, offsetY + movedY, movedX, movedY)
 
@@ -230,15 +232,6 @@ boardPiece model pos =
             Board.OPiece -> boardSide model Model.OSide pos
 
 
-piecesScale : Float
-piecesScale = 2.198
-
-
-boardScale : Model.Model -> Float
-boardScale model =
-    (toFloat (boardWidth model)) / 200
-
-
 -- Given a grid pos, a mouse start and mouse end return the grid pos we have
 -- moved to by moving from the mouse start to the mouse end.
 dragged : Model.Model -> (Int, Int) -> Mouse.Position -> Mouse.Position
@@ -247,7 +240,7 @@ dragged model (dx, dy) dragMouseStart mouseEnd =
     let
         movedX = mouseEnd.x - dragMouseStart.x
         movedY = mouseEnd.y - dragMouseStart.y
-        sc = 20 * (boardScale model) * piecesScale
+        sc = 20 * (PixelScale.boardScale model) * PixelScale.piecesScale
         scale = \d moved -> d + (round ((toFloat moved) / sc))
     in
         (scale dx movedX, scale dy movedY)
@@ -287,17 +280,10 @@ boardTick model handleMouseDown (xpos, ypos) =
             []
 
 
-sidePiece : Model.Side -> Board.Piece
-sidePiece side =
-    case side of
-        Model.XSide -> Board.XPiece
-        Model.OSide -> Board.OPiece
-
-
 boardTicks : Model.Model -> List (Html.Html Msg.Msg)
 boardTicks model =
     let
-        piece = sidePiece model.turn
+        piece = Model.sidePiece model.turn
     in
         case model.dragging of
 
@@ -317,8 +303,8 @@ boardPieces : Model.Model -> Html.Html Msg.Msg
 boardPieces model =
     g
         [ transform <|
-            "scale(" ++ (toString piecesScale)
-            ++ ", "  ++ (toString piecesScale) ++ ")"
+            "scale(" ++ (toString PixelScale.piecesScale)
+            ++ ", "  ++ (toString PixelScale.piecesScale) ++ ")"
         ]
         (
             [ Svg.filter
@@ -336,8 +322,8 @@ boardPieces model =
 boardSvg : Model.Model -> Html.Html Msg.Msg
 boardSvg model =
     let
-        scale = toString <| boardScale model
-        wstr = toString <| boardWidth model
+        scale = toString <| PixelScale.boardScale model
+        wstr = toString <| PixelScale.boardWidth model
     in
         svg
             [ width wstr
@@ -365,7 +351,7 @@ boardDiv : Model.Model -> Html.Html Msg.Msg
 boardDiv model =
     Html.div
         [ Html.Attributes.style
-            [ ("width", (toString (boardWidth model)) ++ "px")
+            [ ("width", (toString (PixelScale.boardWidth model)) ++ "px")
             , ("margin", "1em auto")
             ]
         ]

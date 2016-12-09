@@ -3,7 +3,10 @@ module Moves exposing
     , WhoCanMove(CanMovePositions, Won)
     , allowedEnds
     , allowedMoves
+    , from
+    , to
     , hop
+    , movePiece
     , slide
     , take
     , whichCanMove
@@ -27,6 +30,52 @@ type Move =
 type WhoCanMove =
     CanMovePositions (List (Int, Int))
     | Won Board.Piece
+
+
+movePiecePiece : Board.Board -> (Int, Int) -> Board.Piece -> Move
+    -> Board.Piece
+movePiecePiece board pos piece move =
+    if (from move) == pos then
+        Board.noPiece
+    else if to move == pos then
+        (Board.pieceAt (from move) board)
+    else
+        piece
+    -- TODO: delete taken piece
+
+
+movePieceRow :
+    Board.Board ->
+    Int ->
+    (Board.Piece, Board.Piece, Board.Piece, Board.Piece)
+    -> Move
+    -> (Board.Piece, Board.Piece, Board.Piece, Board.Piece)
+movePieceRow board ypos (p0, p1, p2, p3) move =
+    ( movePiecePiece board (0, ypos) p0 move
+    , movePiecePiece board (1, ypos) p1 move
+    , movePiecePiece board (2, ypos) p2 move
+    , movePiecePiece board (3, ypos) p3 move
+    )
+
+
+movePieceRows :
+    Board.Board ->
+    (Board.Row, Board.Row, Board.Row, Board.Row)
+    -> Move
+    -> (Board.Row, Board.Row, Board.Row, Board.Row)
+movePieceRows board (r0, r1, r2, r3) move =
+    ( movePieceRow board 0 r0 move
+    , movePieceRow board 1 r1 move
+    , movePieceRow board 2 r2 move
+    , movePieceRow board 3 r3 move
+    )
+
+
+movePiece : Board.Board -> Move -> Board.Board
+movePiece board move =
+    { pieces =
+        movePieceRows board board.pieces move
+    }
 
 
 slide : (Int, Int) -> (Int, Int) -> Move

@@ -37,6 +37,7 @@ all =
         , test "Allowed ends shows none if no piece" allowedEndsIfNoPiece
         , test "Allowed ends shows none if we have won" allowedEndsIfWon
         , test "Allowed ends shows none if we have lost" allowedEndsIfLost
+        , test "Move a piece" moveAPiece
         ]
 
 
@@ -368,6 +369,28 @@ allowedEndsIfLost =
         <| \board -> Expect.equal
             []
             ( Moves.allowedEnds Board.oPiece board (2, 3) )
+
+
+moveAPiece : () -> Expect.Expectation
+moveAPiece =
+    Utils.forBoard
+        "...."
+        ".O.."
+        "...X"
+        "...." <| \startBoard ->
+            Utils.doForBoard
+                "...."
+                "...."
+                ".O.X"
+                "...." <| \endBoard ->
+                    Expect.equal
+                        (Board.toStrings endBoard)
+                        (Board.toStrings
+                            (Moves.movePiece
+                                startBoard
+                                (Moves.Slide (1, 1) (1, 2))
+                            )
+                        )
 
 
 --

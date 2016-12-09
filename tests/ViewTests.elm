@@ -172,7 +172,10 @@ rtsHtml =
             ]
             [ Html.div
                 [ Html.Attributes.id "msg" ]
-                [ Html.text "Drag the pieces to move. To play: "
+                [ Html.text <|
+                    "Drag the pieces to move."
+                    ++ " Ticks tell you what you can move."
+                , Html.text " To play:"
                 , Html.img
                     [ Html.Attributes.style
                         [ ("height", "1.2em")
@@ -181,8 +184,6 @@ rtsHtml =
                     , Html.Attributes.src "images/piece-black.svg"
                     ]
                     []
-                , Html.br [] []
-                , Html.text "Ticks tell you what you can move."
                 ]
             , svg
                 [ width "360"

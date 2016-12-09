@@ -1,8 +1,11 @@
 module Update exposing (update)
 
 
+import Board
 import Model
+import Moves
 import Msg
+import PixelScale
 
 
 update : Msg.Msg -> Model.Model -> (Model.Model, Cmd Msg.Msg)
@@ -14,9 +17,57 @@ update msg model =
             Msg.ChangePlayer side player -> updatePlayer model side player
             Msg.MouseMove pos -> { model | mousePos = pos }
             Msg.DragStart xpos ypos -> updateDragStart xpos ypos model
-            Msg.DragStop -> { model | dragging = Nothing }
+            Msg.DragStop -> updateDragStop model
     in
         (m, Cmd.none)
+
+
+type MoveAllowed = YesAllowed Moves.Move | NotAllowed Model.Message
+
+
+moveAllowed : Model.Model -> MoveAllowed
+moveAllowed model =
+    case model.dragging of
+        Nothing -> NotAllowed Model.MessageNormal
+        Just (Model.DragState xpos ypos startPx) ->
+            let
+                (moveX, moveY) =
+                    PixelScale.gridDistance model startPx model.mousePos
+            in
+                if moveX == 0 && moveY == 0 then
+                    NotAllowed Model.MessageNormal
+                else
+                    let
+                        endx = xpos + moveX
+                        endy = ypos + moveY
+                        thisMove = List.filter
+                            (\move -> Moves.to move == (endx, endy))
+                            (Moves.allowedMoves
+                                (Model.sidePiece model.turn) model.board)
+                    in
+                        case List.head thisMove of
+                            Nothing -> NotAllowed Model.MessageMoveNotAllowed
+                            Just move -> YesAllowed move
+
+
+updateDragStop : Model.Model -> Model.Model
+updateDragStop model =
+    let
+        allowed = moveAllowed model
+    in
+        case allowed of
+            YesAllowed move ->
+                { model
+                | dragging = Nothing
+                , message = Model.MessageNormal
+                , board = Moves.movePiece model.board move
+                , turn = Model.oppositeSide model.turn
+                }
+            NotAllowed message ->
+                { model
+                | dragging = Nothing
+                , message = message
+                }
 
 
 updateDragStart : Int -> Int -> Model.Model -> Model.Model

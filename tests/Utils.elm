@@ -1,4 +1,4 @@
-module Utils exposing (allEqual, equalExceptOrder, forBoard)
+module Utils exposing (allEqual, doForBoard, equalExceptOrder, forBoard)
 
 
 import Expect
@@ -50,9 +50,16 @@ forBoard :
         (() -> Expect.Expectation)
 forBoard s1 s2 s3 s4 fn =
     \() ->
-        let
-            board = Board.parse <| Board.strings s1 s2 s3 s4
-        in
-            case board of
-                Err e -> Expect.fail e
-                Ok b -> fn b
+        doForBoard s1 s2 s3 s4 fn
+
+
+doForBoard :
+    String -> String -> String -> String ->
+        (Board.Board -> Expect.Expectation) -> Expect.Expectation
+doForBoard s1 s2 s3 s4 fn =
+    let
+        board = Board.parse <| Board.strings s1 s2 s3 s4
+    in
+        case board of
+            Err e -> Expect.fail e
+            Ok b -> fn b

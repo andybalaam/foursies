@@ -24,7 +24,8 @@ all =
         , test "Impossible to have identical players" playersNotIdentical
         , test "Moving mouse updates" movingMouseUpdates
         , test "Start dragging a piece" startDragging
-        , test "Stop dragging a piece" stopDragging
+        , test "Stop dragging a piece without moving it" stopDraggingNoMove
+        , test "Drop a piece where we can't move it" dropInBadPlace
         ]
 
 
@@ -130,16 +131,38 @@ startDragging =
             (update (Msg.DragStart 1 0) model)
 
 
-stopDragging : () -> Expect.Expectation
-stopDragging =
+stopDraggingNoMove : () -> Expect.Expectation
+stopDraggingNoMove =
     let
         model_ = Model.newModel {width=10, height=10}
         model =
             { model_
             | mousePos = Mouse.Position 21 23
-            , dragging = Just <| Model.DragState 2 2 (Mouse.Position 5 5)
+            , dragging = Just <| Model.DragState 2 2 (Mouse.Position 21 23)
+            , message = Model.MessageMoveNotAllowed
             }
     in
         modelEqual
-            { model | dragging = Nothing }
+            { model
+            | dragging = Nothing
+            , message = Model.MessageNormal
+            }
+            (update Msg.DragStop model)
+
+
+dropInBadPlace : () -> Expect.Expectation
+dropInBadPlace =
+    let
+        model_ = Model.newModel {width=100, height=100}
+        model =
+            { model_
+            | mousePos = Mouse.Position 21 203
+            , dragging = Just <| Model.DragState 2 0 (Mouse.Position 5 5)
+            }
+    in
+        modelEqual
+            { model
+            | dragging = Nothing
+            , message = Model.MessageMoveNotAllowed
+            }
             (update Msg.DragStop model)

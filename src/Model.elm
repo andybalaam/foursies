@@ -3,6 +3,7 @@ module Model exposing
     , newModel
     , oppositeSide
     , sidePlayer
+    , sidePiece
     , Drag(..)
     , Flags
     , Message(..)
@@ -57,9 +58,16 @@ sidePlayer model side =
         OSide -> model.chosenPlayers.o
 
 
+sidePiece : Side -> Board.Piece
+sidePiece side =
+    case side of
+        XSide -> Board.XPiece
+        OSide -> Board.OPiece
+
+
 type Message =
     MessageNormal
-    | MessageDragging Int Int
+    | MessageMoveNotAllowed
 
 
 type Drag =
