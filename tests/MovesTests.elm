@@ -38,6 +38,7 @@ all =
         , test "Allowed ends shows none if we have won" allowedEndsIfWon
         , test "Allowed ends shows none if we have lost" allowedEndsIfLost
         , test "Move a piece" moveAPiece
+        , test "Move one of many pieces" moveOneOfManyPieces
         ]
 
 
@@ -373,27 +374,47 @@ allowedEndsIfLost =
 
 moveAPiece : () -> Expect.Expectation
 moveAPiece =
-    Utils.forBoard
+    moveResultsIn
         "...."
         ".O.."
         "...X"
-        "...." <| \startBoard ->
-            Utils.doForBoard
-                "...."
-                "...."
-                ".O.X"
-                "...." <| \endBoard ->
-                    Expect.equal
-                        (Board.toStrings endBoard)
-                        (Board.toStrings
-                            (Moves.movePiece
-                                startBoard
-                                (Moves.Slide (1, 1) (1, 2))
-                            )
-                        )
+        "...."
+        (Moves.Slide (1, 1) (1, 2))
+        "...."
+        "...."
+        ".O.X"
+        "...."
+
+
+moveOneOfManyPieces : () -> Expect.Expectation
+moveOneOfManyPieces =
+    moveResultsIn
+        "XXXX"
+        "...."
+        "...."
+        "OOOO"
+        (Moves.Slide (1, 0) (1, 1))
+        "X.XX"
+        ".X.."
+        "...."
+        "OOOO"
 
 
 --
+
+
+moveResultsIn :
+    String -> String -> String -> String
+    -> Moves.Move
+    -> String -> String -> String -> String
+    -> () -> Expect.Expectation
+moveResultsIn inp0 inp1 inp2 inp3 move out0 out1 out2 out3 =
+    \() ->
+        Utils.doForBoard inp0 inp1 inp2 inp3 <| \inputBoard ->
+           Utils.doForBoard out0 out1 out2 out3 <| \outputBoard ->
+               Expect.equal
+                   (Board.toStrings outputBoard)
+                   (Board.toStrings (Moves.movePiece inputBoard move))
 
 
 equalCanMovePositions : Moves.WhoCanMove -> Moves.WhoCanMove

@@ -9,8 +9,10 @@ import Mouse
 
 
 import Model
+import Moves
 import Msg
 import Update exposing (update)
+import Utils
 
 
 all : Test
@@ -26,7 +28,13 @@ all =
         , test "Start dragging a piece" startDragging
         , test "Stop dragging a piece without moving it" stopDraggingNoMove
         , test "Drop a piece where we can't move it" dropInBadPlace
+        , test "Drag to make a valid move" dragToMakeAValidMove
+        , test "moveAllowed picks the right move" moveAllowedPicksTheRightMove
         ]
+
+
+basicModel : Model.Model
+basicModel = Model.newModel {width=100, height=100}
 
 
 modelEqual : Model.Model -> (Model.Model, Cmd Msg.Msg)
@@ -153,9 +161,8 @@ stopDraggingNoMove =
 dropInBadPlace : () -> Expect.Expectation
 dropInBadPlace =
     let
-        model_ = Model.newModel {width=100, height=100}
         model =
-            { model_
+            { basicModel
             | mousePos = Mouse.Position 21 203
             , dragging = Just <| Model.DragState 2 0 (Mouse.Position 5 5)
             }
@@ -166,3 +173,54 @@ dropInBadPlace =
             , message = Model.MessageMoveNotAllowed
             }
             (update Msg.DragStop model)
+
+
+-- Make a slide from 1,0 to 1,1 and don't have the bug I had
+-- where it picked 0,0 to 1,1 just because it was happy
+-- with anything ending at 1,1
+moveAllowedPicksTheRightMove : () -> Expect.Expectation
+moveAllowedPicksTheRightMove =
+    \() ->
+        Expect.equal
+            (Update.YesAllowed <| Moves.Slide (1, 0) (1, 1))
+            (Update.moveAllowed
+                { basicModel
+                | mousePos = Mouse.Position 5 23
+                , dragging = Just <| Model.DragState 1 0 (Mouse.Position 5 5)
+                }
+            )
+
+
+-- Drag from 1,0 to 1,1 and don't have the bug I had where it decided to
+-- pretend it was really 0,0 to 1,1
+dragToMakeAValidMove : () -> Expect.Expectation
+dragToMakeAValidMove =
+    Utils.forBoard
+        "XXXX"
+        "...."
+        "...."
+        "OOOO" <| \startBoard ->
+            Utils.doForBoard
+                "X.XX"
+                ".X.."
+                "...."
+                "OOOO" <| \endBoard ->
+                    Expect.equal
+                        (
+                            { basicModel
+                            | mousePos = Mouse.Position 5 23
+                            , dragging = Nothing
+                            , message = Model.MessageNormal
+                            , board = endBoard
+                            , turn = Model.OSide
+                            }
+                        , Cmd.none
+                        )
+                        (update Msg.DragStop
+                            { basicModel
+                            | mousePos = Mouse.Position 5 23
+                            , dragging = Just <|
+                                Model.DragState 1 0 (Mouse.Position 5 5)
+                            , board = startBoard
+                            }
+                        )

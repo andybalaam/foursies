@@ -202,18 +202,19 @@ boardSide model side (xpos, ypos) =
     let
         (pieceX, pieceY, shadowX, shadowY) = offsets model xpos ypos
         scale = \start val -> start + (21.6 * (toFloat val))
-        cx_ = toString <| shadowX + (scale 14.5 xpos)
+        cx_ = toString <| shadowX + (scale 14.5 xpos) -- TODO: pieceWidth
         cy_ = toString <| shadowY + (scale 14.5 ypos)
         x_  = toString <| pieceX  + (scale  3.1 xpos)
         y_  = toString <| pieceY  + (scale  3.1 ypos)
-        -- TODO: blur shadow more
+        -- TODO: blur shadow more when dragged
+        -- TODO: move shadow down-right
         -- TODO: draw the image later, so it's on top
     in
         [ circle
             [ cx cx_, cy cy_, r "10", fill "black"
             , opacity "0.6", filterAtt "url(#blur)" ] []
         , image
-            [ x x_, y y_, height "20", width "20"
+            [ x x_, y y_, height "20", width "20" -- TODO: piecewidth
             , xlinkHref (playerImage (Model.sidePlayer model side))
             ] []
         ]
@@ -232,29 +233,15 @@ boardPiece model pos =
             Board.OPiece -> boardSide model Model.OSide pos
 
 
--- Given a grid pos, a mouse start and mouse end return the grid pos we have
--- moved to by moving from the mouse start to the mouse end.
-dragged : Model.Model -> (Int, Int) -> Mouse.Position -> Mouse.Position
-    -> (Int, Int)
-dragged model (dx, dy) dragMouseStart mouseEnd =
-    let
-        movedX = mouseEnd.x - dragMouseStart.x
-        movedY = mouseEnd.y - dragMouseStart.y
-        sc = 20 * (PixelScale.boardScale model) * PixelScale.piecesScale
-        scale = \d moved -> d + (round ((toFloat moved) / sc))
-    in
-        (scale dx movedX, scale dy movedY)
-
-
 tickImage : Model.Model -> Int -> Int -> String
 tickImage model xpos ypos =
     case model.dragging of
         Nothing -> "images/tick.svg"
         Just (Model.DragState dx dy dragMouseStart) ->
             let (draggedX, draggedY) =
-                dragged model (dx, dy) dragMouseStart model.mousePos
+                PixelScale.gridDistance model dragMouseStart model.mousePos
             in
-                if (draggedX, draggedY) == (xpos, ypos) then
+                if (dx + draggedX, dy + draggedY) == (xpos, ypos) then
                     "images/big-tick.svg"
                 else
                     "images/tick.svg"
@@ -336,8 +323,8 @@ boardSvg model =
                         [ xlinkHref "images/board.svg"
                         , x "0"
                         , y "0"
-                        , width "200"
-                        , height "200"
+                        , width  (toString PixelScale.backgroundWidth)
+                        , height (toString PixelScale.backgroundWidth)
                         ]
                         []
                     ]

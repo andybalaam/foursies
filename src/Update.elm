@@ -1,4 +1,4 @@
-module Update exposing (update)
+module Update exposing (MoveAllowed(..), update, moveAllowed)
 
 
 import Board
@@ -25,6 +25,11 @@ update msg model =
 type MoveAllowed = YesAllowed Moves.Move | NotAllowed Model.Message
 
 
+moveIsFromAndTo : (Int, Int) -> (Int, Int) -> Moves.Move -> Bool
+moveIsFromAndTo fromPos toPos move =
+    (Moves.to move == toPos) && (Moves.from move == fromPos)
+
+
 moveAllowed : Model.Model -> MoveAllowed
 moveAllowed model =
     case model.dragging of
@@ -41,7 +46,7 @@ moveAllowed model =
                         endx = xpos + moveX
                         endy = ypos + moveY
                         thisMove = List.filter
-                            (\move -> Moves.to move == (endx, endy))
+                            (moveIsFromAndTo (xpos, ypos) (endx, endy))
                             (Moves.allowedMoves
                                 (Model.sidePiece model.turn) model.board)
                     in
@@ -52,22 +57,19 @@ moveAllowed model =
 
 updateDragStop : Model.Model -> Model.Model
 updateDragStop model =
-    let
-        allowed = moveAllowed model
-    in
-        case allowed of
-            YesAllowed move ->
-                { model
-                | dragging = Nothing
-                , message = Model.MessageNormal
-                , board = Moves.movePiece model.board move
-                , turn = Model.oppositeSide model.turn
-                }
-            NotAllowed message ->
-                { model
-                | dragging = Nothing
-                , message = message
-                }
+    case moveAllowed model of
+        YesAllowed move ->
+            { model
+            | dragging = Nothing
+            , message = Model.MessageNormal
+            , board = Moves.movePiece model.board move
+            , turn = Model.oppositeSide model.turn
+            }
+        NotAllowed message ->
+            { model
+            | dragging = Nothing
+            , message = message
+            }
 
 
 updateDragStart : Int -> Int -> Model.Model -> Model.Model
