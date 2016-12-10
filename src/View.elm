@@ -1,5 +1,6 @@
 module View exposing
-    ( boardSide
+    ( boardPieces
+    , boardSide
     , boardTicks
     , choosePlayersDiv
     , onTouchStart
@@ -212,6 +213,18 @@ offsets model xpos ypos =
         Nothing -> (0, 0, 0, 0)
 
 
+pieceListeners : Model.Model -> Int -> Int -> List (Svg.Attribute Msg.Msg)
+pieceListeners model xpos ypos =
+    -- TODO: combine with "offsets" above
+    case model.dragging of
+        Just (Model.TouchedState dx dy) ->
+            if dx == xpos || dy == ypos then
+                [ onTouchStart Msg.Untouched ]
+            else
+                []
+        default -> []
+
+
 boardSide : Model.Model -> Model.Side -> (Int, Int) -> List (Html.Html Msg.Msg)
 boardSide model side (xpos, ypos) =
     let
@@ -229,9 +242,13 @@ boardSide model side (xpos, ypos) =
             [ cx cx_, cy cy_, r "10", fill "black"
             , opacity "0.6", filterAtt "url(#blur)" ] []
         , image
-            [ x x_, y y_, height "20", width "20" -- TODO: piecewidth
-            , xlinkHref (playerImage (Model.sidePlayer model side))
-            ] []
+            (
+                [ x x_, y y_, height "20", width "20" -- TODO: piecewidth
+                , xlinkHref (playerImage (Model.sidePlayer model side))
+                ]
+                ++ (pieceListeners model xpos ypos)
+            )
+            []
         ]
 
 

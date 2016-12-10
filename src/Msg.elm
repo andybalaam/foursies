@@ -12,3 +12,4 @@ type Msg =
     | DragStart Int Int
     | DragStop
     | Touched Int Int
+    | Untouched

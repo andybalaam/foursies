@@ -15,6 +15,7 @@ import Board
 import Model
 import Msg
 import View
+import Utils
 
 
 all : Test
@@ -28,6 +29,7 @@ all =
         , test "Continue dragging piece is moved" continueDraggingPieceMoved
         , test "Ticks where piece can land" ticksWherePieceCanLand
         , test "Big ticks where piece will land" bigTickWherePieceWillLand
+        , test "Can tap to cancel when moving" canTapToCancelWhenMoving
         ]
 
 
@@ -839,3 +841,90 @@ bigTickWherePieceWillLand =
                 Err e -> Expect.fail e
                 Ok b ->
                     bigTick b
+
+
+canTapToCancel : Board.Board -> Expect.Expectation
+canTapToCancel board =
+    let
+        model_ = Model.newModel {width=100, height=100}
+        model =
+            { model_
+            | board = board
+            , turn = Model.XSide
+            , dragging = Just <| Model.TouchedState 1 0
+            }
+    in
+        Expect.equal
+            ( toString
+                ( g
+                    [ transform "scale(2.198, 2.198)" ]
+                    [ Svg.filter
+                        [ id "blur" ]
+                        [ feGaussianBlur [ stdDeviation "0.5" ] [] ]
+                    , circle
+                        [ cx "36.1", cy "14.5", r "10", fill "black"
+                        , opacity "0.6", filterAtt "url(#blur)" ] []
+                    , image
+                        [ x "23.700000000000003", y "2.1", height "20", width "20"
+                        , xlinkHref "images/piece-black.svg"
+                        , View.onTouchStart Msg.Untouched
+                        ] []
+                    , circle
+                        [ cx "79.30000000000001", cy "14.5", r "10", fill "black"
+                        , opacity "0.6", filterAtt "url(#blur)" ] []
+                    , image
+                        [ x "67.9", y "3.1", height "20", width "20"
+                        , xlinkHref "images/piece-black.svg"
+                        , View.onTouchStart Msg.Untouched
+                        ] []
+                    , circle
+                        [ cx "36.1", cy "57.7", r "10", fill "black"
+                        , opacity "0.6", filterAtt "url(#blur)" ] []
+                    , image
+                        [ x "24.700000000000003", y "46.300000000000004", height "20", width "20"
+                        , xlinkHref "images/piece-white.svg"
+                        , View.onTouchStart Msg.Untouched
+                        ] []
+                    , image
+                        [ x "46.300000000000004", y "3.1"
+                        , height "20", width "20"
+                        , xlinkHref "images/tick.svg"
+                        , View.onTouchStart <| Msg.Touched 2 0
+                        ] []
+                    , image
+                        [ x "46.300000000000004", y "24.700000000000003"
+                        , height "20", width "20"
+                        , xlinkHref "images/tick.svg"
+                        , View.onTouchStart <| Msg.Touched 2 1
+                        ] []
+                    , image
+                        [ x "24.700000000000003", y "24.700000000000003"
+                        , height "20", width "20"
+                        , xlinkHref "images/tick.svg"
+                        , View.onTouchStart <| Msg.Touched 1 1
+                        ] []
+                    , image
+                        [ x "3.1", y "24.700000000000003"
+                        , height "20", width "20"
+                        , xlinkHref "images/tick.svg"
+                        , View.onTouchStart <| Msg.Touched 0 1
+                        ] []
+                    , image
+                        [ x "3.1", y "3.1"
+                        , height "20", width "20"
+                        , xlinkHref "images/tick.svg"
+                        , View.onTouchStart <| Msg.Touched 0 0
+                        ] []
+                    ]
+                )
+            )
+            (toString (View.boardPieces model))
+
+
+canTapToCancelWhenMoving : () -> Expect.Expectation
+canTapToCancelWhenMoving =
+    Utils.forBoard
+        ".X.X"
+        "...."
+        ".O.."
+        "...." <| canTapToCancel

@@ -22,6 +22,7 @@ update msg model =
             Msg.DragStart xpos ypos -> updateDragStart xpos ypos model
             Msg.DragStop -> updateDragStop model
             Msg.Touched xpos ypos -> updateTouched xpos ypos model
+            Msg.Untouched -> Debug.log "ut" { model | dragging = Nothing }
     in
         (m, Cmd.none)
 

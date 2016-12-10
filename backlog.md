@@ -13,7 +13,7 @@
     - ~~Tap to start moving~~
     - ~~Tap to finish moving~~
     - ~~Visual indication of selected piece~~
-    - Tap to cancel piece movement
+    - ~~Tap to cancel piece movement~~
 
 - UI for winning a game
 - Restart button
@@ -23,6 +23,7 @@
     - When you can't move because it's not your go
     - When you can't do that move because you must take
     - When you can't do that move for normal reasons
+    - When the moves are limited because you must take
 
 - Detailed instructions on how to play, and refer to them from above
 
@@ -33,6 +34,10 @@
 - Mouse pointer changes when over draggable piece
 
 - Final size and UI adjustments
+- "x" to say you can cancel a move by tapping
+
+- Fix bug where tests don't check the co-ords of Msg.Touched even though
+  we specify it.
 
 ## Release 0.1
 
