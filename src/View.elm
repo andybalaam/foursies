@@ -204,7 +204,12 @@ offsets model xpos ypos =
                 (0, 0, 0, 0)
             else
                 beingDraggedOffsets model dMousePos
-        default -> (0, 0, 0, 0)
+        Just (Model.TouchedState dx dy) ->
+            if dx /= xpos || dy /= ypos then
+                (0, 0, 0, 0)
+            else
+                (-1, -1, 0, 0)
+        Nothing -> (0, 0, 0, 0)
 
 
 boardSide : Model.Model -> Model.Side -> (Int, Int) -> List (Html.Html Msg.Msg)

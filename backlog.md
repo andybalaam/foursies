@@ -12,7 +12,7 @@
 - Tap to move on mobile
     - ~~Tap to start moving~~
     - ~~Tap to finish moving~~
-    - Visual indication of selected piece
+    - ~~Visual indication of selected piece~~
     - Tap to cancel piece movement
 
 - UI for winning a game
