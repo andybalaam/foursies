@@ -7,10 +7,7 @@
 - ~~Choose player~~
 - ~~Render board to SVG~~
 - ~~UI for dragging pieces to move~~
-
-- Making a move modifies the board
-    - ~~Slide and Hop~~
-    - Take
+- ~~Making a move modifies the board~~
 
 - Drag and drop on mobile
 

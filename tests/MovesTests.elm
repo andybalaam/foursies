@@ -39,6 +39,8 @@ all =
         , test "Allowed ends shows none if we have lost" allowedEndsIfLost
         , test "Move a piece" moveAPiece
         , test "Move one of many pieces" moveOneOfManyPieces
+        , test "Hop over my piece" hopOverMyPiece
+        , test "Take their piece" takeTheirPiece
         ]
 
 
@@ -398,6 +400,34 @@ moveOneOfManyPieces =
         ".X.."
         "...."
         "OOOO"
+
+
+hopOverMyPiece : () -> Expect.Expectation
+hopOverMyPiece =
+    moveResultsIn
+        "..X."
+        "..X."
+        "...."
+        "OOOO"
+        (Moves.Hop (2, 0) (2, 1) (2, 2))
+        "...."
+        "..X."
+        "..X."
+        "OOOO"
+
+
+takeTheirPiece : () -> Expect.Expectation
+takeTheirPiece =
+    moveResultsIn
+        "X.XX"
+        "...."
+        ".X.."
+        "OOOO"
+        (Moves.Take (0, 3) (1, 2) (2, 1))
+        "X.XX"
+        "..O."
+        "...."
+        ".OOO"
 
 
 --

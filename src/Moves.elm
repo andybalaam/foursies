@@ -32,6 +32,14 @@ type WhoCanMove =
     | Won Board.Piece
 
 
+
+takenEquals : Move -> (Int, Int) -> Bool
+takenEquals move pos =
+    case taken move of
+        Just takenPos -> takenPos == pos
+        default       -> False
+
+
 movePiecePiece : Board.Board -> (Int, Int) -> Board.Piece -> Move
     -> Board.Piece
 movePiecePiece board pos piece move =
@@ -39,9 +47,10 @@ movePiecePiece board pos piece move =
         Board.noPiece
     else if to move == pos then
         (Board.pieceAt (from move) board)
+    else if (takenEquals move pos) then
+        Board.noPiece
     else
         piece
-    -- TODO: delete taken piece
 
 
 movePieceRow :
@@ -112,6 +121,13 @@ to move =
         Slide _   to -> to
         Hop   _ _ to -> to
         Take  _ _ to -> to
+
+
+taken : Move -> Maybe (Int, Int)
+taken move =
+    case move of
+        Take  _ taken _ -> Just taken
+        default         -> Nothing
 
 
 -- Return where the piece specified could move to (if anywhere)
