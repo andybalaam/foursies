@@ -1,4 +1,7 @@
-module Update exposing (MoveAllowed(..), update, moveAllowed)
+module Update exposing (MoveAllowed(..), update, dragMoveAllowed)
+
+
+import Mouse
 
 
 import Board
@@ -18,6 +21,7 @@ update msg model =
             Msg.MouseMove pos -> { model | mousePos = pos }
             Msg.DragStart xpos ypos -> updateDragStart xpos ypos model
             Msg.DragStop -> updateDragStop model
+            Msg.Touched xpos ypos -> updateTouched xpos ypos model
     in
         (m, Cmd.none)
 
@@ -30,34 +34,41 @@ moveIsFromAndTo fromPos toPos move =
     (Moves.to move == toPos) && (Moves.from move == fromPos)
 
 
-moveAllowed : Model.Model -> MoveAllowed
-moveAllowed model =
-    case model.dragging of
-        Nothing -> NotAllowed Model.MessageNormal
-        Just (Model.DragState xpos ypos startPx) ->
-            let
-                (moveX, moveY) =
-                    PixelScale.gridDistance model startPx model.mousePos
-            in
-                if moveX == 0 && moveY == 0 then
-                    NotAllowed Model.MessageNormal
-                else
-                    let
-                        endx = xpos + moveX
-                        endy = ypos + moveY
-                        thisMove = List.filter
-                            (moveIsFromAndTo (xpos, ypos) (endx, endy))
-                            (Moves.allowedMoves
-                                (Model.sidePiece model.turn) model.board)
-                    in
-                        case List.head thisMove of
-                            Nothing -> NotAllowed Model.MessageMoveNotAllowed
-                            Just move -> YesAllowed move
+dragMoveAllowed : Model.Model -> Int -> Int -> Mouse.Position -> MoveAllowed
+dragMoveAllowed model xpos ypos startPx =
+    let
+        (moveX, moveY) = PixelScale.gridDistance model startPx model.mousePos
+    in
+        moveAllowed model xpos ypos (xpos+moveX) (ypos+moveY)
+
+
+moveAllowed : Model.Model -> Int -> Int -> Int -> Int -> MoveAllowed
+moveAllowed model startX startY endX endY =
+    if startX == endX && startY == endY then
+        NotAllowed Model.MessageNormal
+    else
+        let
+            thisMove = List.filter
+                (moveIsFromAndTo (startX, startY) (endX, endY))
+                (Moves.allowedMoves
+                    (Model.sidePiece model.turn) model.board)
+        in
+            case List.head thisMove of
+                Nothing -> NotAllowed Model.MessageMoveNotAllowed
+                Just move -> YesAllowed move
 
 
 updateDragStop : Model.Model -> Model.Model
 updateDragStop model =
-    case moveAllowed model of
+    case model.dragging of
+        Just (Model.DragState xpos ypos startPx) ->
+            updateTryMove model (dragMoveAllowed model xpos ypos startPx)
+        default -> model -- Ignore if we were not dragging
+
+
+updateTryMove : Model.Model -> MoveAllowed -> Model.Model
+updateTryMove model moveA =
+    case moveA of
         YesAllowed move ->
             { model
             | dragging = Nothing
@@ -77,6 +88,14 @@ updateDragStart xpos ypos model =
     { model
         | dragging = Just <| Model.DragState xpos ypos model.mousePos
     }
+
+
+updateTouched : Int -> Int -> Model.Model -> Model.Model
+updateTouched xpos ypos model =
+    case model.dragging of
+        Just (Model.TouchedState startX startY) ->
+            updateTryMove model (moveAllowed model startX startY xpos ypos)
+        default -> { model | dragging = Just <| Model.TouchedState xpos ypos }
 
 
 updateResize : Int -> Int -> Model.Model -> Model.Model

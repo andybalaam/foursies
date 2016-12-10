@@ -299,21 +299,25 @@ rtsHtml =
                         , image
                             [ x "3.1", y "3.1", height "20", width "20"
                             , xlinkHref "images/tick.svg"
+                            , View.onTouchStart <| Msg.Touched 0 0
                             , onMouseDown <| Msg.DragStart 0 0
                             ] []
                         , image
                             [ x "24.700000000000003", y "3.1", height "20", width "20"
                             , xlinkHref "images/tick.svg"
+                            , View.onTouchStart <| Msg.Touched 1 0
                             , onMouseDown <| Msg.DragStart 1 0
                             ] []
                         , image
                             [ x "46.300000000000004", y "3.1", height "20", width "20"
                             , xlinkHref "images/tick.svg"
+                            , View.onTouchStart <| Msg.Touched 2 0
                             , onMouseDown <| Msg.DragStart 2 0
                             ] []
                         , image
                             [ x "67.9", y "3.1", height "20", width "20"
                             , xlinkHref "images/tick.svg"
+                            , View.onTouchStart <| Msg.Touched 3 0
                             , onMouseDown <| Msg.DragStart 3 0
                             ] []
                         ]
@@ -342,12 +346,14 @@ ticksOnPlaces board =
                     [ x "24.700000000000003", y "46.300000000000004"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 3 1
                     , onMouseDown <| Msg.DragStart 3 1
                     ] []
                 , image
                     [ x "67.9", y "24.700000000000003"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 1 2
                     , onMouseDown <| Msg.DragStart 1 2
                     ] []
                 ]
@@ -723,26 +729,31 @@ ticksWhereLand board =
                     [ x "67.9", y "3.1"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 3 0
                     ] []
                 , image
                     [ x "67.9", y "46.300000000000004"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 3 2
                     ] []
                 , image
                     [ x "46.300000000000004", y "46.300000000000004"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 2 2
                     ] []
                 , image
                     [ x "46.300000000000004", y "24.700000000000003"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 2 1
                     ] []
                 , image
                     [ x "46.300000000000004", y "3.1"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 3 0
                     ] []
                 ]
             )
@@ -783,26 +794,31 @@ bigTick board =
                     [ x "67.9", y "3.1"
                     , height "20", width "20"
                     , xlinkHref "images/big-tick.svg"
+                    , View.onTouchStart <| Msg.Touched 3 0
                     ] []
                 , image
                     [ x "67.9", y "46.300000000000004"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 3 2
                     ] []
                 , image
                     [ x "46.300000000000004", y "46.300000000000004"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 2 2
                     ] []
                 , image
                     [ x "46.300000000000004", y "24.700000000000003"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 2 1
                     ] []
                 , image
                     [ x "46.300000000000004", y "3.1"
                     , height "20", width "20"
                     , xlinkHref "images/tick.svg"
+                    , View.onTouchStart <| Msg.Touched 2 1
                     ] []
                 ]
             )

@@ -26,10 +26,13 @@ all =
         , test "Impossible to have identical players" playersNotIdentical
         , test "Moving mouse updates" movingMouseUpdates
         , test "Start dragging a piece" startDragging
+        , test "Tap to start moving a piece" tapToStartMoving
+        , test "Tap to finish moving a piece" tapToFinishMoving
+        -- TODO: tap to cancel moving
         , test "Stop dragging a piece without moving it" stopDraggingNoMove
         , test "Drop a piece where we can't move it" dropInBadPlace
         , test "Drag to make a valid move" dragToMakeAValidMove
-        , test "moveAllowed picks the right move" moveAllowedPicksTheRightMove
+        , test "dragMoveAllowed picks right move" dragMoveAllowedPicksRightMove
         ]
 
 
@@ -40,7 +43,13 @@ basicModel = Model.newModel {width=100, height=100}
 modelEqual : Model.Model -> (Model.Model, Cmd Msg.Msg)
     -> (() -> Expect.Expectation)
 modelEqual exp act =
-    \() -> Expect.equal (exp, Cmd.none) act
+    \() -> doModelEqual exp act
+
+
+doModelEqual : Model.Model -> (Model.Model, Cmd Msg.Msg)
+    -> (Expect.Expectation)
+doModelEqual exp act =
+    Expect.equal (exp, Cmd.none) act
 
 
 resizeUpdatesModelSize : () -> Expect.Expectation
@@ -139,6 +148,37 @@ startDragging =
             (update (Msg.DragStart 1 0) model)
 
 
+tapToStartMoving : () -> Expect.Expectation
+tapToStartMoving =
+    let
+        model = Model.newModel {width=10, height=10}
+    in
+        modelEqual
+            { model | dragging = Just <| Model.TouchedState 1 0 }
+            (update (Msg.Touched 1 0) model)
+
+
+tapToFinishMoving : () -> Expect.Expectation
+tapToFinishMoving =
+    let
+        model_ = Model.newModel {width=10, height=10}
+        model =
+            { model_ | dragging = Just <| Model.TouchedState 1 0 }
+    in
+        Utils.forBoard
+            "X.XX"
+            ".X.."
+            "...."
+            "OOOO" <| \board ->
+                doModelEqual
+                    { model
+                    | dragging = Nothing
+                    , board = board
+                    , turn = Model.OSide
+                    }
+                    (update (Msg.Touched 1 1) model)
+
+
 stopDraggingNoMove : () -> Expect.Expectation
 stopDraggingNoMove =
     let
@@ -178,16 +218,19 @@ dropInBadPlace =
 -- Make a slide from 1,0 to 1,1 and don't have the bug I had
 -- where it picked 0,0 to 1,1 just because it was happy
 -- with anything ending at 1,1
-moveAllowedPicksTheRightMove : () -> Expect.Expectation
-moveAllowedPicksTheRightMove =
+dragMoveAllowedPicksRightMove : () -> Expect.Expectation
+dragMoveAllowedPicksRightMove =
     \() ->
         Expect.equal
             (Update.YesAllowed <| Moves.Slide (1, 0) (1, 1))
-            (Update.moveAllowed
+            (Update.dragMoveAllowed
                 { basicModel
                 | mousePos = Mouse.Position 5 23
                 , dragging = Just <| Model.DragState 1 0 (Mouse.Position 5 5)
                 }
+                1
+                0
+                (Mouse.Position 5 5)
             )
 
 

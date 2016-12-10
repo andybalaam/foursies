@@ -72,6 +72,7 @@ type Message =
 
 type Drag =
     DragState Int Int Mouse.Position
+    | TouchedState Int Int
 
 
 type alias Model =

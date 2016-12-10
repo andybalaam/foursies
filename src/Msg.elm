@@ -11,3 +11,4 @@ type Msg =
     | MouseMove Mouse.Position
     | DragStart Int Int
     | DragStop
+    | Touched Int Int

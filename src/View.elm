@@ -1,9 +1,16 @@
-module View exposing (boardSide, boardTicks, choosePlayersDiv, view)
+module View exposing
+    ( boardSide
+    , boardTicks
+    , choosePlayersDiv
+    , onTouchStart
+    , view
+    )
 
 
 import Html
 import Html.Attributes
 import Html.Events
+import Json.Decode
 import Mouse
 import Svg exposing (..)
 import Svg.Attributes exposing (..)
@@ -15,6 +22,9 @@ import Model
 import Moves
 import Msg
 import PixelScale
+
+
+onTouchStart msg = on "touchstart" (Json.Decode.succeed msg)
 
 
 playerImage : Model.Player -> String
@@ -189,12 +199,12 @@ beingDraggedOffsets model dMousePos =
 offsets : Model.Model -> Int -> Int -> (Float, Float, Float, Float)
 offsets model xpos ypos =
     case model.dragging of
-        Nothing -> (0, 0, 0, 0)
         Just (Model.DragState dx dy dMousePos) ->
             if dx /= xpos || dy /= ypos then
                 (0, 0, 0, 0)
             else
                 beingDraggedOffsets model dMousePos
+        default -> (0, 0, 0, 0)
 
 
 boardSide : Model.Model -> Model.Side -> (Int, Int) -> List (Html.Html Msg.Msg)
@@ -235,7 +245,6 @@ boardPiece model pos =
 tickImage : Model.Model -> Int -> Int -> String
 tickImage model xpos ypos =
     case model.dragging of
-        Nothing -> "images/tick.svg"
         Just (Model.DragState dx dy dragMouseStart) ->
             let (draggedX, draggedY) =
                 PixelScale.gridDistance model dragMouseStart model.mousePos
@@ -244,6 +253,7 @@ tickImage model xpos ypos =
                     "images/big-tick.svg"
                 else
                     "images/tick.svg"
+        default -> "images/tick.svg"
 
 
 boardTick : Model.Model -> Bool -> (Int, Int) -> Html.Html Msg.Msg
@@ -257,6 +267,7 @@ boardTick model handleMouseDown (xpos, ypos) =
             (
                 [ x x_, y y_, height "20", width "20"
                 , xlinkHref <| tickImage model xpos ypos
+                , onTouchStart <| Msg.Touched xpos ypos
                 -- TODO , Svg.Attributes.style "cursor: move"
                 ] ++
                     if handleMouseDown then
@@ -281,6 +292,11 @@ boardTicks model =
                         List.map (boardTick model True) posList
 
             Just (Model.DragState xpos ypos _) ->
+                List.map
+                    (boardTick model False)
+                    (Moves.allowedEnds piece model.board (xpos, ypos))
+
+            Just (Model.TouchedState xpos ypos) ->
                 List.map
                     (boardTick model False)
                     (Moves.allowedEnds piece model.board (xpos, ypos))
