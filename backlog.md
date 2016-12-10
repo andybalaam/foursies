@@ -42,9 +42,10 @@
 
 ## Release Christmas 2016
 
+- Undo and redo
+- Click to move on PC
 - Unify Model.Side and Board.Piece in some way
 - Abstract all distances into PixelScale
 - Improve vocabulary around boardScale, gridScale, piecesScale
-- Undo and redo
 
 ## Later releases
