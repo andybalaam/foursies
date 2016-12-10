@@ -218,7 +218,6 @@ boardSide model side (xpos, ypos) =
             , xlinkHref (playerImage (Model.sidePlayer model side))
             ] []
         ]
-        -- TODO: style [ ("cursor", "move") ]
 
 
 boardPiece : Model.Model -> (Int, Int) -> List (Html.Html Msg.Msg)
@@ -258,6 +257,7 @@ boardTick model handleMouseDown (xpos, ypos) =
             (
                 [ x x_, y y_, height "20", width "20"
                 , xlinkHref <| tickImage model xpos ypos
+                -- TODO , Svg.Attributes.style "cursor: move"
                 ] ++
                     if handleMouseDown then
                         [ onMouseDown <| Msg.DragStart xpos ypos ]
