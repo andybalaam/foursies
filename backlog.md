@@ -11,7 +11,7 @@
 - ~~Tap to move on mobile~~
 
 - ~~UI for winning a game~~
-- Restart button
+- ~~Restart button~~
 - Messages
     - At the very start of the game?
     - When you win
