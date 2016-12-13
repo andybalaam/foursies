@@ -11019,8 +11019,12 @@ var _andybalaam$foursies$View$toPlay = function (model) {
 							_0: {ctor: '_Tuple2', _0: 'height', _1: '1.2em'},
 							_1: {
 								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'bottom'},
-								_1: {ctor: '[]'}
+								_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'middle'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'margin-left', _1: '0.2em'},
+									_1: {ctor: '[]'}
+								}
 							}
 						}),
 					_1: {
