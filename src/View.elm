@@ -5,6 +5,7 @@ module View exposing
     , choosePlayersDiv
     , onTouchStart
     , view
+    , wonOverlay
     )
 
 
@@ -344,6 +345,55 @@ boardPieces model =
         )
 
 
+actualWonMessage : Model.Model -> Model.Side -> List (Html.Html Msg.Msg)
+actualWonMessage model wonSide =
+    let
+        w = PixelScale.backgroundWidth
+    in
+        [
+            rect
+                [ x "0"
+                , y "0"
+                , width  (toString w)
+                , height (toString w)
+                , fill "#000000"
+                , opacity "0.7"
+                ]
+                []
+            , image
+                [ x (toString (w * 0.25))
+                , y (toString (w * 0.14))
+                , height (toString (w * 0.5))
+                , width (toString (w * 0.5))
+                , xlinkHref
+                    <| playerImage
+                    <| Model.sidePlayer model wonSide
+                ]
+                []
+            , Svg.text_
+                [ x (toString (w*0.275))
+                , y (toString (w*0.84))
+                , fontSize (toString (w*0.2))
+                , fill "#FFFFFF"
+                ]
+                [ Svg.text "wins!" ]
+        ]
+
+
+wonOverlay : Model.Model -> List (Html.Html Msg.Msg)
+wonOverlay model =
+    let
+        canMove = Moves.whichCanMove (Model.sidePiece model.turn) model.board
+    in
+        case canMove of
+            Moves.Won wonPiece ->
+                case Model.pieceSide wonPiece of
+                    Just wonSide ->
+                        actualWonMessage model wonSide
+                    Nothing -> [] -- Never happens - wonPiece will be X or O
+            default -> []
+
+
 boardSvg : Model.Model -> Html.Html Msg.Msg
 boardSvg model =
     let
@@ -368,6 +418,7 @@ boardSvg model =
                     ]
                     ++ boardLines
                     ++ [ boardPieces model ]
+                    ++ (wonOverlay model)
                 )
             ]
 

@@ -2,6 +2,7 @@ module Model exposing
     ( allPlayers
     , newModel
     , oppositeSide
+    , pieceSide
     , sidePlayer
     , sidePiece
     , Drag(..)
@@ -63,6 +64,14 @@ sidePiece side =
     case side of
         XSide -> Board.XPiece
         OSide -> Board.OPiece
+
+
+pieceSide : Board.Piece -> Maybe Side
+pieceSide piece =
+    case piece of
+        Board.XPiece -> Just XSide
+        Board.OPiece -> Just OSide
+        default -> Nothing
 
 
 type Message =

@@ -8,14 +8,9 @@
 - ~~Render board to SVG~~
 - ~~UI for dragging pieces to move~~
 - ~~Making a move modifies the board~~
+- ~~Tap to move on mobile~~
 
-- Tap to move on mobile
-    - ~~Tap to start moving~~
-    - ~~Tap to finish moving~~
-    - ~~Visual indication of selected piece~~
-    - ~~Tap to cancel piece movement~~
-
-- UI for winning a game
+- ~~UI for winning a game~~
 - Restart button
 - Messages
     - At the very start of the game?
