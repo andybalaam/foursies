@@ -182,7 +182,8 @@ rtsHtml =
                 , Html.img
                     [ Html.Attributes.style
                         [ ("height", "1.2em")
-                        , ("vertical-align", "bottom")
+                        , ("vertical-align", "middle")
+                        , ("margin-left", "0.2em")
                         ]
                     , Html.Attributes.src "images/piece-black.svg"
                     ]
