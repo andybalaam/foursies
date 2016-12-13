@@ -176,8 +176,8 @@ rtsHtml =
             [ Html.div
                 [ Html.Attributes.id "msg" ]
                 [ Html.text <|
-                    "Drag the pieces to move."
-                    ++ " Ticks tell you what you can move."
+                    "Tap or drag the pieces."
+                    ++ " Green ticks show what you can do."
                 , Html.text " To play:"
                 , Html.img
                     [ Html.Attributes.style

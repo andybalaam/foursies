@@ -131,8 +131,8 @@ boardMessage model =
         case model.message of
             Model.MessageNormal ->
                 [ Html.text <|
-                    "Drag the pieces to move. "
-                    ++ "Ticks tell you what you can move."
+                    "Tap or drag the pieces."
+                    ++ " Green ticks show what you can do."
                 ]
             Model.MessageMoveNotAllowed ->
                 [ Html.text <|
