@@ -357,7 +357,7 @@ actualWonMessage model wonSide =
                 , width  (toString w)
                 , height (toString w)
                 , fill "#000000"
-                , opacity "0.7"
+                , opacity "0.8"
                 ]
                 []
             , image
@@ -431,10 +431,18 @@ boardDiv model =
             , ("margin", "1em auto")
             ]
         ]
-        [ Html.div
-            [ Html.Attributes.id "msg" ]
-            (boardMessage model)
+        [ Html.div [ Html.Attributes.id "msg" ] (boardMessage model)
         , boardSvg model
+        , Html.div
+            [ Html.Attributes.class "butdiv"
+            ]
+            [ Html.input
+                [ Html.Attributes.type_ "button"
+                , Html.Attributes.value "Start again"
+                , Html.Attributes.class "but"
+                ]
+                []
+            ]
         ]
 
 

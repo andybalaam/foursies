@@ -326,6 +326,16 @@ rtsHtml =
                         ]
                     ]
                 ]
+                , Html.div
+                    [ Html.Attributes.class "butdiv"
+                    ]
+                    [ Html.input
+                        [ Html.Attributes.type_ "button"
+                        , Html.Attributes.value "Start again"
+                        , Html.Attributes.class "but"
+                        ]
+                        []
+                    ]
             ]
         ]
 
@@ -950,7 +960,7 @@ overlayDisplayedWhenWin =
                     [
                         rect
                             [ x "0", y "0", width "200", height "200"
-                            , fill "#000000" , opacity "0.7" ] []
+                            , fill "#000000" , opacity "0.8" ] []
                         , image
                             [ x "50", y "28.000000000000004"
                             , height "100", width "100"
