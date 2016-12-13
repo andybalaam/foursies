@@ -9011,6 +9011,7 @@ var _elm_lang$window$Window$subMap = F2(
 	});
 _elm_lang$core$Native_Platform.effectManagers['Window'] = {pkg: 'elm-lang/window', init: _elm_lang$window$Window$init, onEffects: _elm_lang$window$Window$onEffects, onSelfMsg: _elm_lang$window$Window$onSelfMsg, tag: 'sub', subMap: _elm_lang$window$Window$subMap};
 
+var _andybalaam$foursies$Model$startingBoard = _andybalaam$foursies$Board$newBoard(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece);
 var _andybalaam$foursies$Model$sidePiece = function (side) {
 	var _p0 = side;
 	if (_p0.ctor === 'XSide') {
@@ -9087,7 +9088,7 @@ var _andybalaam$foursies$Model$newModel = function (flags) {
 		chosenPlayers: {x: _andybalaam$foursies$Model$BlackPlayer, o: _andybalaam$foursies$Model$WhitePlayer},
 		choosingSide: _elm_lang$core$Maybe$Nothing,
 		turn: _andybalaam$foursies$Model$XSide,
-		board: _andybalaam$foursies$Board$newBoard(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$xPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$noPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece)(_andybalaam$foursies$Board$oPiece),
+		board: _andybalaam$foursies$Model$startingBoard,
 		dragging: _elm_lang$core$Maybe$Nothing,
 		mousePos: A2(_elm_lang$mouse$Mouse$Position, 0, 0)
 	};
@@ -9114,6 +9115,7 @@ var _andybalaam$foursies$Msg$DragStart = F2(
 var _andybalaam$foursies$Msg$MouseMove = function (a) {
 	return {ctor: 'MouseMove', _0: a};
 };
+var _andybalaam$foursies$Msg$StartAgain = {ctor: 'StartAgain'};
 var _andybalaam$foursies$Msg$ChangePlayer = F2(
 	function (a, b) {
 		return {ctor: 'ChangePlayer', _0: a, _1: b};
@@ -11580,7 +11582,11 @@ var _andybalaam$foursies$View$boardDiv = function (model) {
 										_1: {
 											ctor: '::',
 											_0: _elm_lang$html$Html_Attributes$class('but'),
-											_1: {ctor: '[]'}
+											_1: {
+												ctor: '::',
+												_0: _elm_lang$html$Html_Events$onClick(_andybalaam$foursies$Msg$StartAgain),
+												_1: {ctor: '[]'}
+											}
 										}
 									}
 								},
@@ -11707,6 +11713,11 @@ var _andybalaam$foursies$Update$moveIsFromAndTo = F3(
 			_andybalaam$foursies$Moves$from(move),
 			fromPos);
 	});
+var _andybalaam$foursies$Update$updateStartAgain = function (model) {
+	return _elm_lang$core$Native_Utils.update(
+		model,
+		{message: _andybalaam$foursies$Model$MessageNormal, board: _andybalaam$foursies$Model$startingBoard, turn: _andybalaam$foursies$Model$XSide});
+};
 var _andybalaam$foursies$Update$NotAllowed = function (a) {
 	return {ctor: 'NotAllowed', _0: a};
 };
@@ -11786,6 +11797,8 @@ var _andybalaam$foursies$Update$update = F2(
 						});
 				case 'ChangePlayer':
 					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p6._0, _p6._1);
+				case 'StartAgain':
+					return _andybalaam$foursies$Update$updateStartAgain(model);
 				case 'MouseMove':
 					return _elm_lang$core$Native_Utils.update(
 						model,
