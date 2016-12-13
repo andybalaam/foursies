@@ -11084,7 +11084,7 @@ var _andybalaam$foursies$View$actualWonMessage = F2(
 									_0: _elm_lang$svg$Svg_Attributes$fill('#000000'),
 									_1: {
 										ctor: '::',
-										_0: _elm_lang$svg$Svg_Attributes$opacity('0.7'),
+										_0: _elm_lang$svg$Svg_Attributes$opacity('0.8'),
 										_1: {ctor: '[]'}
 									}
 								}
@@ -11558,7 +11558,37 @@ var _andybalaam$foursies$View$boardDiv = function (model) {
 			_1: {
 				ctor: '::',
 				_0: _andybalaam$foursies$View$boardSvg(model),
-				_1: {ctor: '[]'}
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('butdiv'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$input,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$type_('button'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$value('Start again'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('but'),
+											_1: {ctor: '[]'}
+										}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {ctor: '[]'}
+						}),
+					_1: {ctor: '[]'}
+				}
 			}
 		});
 };
