@@ -333,6 +333,7 @@ rtsHtml =
                         [ Html.Attributes.type_ "button"
                         , Html.Attributes.value "Start again"
                         , Html.Attributes.class "but"
+                        , Html.Events.onClick Msg.StartAgain
                         ]
                         []
                     ]

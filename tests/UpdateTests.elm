@@ -33,6 +33,7 @@ all =
         , test "Drop a piece where we can't move it" dropInBadPlace
         , test "Drag to make a valid move" dragToMakeAValidMove
         , test "dragMoveAllowed picks right move" dragMoveAllowedPicksRightMove
+        , test "Reset sets the board back" resetSetsTheBoardBack
         ]
 
 
@@ -267,3 +268,27 @@ dragToMakeAValidMove =
                             , board = startBoard
                             }
                         )
+
+
+resetSetsTheBoardBack : () -> Expect.Expectation
+resetSetsTheBoardBack =
+    Utils.forBoard
+        ".X.X"
+        "X.X."
+        ".O.."
+        "...." <| \startBoard ->
+            Expect.equal
+                (
+                    { basicModel
+                    | message = Model.MessageNormal
+                    , turn = Model.XSide
+                    }
+                , Cmd.none
+                )
+                (update Msg.StartAgain
+                    { basicModel
+                    | board = startBoard
+                    , message = Model.MessageMoveNotAllowed
+                    , turn = Model.OSide
+                    }
+                )

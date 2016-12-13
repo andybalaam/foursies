@@ -8,6 +8,7 @@ type Msg =
     Resize Int Int
     | ChoosePlayer Model.Side
     | ChangePlayer Model.Side Model.Player
+    | StartAgain
     | MouseMove Mouse.Position
     | DragStart Int Int
     | DragStop

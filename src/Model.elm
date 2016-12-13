@@ -5,6 +5,7 @@ module Model exposing
     , pieceSide
     , sidePlayer
     , sidePiece
+    , startingBoard
     , Drag(..)
     , Flags
     , Message(..)
@@ -95,11 +96,20 @@ type alias Model =
         , o : Player -- Bottom
         }
     , choosingSide : Maybe Side
-    , turn : Side
-    , board : Board.Board
+    , turn : Side            -- TODO: combine board and side
+    , board : Board.Board    --       together before making undo/redo
     , dragging : Maybe Drag
     , mousePos : Mouse.Position
     }
+
+
+startingBoard : Board.Board
+startingBoard =
+    Board.newBoard
+        Board.xPiece  Board.xPiece  Board.xPiece  Board.xPiece
+        Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+        Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+        Board.oPiece  Board.oPiece  Board.oPiece  Board.oPiece
 
 
 newModel : Flags -> Model
@@ -115,11 +125,7 @@ newModel flags =
         }
     , choosingSide = Nothing
     , turn = XSide
-    , board = Board.newBoard
-        Board.xPiece  Board.xPiece  Board.xPiece  Board.xPiece
-        Board.noPiece Board.noPiece Board.noPiece Board.noPiece
-        Board.noPiece Board.noPiece Board.noPiece Board.noPiece
-        Board.oPiece  Board.oPiece  Board.oPiece  Board.oPiece
+    , board = startingBoard
     , dragging = Nothing
     , mousePos = Mouse.Position 0 0
     }

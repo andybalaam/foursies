@@ -18,6 +18,7 @@ update msg model =
             Msg.Resize w h -> updateResize w h model
             Msg.ChoosePlayer side -> { model | choosingSide = Just side }
             Msg.ChangePlayer side player -> updatePlayer model side player
+            Msg.StartAgain -> updateStartAgain model
             Msg.MouseMove pos -> { model | mousePos = pos }
             Msg.DragStart xpos ypos -> updateDragStart xpos ypos model
             Msg.DragStop -> updateDragStop model
@@ -25,6 +26,15 @@ update msg model =
             Msg.Untouched -> Debug.log "ut" { model | dragging = Nothing }
     in
         (m, Cmd.none)
+
+
+updateStartAgain : Model.Model -> Model.Model
+updateStartAgain model =
+    { model
+    | message = Model.MessageNormal
+    , board = Model.startingBoard
+    , turn = Model.XSide
+    }
 
 
 type MoveAllowed = YesAllowed Moves.Move | NotAllowed Model.Message
