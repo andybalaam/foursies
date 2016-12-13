@@ -11047,7 +11047,7 @@ var _andybalaam$foursies$View$boardMessage = function (model) {
 			return {
 				ctor: '::',
 				_0: _elm_lang$html$Html$text(
-					A2(_elm_lang$core$Basics_ops['++'], 'Drag the pieces to move. ', 'Ticks tell you what you can move.')),
+					A2(_elm_lang$core$Basics_ops['++'], 'Tap or drag the pieces.', ' Green ticks show what you can do.')),
 				_1: {ctor: '[]'}
 			};
 		} else {
