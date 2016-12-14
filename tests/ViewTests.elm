@@ -171,7 +171,7 @@ rtsHtml =
             ]
         , Html.div
             [ Html.Attributes.style
-                [ ("width", "360px")
+                [ ("width", "320px")
                 , ("margin", "1em auto")
                 ]
             ]
@@ -192,11 +192,11 @@ rtsHtml =
                     []
                 ]
             , svg
-                [ width "360"
-                , height "360"
+                [ width "320"
+                , height "320"
                 ]
                 [ g
-                    [ transform "scale(1.8,1.8)" ]
+                    [ transform "scale(1.6,1.6)" ]
                     [ image
                         [ xlinkHref "images/board.svg"
                         , x "0"
@@ -703,10 +703,10 @@ startDraggingPieceOffset =
 pieceMovedHtml : List (Html.Html Msg.Msg)
 pieceMovedHtml =
     [ circle
-        [ cx "41.155100596501875", cy "34.72040238600748", r "10", fill "black"
+        [ cx "41.78698817106461", cy "37.24795268425842", r "10", fill "black"
         , opacity "0.6", filterAtt "url(#blur)" ] []
     , image
-        [ x "28.755100596501872", y "22.320402386007483"
+        [ x "29.38698817106461", y "24.84795268425842"
         , height "20", width "20"
         , xlinkHref "images/piece-black.svg"
         , onMouseDown <| Msg.DragStart 1 0

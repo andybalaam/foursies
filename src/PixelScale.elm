@@ -19,7 +19,7 @@ boardWidth model =
     let
         minD = Basics.min model.screen.width model.screen.height
     in
-        round <| (toFloat minD) * 0.9
+        round <| (toFloat minD) * 0.8
 
 
 -- Given a mouse start and mouse end return number of grid squares` we have
