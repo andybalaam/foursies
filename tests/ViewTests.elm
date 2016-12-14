@@ -343,6 +343,107 @@ rtsHtml =
                         []
                     ]
             ]
+        , Html.div
+            [ Html.Attributes.style
+                [ ( "width", "23em" )
+                , ( "margin", "auto" )
+                ]
+            ]
+            [ Html.h2 [] [ Html.text "How to play" ]
+            , Html.div
+                [ Html.Attributes.class "instr" ]
+                [ Html.img
+                    [ Html.Attributes.class "imgleft"
+                    , Html.Attributes.src "images/win.svg"
+                    ]
+                    []
+                , Html.div
+                    [ Html.Attributes.class "paright"
+                    , Html.Attributes.style [ ( "padding-top", "0.6em" ) ]
+                    ]
+                    [ Html.text
+                        ("To win, get a piece to the other side of the "
+                        ++ "board (or capture all your opponent's pieces).")
+                    ]
+                ]
+            , Html.div
+                [ Html.Attributes.class "instr" ]
+                [ Html.img
+                    [ Html.Attributes.class "imgright"
+                    , Html.Attributes.src "images/move-dirs.svg"
+                    ]
+                    []
+                , Html.div
+                    [ Html.Attributes.class "parleft"
+                    ]
+                    [ Html.text
+                        ("Pieces can move 1 square in any direction, "
+                        ++ "including diagonally.")
+                    ]
+                ]
+            , Html.div
+                [ Html.Attributes.class "instr" ]
+                [ Html.img
+                    [ Html.Attributes.class "imgleft"
+                    , Html.Attributes.src "images/jump.svg"
+                    ]
+                    []
+                , Html.div
+                    [ Html.Attributes.class "paright"
+                    ]
+                    [ Html.text
+                        ("Pieces can jump over other pieces of the "
+                        ++ "same colour.")
+                    ]
+                ]
+            , Html.div
+                [ Html.Attributes.class "instr" ]
+                [ Html.img
+                    [ Html.Attributes.class "imgright"
+                    , Html.Attributes.src "images/capture.svg"
+                    ]
+                    []
+                , Html.div
+                    [ Html.Attributes.class "parleft"
+                    ]
+                    [ Html.text
+                        "Jumping over the opponent's piece captures it."
+                    ]
+                ]
+            , Html.div
+                [ Html.Attributes.class "instr" ]
+                [ Html.div
+                    [ Html.Attributes.style [ ( "padding-top", "0.6em" ) ]
+                    ]
+                    [ Html.text "If you can capture something, you "
+                    , Html.strong [] [ Html.text "must" ]
+                    , Html.text " capture something."
+                    ]
+                ]
+            ]
+        , Html.address
+            []
+            [ Html.text
+                ("This game is Free Software, licensed under the GPLv3"
+                ++ " licence. You can find the source code at ")
+            , Html.a
+                [ Html.Attributes.href
+                    "https://github.com/andybalaam/foursies"
+                ]
+                [ Html.text "https://github.com/andybalaam/foursies"
+                ]
+            , Html.text ". The wood board image is based on "
+            , Html.a
+                [ Html.Attributes.href
+                    ("https://openclipart.org/detail/226774/"
+                    ++"grain-woody-texture-seamless-pattern-02")
+                ]
+                [ Html.text
+                    ("https://openclipart.org/detail/226774/"
+                    ++ "grain-woody-texture-seamless-pattern-02")
+                ]
+                , Html.text " by yamachem"
+            ]
         ]
 
 
