@@ -81,12 +81,20 @@ updateTryMove : Model.Model -> MoveAllowed -> Model.Model
 updateTryMove model moveA =
     case moveA of
         YesAllowed move ->
-            { model
-            | dragging = Nothing
-            , message = Model.MessageNormal
-            , board = Moves.movePiece model.board move
-            , turn = Model.oppositeSide model.turn
-            }
+            let
+                newBoard = Moves.movePiece model.board move
+                won = Moves.whoWon newBoard
+            in
+                { model
+                | dragging = Nothing
+                , message =
+                    case won of
+                        Board.XPiece -> Model.MessageWon Model.XSide
+                        Board.OPiece -> Model.MessageWon Model.OSide
+                        default -> Model.MessageNormal
+                , board = newBoard
+                , turn = Model.oppositeSide model.turn
+                }
         NotAllowed message ->
             { model
             | dragging = Nothing

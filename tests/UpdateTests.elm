@@ -8,6 +8,7 @@ import Expect
 import Mouse
 
 
+import Board
 import Model
 import Moves
 import Msg
@@ -34,6 +35,8 @@ all =
         , test "Drag to make a valid move" dragToMakeAValidMove
         , test "dragMoveAllowed picks right move" dragMoveAllowedPicksRightMove
         , test "Reset sets the board back" resetSetsTheBoardBack
+        , test "If you win (via touch) win message" winningTouchUpdatesMessage
+        , test "If you win (via drag) win message" winningDragUpdatesMessage
         ]
 
 
@@ -294,18 +297,45 @@ resetSetsTheBoardBack =
                 )
 
 
-winningMoveUpdatesMessage : () -> Expect.Expectation
-winningMoveUpdatesMessage =
+winningTouchUpdatesMessage : () -> Expect.Expectation
+winningTouchUpdatesMessage =
     let
         model =
             { basicModel
-            | dragging = Just <| Model.TouchedState 0 1
+            | dragging = Just <| Model.TouchedState 1 1
+            , board = Board.newBoard
+                Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+                Board.noPiece Board.oPiece  Board.noPiece Board.noPiece
+                Board.noPiece Board.noPiece Board.noPiece Board.xPiece
+                Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+            , turn = Model.OSide
             }
     in
         \() ->
             Expect.equal
                 (Model.MessageWon Model.OSide)
-                (messageOf <| update (Msg.Touched 0 0) model)
+                (messageOf <| update (Msg.Touched 1 0) model)
+
+
+winningDragUpdatesMessage : () -> Expect.Expectation
+winningDragUpdatesMessage =
+    let
+        model =
+            { basicModel
+            | dragging = Just <| Model.DragState 3 2 (Mouse.Position 10 10)
+            , mousePos = Mouse.Position 10 30
+            , board = Board.newBoard
+                Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+                Board.noPiece Board.oPiece  Board.noPiece Board.noPiece
+                Board.noPiece Board.noPiece Board.noPiece Board.xPiece
+                Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+            , turn = Model.XSide
+            }
+    in
+        \() ->
+            Expect.equal
+                (Model.MessageWon Model.XSide)
+                (messageOf <| update Msg.DragStop model)
 
 --
 

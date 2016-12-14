@@ -137,7 +137,7 @@ boardMessage model =
         Model.MessageMoveNotAllowed ->
             [ Html.text <|
                 "You are not allowed to move to there."
-                ++ "Drop the piece where there is a tick."
+                ++ " Drop the piece where there is a tick."
             ] ++ (toPlay model)
         Model.MessageWon side ->
             [ Html.img

@@ -10,6 +10,7 @@ module Moves exposing
     , slide
     , take
     , whichCanMove
+    , whoWon
     )
 
 
