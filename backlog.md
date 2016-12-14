@@ -12,20 +12,7 @@
 - ~~UI for winning a game~~
 - ~~Restart button~~
 - ~~Messages~~
-
-- Detailed instructions on how to play, and refer to them from above
-
-- Display piece being dragged above others
-- Soften shadow of dragged piece
-- Move dragged shadow down-right
-
-- Mouse pointer changes when over draggable piece
-
-- Final size and UI adjustments
-- "x" to say you can cancel a move by tapping
-
-- Fix bug where tests don't check the co-ords of Msg.Touched even though
-  we specify it.
+- ~~Detailed instructions on how to play, and refer to them from above~~
 
 ## Release 0.1
 
@@ -35,6 +22,13 @@
 
 ## Release Christmas 2016
 
+- Display piece being dragged above others
+- Soften shadow of dragged piece
+- Move dragged shadow down-right
+- Mouse pointer changes when over draggable piece
+- "x" to say you can cancel a move by tapping
+- Fix bug where tests don't check the co-ords of Msg.Touched even though
+  we specify it.
 - Undo and redo
 - Click to move on PC
 - Unify Model.Side and Board.Piece in some way
