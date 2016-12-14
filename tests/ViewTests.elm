@@ -179,19 +179,8 @@ rtsHtml =
             [ Html.div
                 [ Html.Attributes.id "msg" ]
                 [ Html.text <|
-                    "Tap or drag the pieces."
-                    ++ " Green ticks show what you can do."
-                , Html.text " To play:"
-                , Html.img
-                    [ Html.Attributes.style
-                        [ ("height", "1.2em")
-                        , ("vertical-align", "middle")
-                        , ("margin-left", "0.2em")
-                        ]
-                    , Html.Attributes.src "images/piece-black.svg"
-                    ]
-                    []
-                , Html.text " Full instructions below."
+                    "Scroll down for rules. Tap or drag the pieces."
+                    ++ " Ticks show what you can do."
                 ]
             , svg
                 [ width "320"

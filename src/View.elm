@@ -110,36 +110,20 @@ choosePlayersDiv model =
         ]
 
 
-toPlay : Model.Model -> List (Html.Html Msg.Msg)
-toPlay model =
-    [ Html.text " To play:"
-    , Html.img
-        [ Html.Attributes.style
-            [ ("height", "1.2em")
-            , ("vertical-align", "middle")
-            , ("margin-left", "0.2em")
-            ]
-        , Html.Attributes.src
-            <| playerImage <| Model.sidePlayer model model.turn
-        ]
-        []
-    ]
-
-
 boardMessage : Model.Model -> List (Html.Html Msg.Msg)
 boardMessage model =
     case model.message of
         Model.MessageNormal ->
             [ Html.text <|
-                "Tap or drag the pieces."
-                ++ " Green ticks show what you can do."
-            ] ++ (toPlay model) ++ [ Html.text " Full instructions below." ]
+                "Scroll down for rules. Tap or drag the pieces."
+                ++ " Ticks show what you can do."
+            ]
 
         Model.MessageMoveNotAllowed ->
             [ Html.text <|
                 "You are not allowed to move to there."
                 ++ " Drop the piece where there is a tick."
-            ] ++ (toPlay model)
+            ]
 
         Model.MessageWon side ->
             [ Html.img
