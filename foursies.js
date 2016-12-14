@@ -11383,73 +11383,23 @@ var _andybalaam$foursies$View$choosePlayersDiv = function (model) {
 			}
 		});
 };
-var _andybalaam$foursies$View$toPlay = function (model) {
-	return {
-		ctor: '::',
-		_0: _elm_lang$html$Html$text(' To play:'),
-		_1: {
-			ctor: '::',
-			_0: A2(
-				_elm_lang$html$Html$img,
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html_Attributes$style(
-						{
-							ctor: '::',
-							_0: {ctor: '_Tuple2', _0: 'height', _1: '1.2em'},
-							_1: {
-								ctor: '::',
-								_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'middle'},
-								_1: {
-									ctor: '::',
-									_0: {ctor: '_Tuple2', _0: 'margin-left', _1: '0.2em'},
-									_1: {ctor: '[]'}
-								}
-							}
-						}),
-					_1: {
-						ctor: '::',
-						_0: _elm_lang$html$Html_Attributes$src(
-							_andybalaam$foursies$View$playerImage(
-								A2(_andybalaam$foursies$Model$sidePlayer, model, model.turn))),
-						_1: {ctor: '[]'}
-					}
-				},
-				{ctor: '[]'}),
-			_1: {ctor: '[]'}
-		}
-	};
-};
 var _andybalaam$foursies$View$boardMessage = function (model) {
 	var _p5 = model.message;
 	switch (_p5.ctor) {
 		case 'MessageNormal':
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text(
-						A2(_elm_lang$core$Basics_ops['++'], 'Tap or drag the pieces.', ' Green ticks show what you can do.')),
-					_1: {ctor: '[]'}
-				},
-				A2(
-					_elm_lang$core$Basics_ops['++'],
-					_andybalaam$foursies$View$toPlay(model),
-					{
-						ctor: '::',
-						_0: _elm_lang$html$Html$text(' Full instructions below.'),
-						_1: {ctor: '[]'}
-					}));
+			return {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(
+					A2(_elm_lang$core$Basics_ops['++'], 'Scroll down for rules. Tap or drag the pieces.', ' Ticks show what you can do.')),
+				_1: {ctor: '[]'}
+			};
 		case 'MessageMoveNotAllowed':
-			return A2(
-				_elm_lang$core$Basics_ops['++'],
-				{
-					ctor: '::',
-					_0: _elm_lang$html$Html$text(
-						A2(_elm_lang$core$Basics_ops['++'], 'You are not allowed to move to there.', ' Drop the piece where there is a tick.')),
-					_1: {ctor: '[]'}
-				},
-				_andybalaam$foursies$View$toPlay(model));
+			return {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text(
+					A2(_elm_lang$core$Basics_ops['++'], 'You are not allowed to move to there.', ' Drop the piece where there is a tick.')),
+				_1: {ctor: '[]'}
+			};
 		case 'MessageWon':
 			return {
 				ctor: '::',
