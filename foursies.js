@@ -9079,6 +9079,9 @@ var _andybalaam$foursies$Model$allPlayers = {
 		}
 	}
 };
+var _andybalaam$foursies$Model$MessageWon = function (a) {
+	return {ctor: 'MessageWon', _0: a};
+};
 var _andybalaam$foursies$Model$MessageMoveNotAllowed = {ctor: 'MessageMoveNotAllowed'};
 var _andybalaam$foursies$Model$MessageNormal = {ctor: 'MessageNormal'};
 var _andybalaam$foursies$Model$newModel = function (flags) {
@@ -11118,28 +11121,65 @@ var _andybalaam$foursies$View$toPlay = function (model) {
 	};
 };
 var _andybalaam$foursies$View$boardMessage = function (model) {
-	var mainMsg = function () {
-		var _p5 = model.message;
-		if (_p5.ctor === 'MessageNormal') {
+	var _p5 = model.message;
+	switch (_p5.ctor) {
+		case 'MessageNormal':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						A2(_elm_lang$core$Basics_ops['++'], 'Tap or drag the pieces.', ' Green ticks show what you can do.')),
+					_1: {ctor: '[]'}
+				},
+				_andybalaam$foursies$View$toPlay(model));
+		case 'MessageMoveNotAllowed':
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(
+						A2(_elm_lang$core$Basics_ops['++'], 'You are not allowed to move to there.', 'Drop the piece where there is a tick.')),
+					_1: {ctor: '[]'}
+				},
+				_andybalaam$foursies$View$toPlay(model));
+		default:
 			return {
 				ctor: '::',
-				_0: _elm_lang$html$Html$text(
-					A2(_elm_lang$core$Basics_ops['++'], 'Tap or drag the pieces.', ' Green ticks show what you can do.')),
-				_1: {ctor: '[]'}
+				_0: A2(
+					_elm_lang$html$Html$img,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$style(
+							{
+								ctor: '::',
+								_0: {ctor: '_Tuple2', _0: 'height', _1: '1.2em'},
+								_1: {
+									ctor: '::',
+									_0: {ctor: '_Tuple2', _0: 'vertical-align', _1: 'middle'},
+									_1: {
+										ctor: '::',
+										_0: {ctor: '_Tuple2', _0: 'margin-left', _1: '0.2em'},
+										_1: {ctor: '[]'}
+									}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$src(
+								_andybalaam$foursies$View$playerImage(
+									A2(_andybalaam$foursies$Model$sidePlayer, model, _p5._0))),
+							_1: {ctor: '[]'}
+						}
+					},
+					{ctor: '[]'}),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$html$Html$text(' won!  Choose \"Start again\".'),
+					_1: {ctor: '[]'}
+				}
 			};
-		} else {
-			return {
-				ctor: '::',
-				_0: _elm_lang$html$Html$text(
-					A2(_elm_lang$core$Basics_ops['++'], 'You are not allowed to move to there.', 'Drop the piece where there is a tick.')),
-				_1: {ctor: '[]'}
-			};
-		}
-	}();
-	return A2(
-		_elm_lang$core$Basics_ops['++'],
-		mainMsg,
-		_andybalaam$foursies$View$toPlay(model));
+	}
 };
 var _andybalaam$foursies$View$actualWonMessage = F2(
 	function (model, wonSide) {
@@ -11891,12 +11931,9 @@ var _andybalaam$foursies$Update$update = F2(
 				case 'Touched':
 					return A3(_andybalaam$foursies$Update$updateTouched, _p6._0, _p6._1, model);
 				default:
-					return A2(
-						_elm_lang$core$Debug$log,
-						'ut',
-						_elm_lang$core$Native_Utils.update(
-							model,
-							{dragging: _elm_lang$core$Maybe$Nothing}));
+					return _elm_lang$core$Native_Utils.update(
+						model,
+						{dragging: _elm_lang$core$Maybe$Nothing});
 			}
 		}();
 		return {ctor: '_Tuple2', _0: m, _1: _elm_lang$core$Platform_Cmd$none};
