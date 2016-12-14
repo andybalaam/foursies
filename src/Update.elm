@@ -77,13 +77,28 @@ updateDragStop model =
         default -> model -- Ignore if we were not dragging
 
 
+containsTake : List Moves.Move -> Bool
+containsTake moves =
+    not <|
+        List.isEmpty <|
+            List.filter
+                (\move ->
+                    case move of
+                        Moves.Take _ _ _ -> True
+                        default -> False
+                )
+                moves
+
+
 updateTryMove : Model.Model -> MoveAllowed -> Model.Model
 updateTryMove model moveA =
     case moveA of
         YesAllowed move ->
             let
                 newBoard = Moves.movePiece model.board move
+                newTurn = Model.oppositeSide model.turn
                 won = Moves.whoWon newBoard
+                allowed = Moves.allowedMoves (Model.sidePiece newTurn) newBoard
             in
                 { model
                 | dragging = Nothing
@@ -91,9 +106,13 @@ updateTryMove model moveA =
                     case won of
                         Board.XPiece -> Model.MessageWon Model.XSide
                         Board.OPiece -> Model.MessageWon Model.OSide
-                        default -> Model.MessageNormal
+                        default ->
+                            if containsTake allowed then
+                                Model.MessageMustTake
+                            else
+                                Model.MessageNormal
                 , board = newBoard
-                , turn = Model.oppositeSide model.turn
+                , turn = newTurn
                 }
         NotAllowed message ->
             { model

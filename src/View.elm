@@ -140,6 +140,7 @@ boardMessage model =
                 "You are not allowed to move to there."
                 ++ " Drop the piece where there is a tick."
             ] ++ (toPlay model)
+
         Model.MessageWon side ->
             [ Html.img
                 [ Html.Attributes.style
@@ -153,6 +154,9 @@ boardMessage model =
                 []
             , Html.text " won!  Choose \"Start again\" below."
             ]
+
+        Model.MessageMustTake ->
+            [ Html.text "You must take!" ]
 
 
 boardLine : String -> String -> String -> String -> Html.Html Msg.Msg

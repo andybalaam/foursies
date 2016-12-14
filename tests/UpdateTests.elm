@@ -37,6 +37,7 @@ all =
         , test "Reset sets the board back" resetSetsTheBoardBack
         , test "If you win (via touch) win message" winningTouchUpdatesMessage
         , test "If you win (via drag) win message" winningDragUpdatesMessage
+        , test "Must take message" mustTakeMessage
         ]
 
 
@@ -336,6 +337,27 @@ winningDragUpdatesMessage =
             Expect.equal
                 (Model.MessageWon Model.XSide)
                 (messageOf <| update Msg.DragStop model)
+
+
+mustTakeMessage : () -> Expect.Expectation
+mustTakeMessage =
+    let
+        model =
+            { basicModel
+            | dragging = Just <| Model.TouchedState 3 2
+            , board = Board.newBoard
+                Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+                Board.noPiece Board.oPiece  Board.noPiece Board.noPiece
+                Board.noPiece Board.noPiece Board.noPiece Board.xPiece
+                Board.noPiece Board.noPiece Board.noPiece Board.noPiece
+            , turn = Model.XSide
+            }
+    in
+        \() ->
+            Expect.equal
+                Model.MessageMustTake
+                (messageOf <| update (Msg.Touched 2 2) model)
+
 
 --
 

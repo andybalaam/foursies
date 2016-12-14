@@ -9,16 +9,9 @@
 - ~~UI for dragging pieces to move~~
 - ~~Making a move modifies the board~~
 - ~~Tap to move on mobile~~
-
 - ~~UI for winning a game~~
 - ~~Restart button~~
-- Messages
-    - ~~At the very start of the game?~~
-    - ~~When you win~~
-    - When you can't move because it's not your go
-    - When you can't do that move because you must take
-    - When you can't do that move for normal reasons
-    - When the moves are limited because you must take
+- ~~Messages~~
 
 - Detailed instructions on how to play, and refer to them from above
 
@@ -47,5 +40,8 @@
 - Unify Model.Side and Board.Piece in some way
 - Abstract all distances into PixelScale
 - Improve vocabulary around boardScale, gridScale, piecesScale
+- Messages
+    - When you can't move because it's not your go
+    - When you can't do that move because you must take
 
 ## Later releases

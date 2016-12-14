@@ -33,6 +33,7 @@ all =
         , test "Overlay is displayed when you win" overlayDisplayedWhenWin
         , test "Overlay is displayed when all captured" overlayWhenAllCaptured
         , test "Winning message is formatted" winningMessage
+        , test "Must take message is formatted" mustTakeMessage
         ]
 
 
@@ -1032,4 +1033,19 @@ winningMessage =
                     []
                 , Html.text " won!  Choose \"Start again\" below."
                 ]
+                (View.boardMessage model)
+
+
+mustTakeMessage : () -> Expect.Expectation
+mustTakeMessage =
+    let
+        model_ = Model.newModel {height=400, width=400}
+        model =
+            { model_
+            | message = Model.MessageMustTake
+            }
+    in
+        \() ->
+            Expect.equal
+                [ Html.text "You must take!" ]
                 (View.boardMessage model)

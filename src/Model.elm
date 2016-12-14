@@ -79,6 +79,7 @@ type Message =
     MessageNormal
     | MessageMoveNotAllowed
     | MessageWon Side
+    | MessageMustTake
 
 
 type Drag =
