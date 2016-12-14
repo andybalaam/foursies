@@ -11132,7 +11132,14 @@ var _andybalaam$foursies$View$boardMessage = function (model) {
 						A2(_elm_lang$core$Basics_ops['++'], 'Tap or drag the pieces.', ' Green ticks show what you can do.')),
 					_1: {ctor: '[]'}
 				},
-				_andybalaam$foursies$View$toPlay(model));
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					_andybalaam$foursies$View$toPlay(model),
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(' Full instructions below.'),
+						_1: {ctor: '[]'}
+					}));
 		case 'MessageMoveNotAllowed':
 			return A2(
 				_elm_lang$core$Basics_ops['++'],
