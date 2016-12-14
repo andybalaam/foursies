@@ -10096,6 +10096,8 @@ var _elm_lang$core$Set$partition = F2(
 var _andybalaam$foursies$Moves$whoWon = function (board) {
 	var _p0 = board.pieces;
 	var rt = _p0._0;
+	var rm = _p0._1;
+	var rn = _p0._2;
 	var rb = _p0._3;
 	var _p1 = rt;
 	var t0 = _p1._0;
@@ -10107,6 +10109,81 @@ var _andybalaam$foursies$Moves$whoWon = function (board) {
 	var b1 = _p2._1;
 	var b2 = _p2._2;
 	var b3 = _p2._3;
+	var _p3 = rm;
+	var m0 = _p3._0;
+	var m1 = _p3._1;
+	var m2 = _p3._2;
+	var m3 = _p3._3;
+	var _p4 = rn;
+	var n0 = _p4._0;
+	var n1 = _p4._1;
+	var n2 = _p4._2;
+	var n3 = _p4._3;
+	var all = {
+		ctor: '::',
+		_0: t0,
+		_1: {
+			ctor: '::',
+			_0: t1,
+			_1: {
+				ctor: '::',
+				_0: t2,
+				_1: {
+					ctor: '::',
+					_0: t3,
+					_1: {
+						ctor: '::',
+						_0: m0,
+						_1: {
+							ctor: '::',
+							_0: m1,
+							_1: {
+								ctor: '::',
+								_0: m2,
+								_1: {
+									ctor: '::',
+									_0: m3,
+									_1: {
+										ctor: '::',
+										_0: n0,
+										_1: {
+											ctor: '::',
+											_0: n1,
+											_1: {
+												ctor: '::',
+												_0: n2,
+												_1: {
+													ctor: '::',
+													_0: n3,
+													_1: {
+														ctor: '::',
+														_0: b0,
+														_1: {
+															ctor: '::',
+															_0: b1,
+															_1: {
+																ctor: '::',
+																_0: b2,
+																_1: {
+																	ctor: '::',
+																	_0: b3,
+																	_1: {ctor: '[]'}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	};
 	return A2(
 		_elm_lang$core$List$member,
 		_andybalaam$foursies$Board$oPiece,
@@ -10145,18 +10222,18 @@ var _andybalaam$foursies$Moves$whoWon = function (board) {
 					}
 				}
 			}
-		}) ? _andybalaam$foursies$Board$xPiece : _andybalaam$foursies$Board$noPiece);
+		}) ? _andybalaam$foursies$Board$xPiece : ((!A2(_elm_lang$core$List$member, _andybalaam$foursies$Board$xPiece, all)) ? _andybalaam$foursies$Board$oPiece : ((!A2(_elm_lang$core$List$member, _andybalaam$foursies$Board$oPiece, all)) ? _andybalaam$foursies$Board$xPiece : _andybalaam$foursies$Board$noPiece)));
 };
-var _andybalaam$foursies$Moves$unique = function (_p3) {
+var _andybalaam$foursies$Moves$unique = function (_p5) {
 	return _elm_lang$core$Set$toList(
-		_elm_lang$core$Set$fromList(_p3));
+		_elm_lang$core$Set$fromList(_p5));
 };
 var _andybalaam$foursies$Moves$anyTakesMeansOnlyTakes = function (moves) {
 	var onlyTakes = A2(
 		_elm_lang$core$List$filter,
 		function (move) {
-			var _p4 = move;
-			if (_p4.ctor === 'Take') {
+			var _p6 = move;
+			if (_p6.ctor === 'Take') {
 				return true;
 			} else {
 				return false;
@@ -10166,79 +10243,79 @@ var _andybalaam$foursies$Moves$anyTakesMeansOnlyTakes = function (moves) {
 	return _elm_lang$core$List$isEmpty(onlyTakes) ? moves : onlyTakes;
 };
 var _andybalaam$foursies$Moves$opposite = function (side) {
-	var _p5 = side;
-	switch (_p5.ctor) {
+	var _p7 = side;
+	switch (_p7.ctor) {
 		case 'XPiece':
 			return _andybalaam$foursies$Board$oPiece;
 		case 'OPiece':
 			return _andybalaam$foursies$Board$xPiece;
 		default:
-			return _p5;
+			return _p7;
 	}
 };
 var _andybalaam$foursies$Moves$allowedMove = F3(
 	function (side, board, move) {
-		var _p6 = move;
-		switch (_p6.ctor) {
+		var _p8 = move;
+		switch (_p8.ctor) {
 			case 'Slide':
 				return _elm_lang$core$Native_Utils.eq(
-					A2(_andybalaam$foursies$Board$pieceAt, _p6._1, board),
+					A2(_andybalaam$foursies$Board$pieceAt, _p8._1, board),
 					_andybalaam$foursies$Board$noPiece);
 			case 'Hop':
 				return _elm_lang$core$Native_Utils.eq(
-					A2(_andybalaam$foursies$Board$pieceAt, _p6._2, board),
+					A2(_andybalaam$foursies$Board$pieceAt, _p8._2, board),
 					_andybalaam$foursies$Board$noPiece) && _elm_lang$core$Native_Utils.eq(
-					A2(_andybalaam$foursies$Board$pieceAt, _p6._1, board),
+					A2(_andybalaam$foursies$Board$pieceAt, _p8._1, board),
 					side);
 			default:
 				return _elm_lang$core$Native_Utils.eq(
-					A2(_andybalaam$foursies$Board$pieceAt, _p6._2, board),
+					A2(_andybalaam$foursies$Board$pieceAt, _p8._2, board),
 					_andybalaam$foursies$Board$noPiece) && _elm_lang$core$Native_Utils.eq(
-					A2(_andybalaam$foursies$Board$pieceAt, _p6._1, board),
+					A2(_andybalaam$foursies$Board$pieceAt, _p8._1, board),
 					_andybalaam$foursies$Moves$opposite(side));
 		}
 	});
 var _andybalaam$foursies$Moves$taken = function (move) {
-	var _p7 = move;
-	if (_p7.ctor === 'Take') {
-		return _elm_lang$core$Maybe$Just(_p7._1);
+	var _p9 = move;
+	if (_p9.ctor === 'Take') {
+		return _elm_lang$core$Maybe$Just(_p9._1);
 	} else {
 		return _elm_lang$core$Maybe$Nothing;
 	}
 };
 var _andybalaam$foursies$Moves$to = function (move) {
-	var _p8 = move;
-	switch (_p8.ctor) {
+	var _p10 = move;
+	switch (_p10.ctor) {
 		case 'Slide':
-			return _p8._1;
+			return _p10._1;
 		case 'Hop':
-			return _p8._2;
+			return _p10._2;
 		default:
-			return _p8._2;
+			return _p10._2;
 	}
 };
 var _andybalaam$foursies$Moves$from = function (move) {
-	var _p9 = move;
-	switch (_p9.ctor) {
+	var _p11 = move;
+	switch (_p11.ctor) {
 		case 'Slide':
-			return _p9._0;
+			return _p11._0;
 		case 'Hop':
-			return _p9._0;
+			return _p11._0;
 		default:
-			return _p9._0;
+			return _p11._0;
 	}
 };
 var _andybalaam$foursies$Moves$adjust = F2(
-	function (_p11, _p10) {
-		var _p12 = _p11;
-		var _p13 = _p10;
-		return {ctor: '_Tuple2', _0: _p12._0 + _p13._0, _1: _p12._1 + _p13._1};
+	function (_p13, _p12) {
+		var _p14 = _p13;
+		var _p15 = _p12;
+		return {ctor: '_Tuple2', _0: _p14._0 + _p15._0, _1: _p14._1 + _p15._1};
 	});
 var _andybalaam$foursies$Moves$takenEquals = F2(
 	function (move, pos) {
-		var _p14 = _andybalaam$foursies$Moves$taken(move);
-		if (_p14.ctor === 'Just') {
-			return _elm_lang$core$Native_Utils.eq(_p14._0, pos);
+		var _p16 = _andybalaam$foursies$Moves$taken(move);
+		if (_p16.ctor === 'Just') {
+			return _elm_lang$core$Native_Utils.eq(_p16._0, pos);
 		} else {
 			return false;
 		}
@@ -10255,45 +10332,45 @@ var _andybalaam$foursies$Moves$movePiecePiece = F4(
 			board) : (A2(_andybalaam$foursies$Moves$takenEquals, move, pos) ? _andybalaam$foursies$Board$noPiece : piece));
 	});
 var _andybalaam$foursies$Moves$movePieceRow = F4(
-	function (board, ypos, _p15, move) {
-		var _p16 = _p15;
+	function (board, ypos, _p17, move) {
+		var _p18 = _p17;
 		return {
 			ctor: '_Tuple4',
 			_0: A4(
 				_andybalaam$foursies$Moves$movePiecePiece,
 				board,
 				{ctor: '_Tuple2', _0: 0, _1: ypos},
-				_p16._0,
+				_p18._0,
 				move),
 			_1: A4(
 				_andybalaam$foursies$Moves$movePiecePiece,
 				board,
 				{ctor: '_Tuple2', _0: 1, _1: ypos},
-				_p16._1,
+				_p18._1,
 				move),
 			_2: A4(
 				_andybalaam$foursies$Moves$movePiecePiece,
 				board,
 				{ctor: '_Tuple2', _0: 2, _1: ypos},
-				_p16._2,
+				_p18._2,
 				move),
 			_3: A4(
 				_andybalaam$foursies$Moves$movePiecePiece,
 				board,
 				{ctor: '_Tuple2', _0: 3, _1: ypos},
-				_p16._3,
+				_p18._3,
 				move)
 		};
 	});
 var _andybalaam$foursies$Moves$movePieceRows = F3(
-	function (board, _p17, move) {
-		var _p18 = _p17;
+	function (board, _p19, move) {
+		var _p20 = _p19;
 		return {
 			ctor: '_Tuple4',
-			_0: A4(_andybalaam$foursies$Moves$movePieceRow, board, 0, _p18._0, move),
-			_1: A4(_andybalaam$foursies$Moves$movePieceRow, board, 1, _p18._1, move),
-			_2: A4(_andybalaam$foursies$Moves$movePieceRow, board, 2, _p18._2, move),
-			_3: A4(_andybalaam$foursies$Moves$movePieceRow, board, 3, _p18._3, move)
+			_0: A4(_andybalaam$foursies$Moves$movePieceRow, board, 0, _p20._0, move),
+			_1: A4(_andybalaam$foursies$Moves$movePieceRow, board, 1, _p20._1, move),
+			_2: A4(_andybalaam$foursies$Moves$movePieceRow, board, 2, _p20._2, move),
+			_3: A4(_andybalaam$foursies$Moves$movePieceRow, board, 3, _p20._3, move)
 		};
 	});
 var _andybalaam$foursies$Moves$movePiece = F2(
@@ -10639,8 +10716,8 @@ var _andybalaam$foursies$Moves$movesForPos = F3(
 	});
 var _andybalaam$foursies$Moves$allowedMoves = F2(
 	function (side, board) {
-		var _p19 = _andybalaam$foursies$Moves$whoWon(board);
-		switch (_p19.ctor) {
+		var _p21 = _andybalaam$foursies$Moves$whoWon(board);
+		switch (_p21.ctor) {
 			case 'XPiece':
 				return {ctor: '[]'};
 			case 'OPiece':
@@ -10663,18 +10740,18 @@ var _andybalaam$foursies$Moves$allowedMoves = F2(
 		}
 	});
 var _andybalaam$foursies$Moves$allowedEnds = F3(
-	function (side, board, _p20) {
-		var _p21 = _p20;
+	function (side, board, _p22) {
+		var _p23 = _p22;
 		return A2(
 			_elm_lang$core$List$map,
 			_andybalaam$foursies$Moves$to,
 			A2(
 				_elm_lang$core$List$filter,
 				function (move) {
-					var _p22 = _andybalaam$foursies$Moves$from(move);
-					var x = _p22._0;
-					var y = _p22._1;
-					return _elm_lang$core$Native_Utils.eq(x, _p21._0) && _elm_lang$core$Native_Utils.eq(y, _p21._1);
+					var _p24 = _andybalaam$foursies$Moves$from(move);
+					var x = _p24._0;
+					var y = _p24._1;
+					return _elm_lang$core$Native_Utils.eq(x, _p23._0) && _elm_lang$core$Native_Utils.eq(y, _p23._1);
 				},
 				A2(_andybalaam$foursies$Moves$allowedMoves, side, board)));
 	});
@@ -10686,8 +10763,8 @@ var _andybalaam$foursies$Moves$CanMovePositions = function (a) {
 };
 var _andybalaam$foursies$Moves$whichCanMove = F2(
 	function (side, board) {
-		var _p23 = _andybalaam$foursies$Moves$whoWon(board);
-		switch (_p23.ctor) {
+		var _p25 = _andybalaam$foursies$Moves$whoWon(board);
+		switch (_p25.ctor) {
 			case 'XPiece':
 				return _andybalaam$foursies$Moves$Won(_andybalaam$foursies$Board$xPiece);
 			case 'OPiece':
