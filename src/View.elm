@@ -133,7 +133,8 @@ boardMessage model =
             [ Html.text <|
                 "Tap or drag the pieces."
                 ++ " Green ticks show what you can do."
-            ] ++ (toPlay model)
+            ] ++ (toPlay model) ++ [ Html.text " Full instructions below." ]
+
         Model.MessageMoveNotAllowed ->
             [ Html.text <|
                 "You are not allowed to move to there."

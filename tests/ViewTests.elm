@@ -190,6 +190,7 @@ rtsHtml =
                     , Html.Attributes.src "images/piece-black.svg"
                     ]
                     []
+                , Html.text " Full instructions below."
                 ]
             , svg
                 [ width "320"
