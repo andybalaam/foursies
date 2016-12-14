@@ -9079,6 +9079,7 @@ var _andybalaam$foursies$Model$allPlayers = {
 		}
 	}
 };
+var _andybalaam$foursies$Model$MessageMustTake = {ctor: 'MessageMustTake'};
 var _andybalaam$foursies$Model$MessageWon = function (a) {
 	return {ctor: 'MessageWon', _0: a};
 };
@@ -10817,6 +10818,305 @@ var _andybalaam$foursies$PixelScale$boardDistance = F3(
 		return {ctor: '_Tuple2', _0: movedX, _1: movedY};
 	});
 
+var _andybalaam$foursies$View$viewAddress = A2(
+	_elm_lang$html$Html$address,
+	{ctor: '[]'},
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html$text(
+			A2(_elm_lang$core$Basics_ops['++'], 'This game is Free Software, licensed under the GPLv3', ' licence. You can find the source code at ')),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$a,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$href('https://github.com/andybalaam/foursies'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html$text('https://github.com/andybalaam/foursies'),
+					_1: {ctor: '[]'}
+				}),
+			_1: {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('. The wood board image is based on '),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$a,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$href(
+								A2(_elm_lang$core$Basics_ops['++'], 'https://openclipart.org/detail/226774/', 'grain-woody-texture-seamless-pattern-02')),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html$text(
+								A2(_elm_lang$core$Basics_ops['++'], 'https://openclipart.org/detail/226774/', 'grain-woody-texture-seamless-pattern-02')),
+							_1: {ctor: '[]'}
+						}),
+					_1: {
+						ctor: '::',
+						_0: _elm_lang$html$Html$text(' by yamachem'),
+						_1: {ctor: '[]'}
+					}
+				}
+			}
+		}
+	});
+var _andybalaam$foursies$View$howToPlay = A2(
+	_elm_lang$html$Html$div,
+	{
+		ctor: '::',
+		_0: _elm_lang$html$Html_Attributes$style(
+			{
+				ctor: '::',
+				_0: {ctor: '_Tuple2', _0: 'width', _1: '23em'},
+				_1: {
+					ctor: '::',
+					_0: {ctor: '_Tuple2', _0: 'margin', _1: 'auto'},
+					_1: {ctor: '[]'}
+				}
+			}),
+		_1: {ctor: '[]'}
+	},
+	{
+		ctor: '::',
+		_0: A2(
+			_elm_lang$html$Html$h2,
+			{ctor: '[]'},
+			{
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('How to play'),
+				_1: {ctor: '[]'}
+			}),
+		_1: {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$html$Html$div,
+				{
+					ctor: '::',
+					_0: _elm_lang$html$Html_Attributes$class('instr'),
+					_1: {ctor: '[]'}
+				},
+				{
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$img,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('imgleft'),
+							_1: {
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$src('images/win.svg'),
+								_1: {ctor: '[]'}
+							}
+						},
+						{ctor: '[]'}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('paright'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$style(
+										{
+											ctor: '::',
+											_0: {ctor: '_Tuple2', _0: 'padding-top', _1: '0.6em'},
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							},
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html$text(
+									A2(_elm_lang$core$Basics_ops['++'], 'To win, get a piece to the other side of the ', 'board (or capture all your opponent\'s pieces).')),
+								_1: {ctor: '[]'}
+							}),
+						_1: {ctor: '[]'}
+					}
+				}),
+			_1: {
+				ctor: '::',
+				_0: A2(
+					_elm_lang$html$Html$div,
+					{
+						ctor: '::',
+						_0: _elm_lang$html$Html_Attributes$class('instr'),
+						_1: {ctor: '[]'}
+					},
+					{
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$img,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('imgright'),
+								_1: {
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$src('images/move-dirs.svg'),
+									_1: {ctor: '[]'}
+								}
+							},
+							{ctor: '[]'}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('parleft'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html$text(
+										A2(_elm_lang$core$Basics_ops['++'], 'Pieces can move 1 square in any direction, ', 'including diagonally.')),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}),
+				_1: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$html$Html$div,
+						{
+							ctor: '::',
+							_0: _elm_lang$html$Html_Attributes$class('instr'),
+							_1: {ctor: '[]'}
+						},
+						{
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$img,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('imgleft'),
+									_1: {
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$src('images/jump.svg'),
+										_1: {ctor: '[]'}
+									}
+								},
+								{ctor: '[]'}),
+							_1: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$div,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('paright'),
+										_1: {ctor: '[]'}
+									},
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html$text(
+											A2(_elm_lang$core$Basics_ops['++'], 'Pieces can jump over other pieces of the ', 'same colour.')),
+										_1: {ctor: '[]'}
+									}),
+								_1: {ctor: '[]'}
+							}
+						}),
+					_1: {
+						ctor: '::',
+						_0: A2(
+							_elm_lang$html$Html$div,
+							{
+								ctor: '::',
+								_0: _elm_lang$html$Html_Attributes$class('instr'),
+								_1: {ctor: '[]'}
+							},
+							{
+								ctor: '::',
+								_0: A2(
+									_elm_lang$html$Html$img,
+									{
+										ctor: '::',
+										_0: _elm_lang$html$Html_Attributes$class('imgright'),
+										_1: {
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$src('images/capture.svg'),
+											_1: {ctor: '[]'}
+										}
+									},
+									{ctor: '[]'}),
+								_1: {
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$class('parleft'),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('Jumping over the opponent\'s piece captures it.'),
+											_1: {ctor: '[]'}
+										}),
+									_1: {ctor: '[]'}
+								}
+							}),
+						_1: {
+							ctor: '::',
+							_0: A2(
+								_elm_lang$html$Html$div,
+								{
+									ctor: '::',
+									_0: _elm_lang$html$Html_Attributes$class('instr'),
+									_1: {ctor: '[]'}
+								},
+								{
+									ctor: '::',
+									_0: A2(
+										_elm_lang$html$Html$div,
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html_Attributes$style(
+												{
+													ctor: '::',
+													_0: {ctor: '_Tuple2', _0: 'padding-top', _1: '0.6em'},
+													_1: {ctor: '[]'}
+												}),
+											_1: {ctor: '[]'}
+										},
+										{
+											ctor: '::',
+											_0: _elm_lang$html$Html$text('If you can capture something, you '),
+											_1: {
+												ctor: '::',
+												_0: A2(
+													_elm_lang$html$Html$strong,
+													{ctor: '[]'},
+													{
+														ctor: '::',
+														_0: _elm_lang$html$Html$text('must'),
+														_1: {ctor: '[]'}
+													}),
+												_1: {
+													ctor: '::',
+													_0: _elm_lang$html$Html$text(' capture something.'),
+													_1: {ctor: '[]'}
+												}
+											}
+										}),
+									_1: {ctor: '[]'}
+								}),
+							_1: {ctor: '[]'}
+						}
+					}
+				}
+			}
+		}
+	});
 var _andybalaam$foursies$View$tickImage = F3(
 	function (model, xpos, ypos) {
 		var _p0 = model.dragging;
@@ -11150,7 +11450,7 @@ var _andybalaam$foursies$View$boardMessage = function (model) {
 					_1: {ctor: '[]'}
 				},
 				_andybalaam$foursies$View$toPlay(model));
-		default:
+		case 'MessageWon':
 			return {
 				ctor: '::',
 				_0: A2(
@@ -11185,6 +11485,12 @@ var _andybalaam$foursies$View$boardMessage = function (model) {
 					_0: _elm_lang$html$Html$text(' won!  Choose \"Start again\" below.'),
 					_1: {ctor: '[]'}
 				}
+			};
+		default:
+			return {
+				ctor: '::',
+				_0: _elm_lang$html$Html$text('You must take!'),
+				_1: {ctor: '[]'}
 			};
 	}
 };
@@ -11756,7 +12062,15 @@ var _andybalaam$foursies$View$view = function (model) {
 					_1: {
 						ctor: '::',
 						_0: _andybalaam$foursies$View$boardDiv(model),
-						_1: {ctor: '[]'}
+						_1: {
+							ctor: '::',
+							_0: _andybalaam$foursies$View$howToPlay,
+							_1: {
+								ctor: '::',
+								_0: _andybalaam$foursies$View$viewAddress,
+								_1: {ctor: '[]'}
+							}
+						}
 					}
 				}
 			}
@@ -11815,34 +12129,53 @@ var _andybalaam$foursies$Update$updateDragStart = F3(
 					A3(_andybalaam$foursies$Model$DragState, xpos, ypos, model.mousePos))
 			});
 	});
+var _andybalaam$foursies$Update$containsTake = function (moves) {
+	return !_elm_lang$core$List$isEmpty(
+		A2(
+			_elm_lang$core$List$filter,
+			function (move) {
+				var _p1 = move;
+				if (_p1.ctor === 'Take') {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			moves));
+};
 var _andybalaam$foursies$Update$updateTryMove = F2(
 	function (model, moveA) {
-		var _p1 = moveA;
-		if (_p1.ctor === 'YesAllowed') {
-			var newBoard = A2(_andybalaam$foursies$Moves$movePiece, model.board, _p1._0);
+		var _p2 = moveA;
+		if (_p2.ctor === 'YesAllowed') {
+			var newTurn = _andybalaam$foursies$Model$oppositeSide(model.turn);
+			var newBoard = A2(_andybalaam$foursies$Moves$movePiece, model.board, _p2._0);
 			var won = _andybalaam$foursies$Moves$whoWon(newBoard);
+			var allowed = A2(
+				_andybalaam$foursies$Moves$allowedMoves,
+				_andybalaam$foursies$Model$sidePiece(newTurn),
+				newBoard);
 			return _elm_lang$core$Native_Utils.update(
 				model,
 				{
 					dragging: _elm_lang$core$Maybe$Nothing,
 					message: function () {
-						var _p2 = won;
-						switch (_p2.ctor) {
+						var _p3 = won;
+						switch (_p3.ctor) {
 							case 'XPiece':
 								return _andybalaam$foursies$Model$MessageWon(_andybalaam$foursies$Model$XSide);
 							case 'OPiece':
 								return _andybalaam$foursies$Model$MessageWon(_andybalaam$foursies$Model$OSide);
 							default:
-								return _andybalaam$foursies$Model$MessageNormal;
+								return _andybalaam$foursies$Update$containsTake(allowed) ? _andybalaam$foursies$Model$MessageMustTake : _andybalaam$foursies$Model$MessageNormal;
 						}
 					}(),
 					board: newBoard,
-					turn: _andybalaam$foursies$Model$oppositeSide(model.turn)
+					turn: newTurn
 				});
 		} else {
 			return _elm_lang$core$Native_Utils.update(
 				model,
-				{dragging: _elm_lang$core$Maybe$Nothing, message: _p1._0});
+				{dragging: _elm_lang$core$Maybe$Nothing, message: _p2._0});
 		}
 	});
 var _andybalaam$foursies$Update$moveIsFromAndTo = F3(
@@ -11879,40 +12212,40 @@ var _andybalaam$foursies$Update$moveAllowed = F5(
 					_andybalaam$foursies$Moves$allowedMoves,
 					_andybalaam$foursies$Model$sidePiece(model.turn),
 					model.board));
-			var _p3 = _elm_lang$core$List$head(thisMove);
-			if (_p3.ctor === 'Nothing') {
+			var _p4 = _elm_lang$core$List$head(thisMove);
+			if (_p4.ctor === 'Nothing') {
 				return _andybalaam$foursies$Update$NotAllowed(_andybalaam$foursies$Model$MessageMoveNotAllowed);
 			} else {
-				return _andybalaam$foursies$Update$YesAllowed(_p3._0);
+				return _andybalaam$foursies$Update$YesAllowed(_p4._0);
 			}
 		}
 	});
 var _andybalaam$foursies$Update$dragMoveAllowed = F4(
 	function (model, xpos, ypos, startPx) {
-		var _p4 = A3(_andybalaam$foursies$PixelScale$gridDistance, model, startPx, model.mousePos);
-		var moveX = _p4._0;
-		var moveY = _p4._1;
+		var _p5 = A3(_andybalaam$foursies$PixelScale$gridDistance, model, startPx, model.mousePos);
+		var moveX = _p5._0;
+		var moveY = _p5._1;
 		return A5(_andybalaam$foursies$Update$moveAllowed, model, xpos, ypos, xpos + moveX, ypos + moveY);
 	});
 var _andybalaam$foursies$Update$updateDragStop = function (model) {
-	var _p5 = model.dragging;
-	if ((_p5.ctor === 'Just') && (_p5._0.ctor === 'DragState')) {
+	var _p6 = model.dragging;
+	if ((_p6.ctor === 'Just') && (_p6._0.ctor === 'DragState')) {
 		return A2(
 			_andybalaam$foursies$Update$updateTryMove,
 			model,
-			A4(_andybalaam$foursies$Update$dragMoveAllowed, model, _p5._0._0, _p5._0._1, _p5._0._2));
+			A4(_andybalaam$foursies$Update$dragMoveAllowed, model, _p6._0._0, _p6._0._1, _p6._0._2));
 	} else {
 		return model;
 	}
 };
 var _andybalaam$foursies$Update$updateTouched = F3(
 	function (xpos, ypos, model) {
-		var _p6 = model.dragging;
-		if ((_p6.ctor === 'Just') && (_p6._0.ctor === 'TouchedState')) {
+		var _p7 = model.dragging;
+		if ((_p7.ctor === 'Just') && (_p7._0.ctor === 'TouchedState')) {
 			return A2(
 				_andybalaam$foursies$Update$updateTryMove,
 				model,
-				A5(_andybalaam$foursies$Update$moveAllowed, model, _p6._0._0, _p6._0._1, xpos, ypos));
+				A5(_andybalaam$foursies$Update$moveAllowed, model, _p7._0._0, _p7._0._1, xpos, ypos));
 		} else {
 			return _elm_lang$core$Native_Utils.update(
 				model,
@@ -11925,30 +12258,30 @@ var _andybalaam$foursies$Update$updateTouched = F3(
 var _andybalaam$foursies$Update$update = F2(
 	function (msg, model) {
 		var m = function () {
-			var _p7 = msg;
-			switch (_p7.ctor) {
+			var _p8 = msg;
+			switch (_p8.ctor) {
 				case 'Resize':
-					return A3(_andybalaam$foursies$Update$updateResize, _p7._0, _p7._1, model);
+					return A3(_andybalaam$foursies$Update$updateResize, _p8._0, _p8._1, model);
 				case 'ChoosePlayer':
 					return _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							choosingSide: _elm_lang$core$Maybe$Just(_p7._0)
+							choosingSide: _elm_lang$core$Maybe$Just(_p8._0)
 						});
 				case 'ChangePlayer':
-					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p7._0, _p7._1);
+					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p8._0, _p8._1);
 				case 'StartAgain':
 					return _andybalaam$foursies$Update$updateStartAgain(model);
 				case 'MouseMove':
 					return _elm_lang$core$Native_Utils.update(
 						model,
-						{mousePos: _p7._0});
+						{mousePos: _p8._0});
 				case 'DragStart':
-					return A3(_andybalaam$foursies$Update$updateDragStart, _p7._0, _p7._1, model);
+					return A3(_andybalaam$foursies$Update$updateDragStart, _p8._0, _p8._1, model);
 				case 'DragStop':
 					return _andybalaam$foursies$Update$updateDragStop(model);
 				case 'Touched':
-					return A3(_andybalaam$foursies$Update$updateTouched, _p7._0, _p7._1, model);
+					return A3(_andybalaam$foursies$Update$updateTouched, _p8._0, _p8._1, model);
 				default:
 					return _elm_lang$core$Native_Utils.update(
 						model,
