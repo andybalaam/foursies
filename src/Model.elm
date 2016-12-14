@@ -78,6 +78,7 @@ pieceSide piece =
 type Message =
     MessageNormal
     | MessageMoveNotAllowed
+    | MessageWon Side
 
 
 type Drag =

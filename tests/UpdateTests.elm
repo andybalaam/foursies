@@ -292,3 +292,23 @@ resetSetsTheBoardBack =
                     , turn = Model.OSide
                     }
                 )
+
+
+winningMoveUpdatesMessage : () -> Expect.Expectation
+winningMoveUpdatesMessage =
+    let
+        model =
+            { basicModel
+            | dragging = Just <| Model.TouchedState 0 1
+            }
+    in
+        \() ->
+            Expect.equal
+                (Model.MessageWon Model.OSide)
+                (messageOf <| update (Msg.Touched 0 0) model)
+
+--
+
+messageOf : (Model.Model, Cmd.Cmd Msg.Msg) -> Model.Message
+messageOf (model, _) =
+    model.message

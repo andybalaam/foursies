@@ -30,8 +30,9 @@ all =
         , test "Ticks where piece can land" ticksWherePieceCanLand
         , test "Big ticks where piece will land" bigTickWherePieceWillLand
         , test "Can tap to cancel when moving" canTapToCancelWhenMoving
-        , test "Message is displayed when you win" overlayDisplayedWhenWin
-        , test "Message is displayed when all captured" overlayWhenAllCaptured
+        , test "Overlay is displayed when you win" overlayDisplayedWhenWin
+        , test "Overlay is displayed when all captured" overlayWhenAllCaptured
+        , test "Winning message is formatted" winningMessage
         ]
 
 
@@ -1006,3 +1007,28 @@ overlayWhenAllCaptured =
                             [ Svg.text "wins!" ]
                     ]
                     (View.wonOverlay model)
+
+
+winningMessage : () -> Expect.Expectation
+winningMessage =
+    let
+        model_ = Model.newModel {height=400, width=400}
+        model =
+            { model_
+            | message = Model.MessageWon Model.OSide
+            }
+    in
+        \() ->
+            Expect.equal
+                [ Html.img
+                    [ Html.Attributes.style
+                        [ ("height", "1.2em")
+                        , ("vertical-align", "middle")
+                        , ("margin-left", "0.2em")
+                        ]
+                    , Html.Attributes.src "images/piece-white.svg"
+                    ]
+                    []
+                , Html.text " won!  Choose \"Start again\"."
+                ]
+                (View.boardMessage model)

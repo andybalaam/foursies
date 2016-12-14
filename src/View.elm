@@ -1,5 +1,6 @@
 module View exposing
-    ( boardPieces
+    ( boardMessage
+    , boardPieces
     , boardSide
     , boardTicks
     , choosePlayersDiv
@@ -127,20 +128,30 @@ toPlay model =
 
 boardMessage : Model.Model -> List (Html.Html Msg.Msg)
 boardMessage model =
-    let mainMsg =
-        case model.message of
-            Model.MessageNormal ->
-                [ Html.text <|
-                    "Tap or drag the pieces."
-                    ++ " Green ticks show what you can do."
+    case model.message of
+        Model.MessageNormal ->
+            [ Html.text <|
+                "Tap or drag the pieces."
+                ++ " Green ticks show what you can do."
+            ] ++ (toPlay model)
+        Model.MessageMoveNotAllowed ->
+            [ Html.text <|
+                "You are not allowed to move to there."
+                ++ "Drop the piece where there is a tick."
+            ] ++ (toPlay model)
+        Model.MessageWon side ->
+            [ Html.img
+                [ Html.Attributes.style
+                    [ ("height", "1.2em")
+                    , ("vertical-align", "middle")
+                    , ("margin-left", "0.2em")
+                    ]
+                , Html.Attributes.src
+                    <| playerImage <| Model.sidePlayer model side
                 ]
-            Model.MessageMoveNotAllowed ->
-                [ Html.text <|
-                    "You are not allowed to move to there."
-                    ++ "Drop the piece where there is a tick."
-                ]
-    in
-        mainMsg ++ (toPlay model)
+                []
+            , Html.text " won!  Choose \"Start again\"."
+            ]
 
 
 boardLine : String -> String -> String -> String -> Html.Html Msg.Msg

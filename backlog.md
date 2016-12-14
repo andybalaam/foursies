@@ -13,8 +13,8 @@
 - ~~UI for winning a game~~
 - ~~Restart button~~
 - Messages
-    - At the very start of the game?
-    - When you win
+    - ~~At the very start of the game?~~
+    - ~~When you win~~
     - When you can't move because it's not your go
     - When you can't do that move because you must take
     - When you can't do that move for normal reasons
