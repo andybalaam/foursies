@@ -150,7 +150,7 @@ boardMessage model =
                     <| playerImage <| Model.sidePlayer model side
                 ]
                 []
-            , Html.text " won!  Choose \"Start again\"."
+            , Html.text " won!  Choose \"Start again\" below."
             ]
 
 

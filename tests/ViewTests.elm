@@ -1029,6 +1029,6 @@ winningMessage =
                     , Html.Attributes.src "images/piece-white.svg"
                     ]
                     []
-                , Html.text " won!  Choose \"Start again\"."
+                , Html.text " won!  Choose \"Start again\" below."
                 ]
                 (View.boardMessage model)
