@@ -31,6 +31,7 @@ all =
         , test "Big ticks where piece will land" bigTickWherePieceWillLand
         , test "Can tap to cancel when moving" canTapToCancelWhenMoving
         , test "Message is displayed when you win" overlayDisplayedWhenWin
+        , test "Message is displayed when all captured" overlayWhenAllCaptured
         ]
 
 
@@ -967,6 +968,38 @@ overlayDisplayedWhenWin =
                             [ x "50", y "28.000000000000004"
                             , height "100", width "100"
                             , xlinkHref "images/piece-white.svg" ] []
+                        , Svg.text_
+                            [ x "55.00000000000001", y "168"
+                            , fontSize "40", fill "#FFFFFF" ]
+                            [ Svg.text "wins!" ]
+                    ]
+                    (View.wonOverlay model)
+
+
+overlayWhenAllCaptured : () -> Expect.Expectation
+overlayWhenAllCaptured =
+    Utils.forBoard
+        "...."
+        ".X.."
+        "...."
+        "...." <| \board ->
+            let
+                model_ = Model.newModel {width=100, height=100}
+                model =
+                    { model_
+                    | board = board
+                    , turn = Model.OSide
+                    }
+            in
+                Expect.equal
+                    [
+                        rect
+                            [ x "0", y "0", width "200", height "200"
+                            , fill "#000000" , opacity "0.8" ] []
+                        , image
+                            [ x "50", y "28.000000000000004"
+                            , height "100", width "100"
+                            , xlinkHref "images/piece-black.svg" ] []
                         , Svg.text_
                             [ x "55.00000000000001", y "168"
                             , fontSize "40", fill "#FFFFFF" ]

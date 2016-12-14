@@ -23,6 +23,8 @@ all =
         , test "X wins if reached bottom (O to play)" xWinsIfReachedBottomO
         , test "O wins if reached top (X to play)" oWinsIfReachedTopX
         , test "O wins if reached top (O to play)" oWinsIfReachedTopO
+        , test "X wins if all O pieces are gone" xWinsIfNoOLeft
+        , test "O wins if all X pieces are gone" oWinsIfNoXLeft
         , test "Generate forward moves with no jumps" forwardMovesNoJumps
         , test "Generate backward moves with no jumps" backwardMovesNoJumps
         , test "Generate hops and slides" hopsAndSlides
@@ -134,6 +136,30 @@ oWinsIfReachedTopO =
         "...O"
         ".XX."
         ".O.."
+        "...."
+        <| \board -> Expect.equal
+            ( Moves.Won Board.oPiece )
+            ( Moves.whichCanMove Board.oPiece board )
+
+
+xWinsIfNoOLeft : () -> Expect.Expectation
+xWinsIfNoOLeft =
+    Utils.forBoard
+        "...."
+        ".XX."
+        "...."
+        "...."
+        <| \board -> Expect.equal
+            ( Moves.Won Board.xPiece )
+            ( Moves.whichCanMove Board.oPiece board )
+
+
+oWinsIfNoXLeft : () -> Expect.Expectation
+oWinsIfNoXLeft =
+    Utils.forBoard
+        "...."
+        ".OO."
+        "...."
         "...."
         <| \board -> Expect.equal
             ( Moves.Won Board.oPiece )

@@ -257,13 +257,20 @@ whichCanMove side board =
 whoWon : Board.Board -> Board.Piece
 whoWon board =
     let
-        (rt, _, _, rb) = board.pieces
+        (rt, rm, rn, rb) = board.pieces
         (t0, t1, t2, t3) = rt
         (b0, b1, b2, b3) = rb
+        (m0, m1, m2, m3) = rm
+        (n0, n1, n2, n3) = rn
+        all = [t0, t1, t2, t3, m0, m1, m2, m3, n0, n1, n2, n3, b0, b1, b2, b3]
     in
         if List.member Board.oPiece [t0, t1, t2, t3] then
             Board.oPiece
         else if List.member Board.xPiece [b0, b1, b2, b3] then
+            Board.xPiece
+        else if not (List.member Board.xPiece all) then
+            Board.oPiece
+        else if not (List.member Board.oPiece all) then
             Board.xPiece
         else
             Board.noPiece
