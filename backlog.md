@@ -16,9 +16,9 @@
 
 ## ~~Release 0.1~~
 
-- Fix on Chrome on Android
+- ~~Fix on Chrome on Android~~
 
-## Release 0.1.1
+## ~~Release 0.1.1~~
 
 - Change piece images
 - Make Christmassy

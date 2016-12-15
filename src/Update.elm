@@ -123,9 +123,12 @@ updateTryMove model moveA =
 
 updateDragStart : Int -> Int -> Model.Model -> Model.Model
 updateDragStart xpos ypos model =
-    { model
-        | dragging = Just <| Model.DragState xpos ypos model.mousePos
-    }
+    case model.dragging of
+        Just (Model.TouchedState _ _) -> model
+        default ->
+            { model
+                | dragging = Just <| Model.DragState xpos ypos model.mousePos
+            }
 
 
 updateTouched : Int -> Int -> Model.Model -> Model.Model

@@ -27,6 +27,7 @@ all =
         , test "Impossible to have identical players" playersNotIdentical
         , test "Moving mouse updates" movingMouseUpdates
         , test "Start dragging a piece" startDragging
+        , test "Start dragging after touch does nothing" startDraggingAfterTouch
         , test "Tap to start moving a piece" tapToStartMoving
         , test "Tap to finish moving a piece" tapToFinishMoving
         -- TODO: tap to cancel moving
@@ -150,6 +151,18 @@ startDragging =
                 | dragging = Just
                     <| Model.DragState 1 0 (Mouse.Position 21 23)
             }
+            (update (Msg.DragStart 1 0) model)
+
+
+startDraggingAfterTouch : () -> Expect.Expectation
+startDraggingAfterTouch =
+    let
+        model_ = Model.newModel {width=10, height=10}
+        model = { model_ | dragging = Just <| Model.TouchedState 1 0 }
+    in
+        -- DragStart has no effect because we already touched
+        modelEqual
+            { model | dragging = Just <| Model.TouchedState 1 0 }
             (update (Msg.DragStart 1 0) model)
 
 
