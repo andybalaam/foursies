@@ -12072,20 +12072,25 @@ var _andybalaam$foursies$Update$updateResize = F3(
 	});
 var _andybalaam$foursies$Update$updateDragStart = F3(
 	function (xpos, ypos, model) {
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{
-				dragging: _elm_lang$core$Maybe$Just(
-					A3(_andybalaam$foursies$Model$DragState, xpos, ypos, model.mousePos))
-			});
+		var _p1 = model.dragging;
+		if ((_p1.ctor === 'Just') && (_p1._0.ctor === 'TouchedState')) {
+			return model;
+		} else {
+			return _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					dragging: _elm_lang$core$Maybe$Just(
+						A3(_andybalaam$foursies$Model$DragState, xpos, ypos, model.mousePos))
+				});
+		}
 	});
 var _andybalaam$foursies$Update$containsTake = function (moves) {
 	return !_elm_lang$core$List$isEmpty(
 		A2(
 			_elm_lang$core$List$filter,
 			function (move) {
-				var _p1 = move;
-				if (_p1.ctor === 'Take') {
+				var _p2 = move;
+				if (_p2.ctor === 'Take') {
 					return true;
 				} else {
 					return false;
@@ -12095,10 +12100,10 @@ var _andybalaam$foursies$Update$containsTake = function (moves) {
 };
 var _andybalaam$foursies$Update$updateTryMove = F2(
 	function (model, moveA) {
-		var _p2 = moveA;
-		if (_p2.ctor === 'YesAllowed') {
+		var _p3 = moveA;
+		if (_p3.ctor === 'YesAllowed') {
 			var newTurn = _andybalaam$foursies$Model$oppositeSide(model.turn);
-			var newBoard = A2(_andybalaam$foursies$Moves$movePiece, model.board, _p2._0);
+			var newBoard = A2(_andybalaam$foursies$Moves$movePiece, model.board, _p3._0);
 			var won = _andybalaam$foursies$Moves$whoWon(newBoard);
 			var allowed = A2(
 				_andybalaam$foursies$Moves$allowedMoves,
@@ -12109,8 +12114,8 @@ var _andybalaam$foursies$Update$updateTryMove = F2(
 				{
 					dragging: _elm_lang$core$Maybe$Nothing,
 					message: function () {
-						var _p3 = won;
-						switch (_p3.ctor) {
+						var _p4 = won;
+						switch (_p4.ctor) {
 							case 'XPiece':
 								return _andybalaam$foursies$Model$MessageWon(_andybalaam$foursies$Model$XSide);
 							case 'OPiece':
@@ -12125,7 +12130,7 @@ var _andybalaam$foursies$Update$updateTryMove = F2(
 		} else {
 			return _elm_lang$core$Native_Utils.update(
 				model,
-				{dragging: _elm_lang$core$Maybe$Nothing, message: _p2._0});
+				{dragging: _elm_lang$core$Maybe$Nothing, message: _p3._0});
 		}
 	});
 var _andybalaam$foursies$Update$moveIsFromAndTo = F3(
@@ -12162,40 +12167,40 @@ var _andybalaam$foursies$Update$moveAllowed = F5(
 					_andybalaam$foursies$Moves$allowedMoves,
 					_andybalaam$foursies$Model$sidePiece(model.turn),
 					model.board));
-			var _p4 = _elm_lang$core$List$head(thisMove);
-			if (_p4.ctor === 'Nothing') {
+			var _p5 = _elm_lang$core$List$head(thisMove);
+			if (_p5.ctor === 'Nothing') {
 				return _andybalaam$foursies$Update$NotAllowed(_andybalaam$foursies$Model$MessageMoveNotAllowed);
 			} else {
-				return _andybalaam$foursies$Update$YesAllowed(_p4._0);
+				return _andybalaam$foursies$Update$YesAllowed(_p5._0);
 			}
 		}
 	});
 var _andybalaam$foursies$Update$dragMoveAllowed = F4(
 	function (model, xpos, ypos, startPx) {
-		var _p5 = A3(_andybalaam$foursies$PixelScale$gridDistance, model, startPx, model.mousePos);
-		var moveX = _p5._0;
-		var moveY = _p5._1;
+		var _p6 = A3(_andybalaam$foursies$PixelScale$gridDistance, model, startPx, model.mousePos);
+		var moveX = _p6._0;
+		var moveY = _p6._1;
 		return A5(_andybalaam$foursies$Update$moveAllowed, model, xpos, ypos, xpos + moveX, ypos + moveY);
 	});
 var _andybalaam$foursies$Update$updateDragStop = function (model) {
-	var _p6 = model.dragging;
-	if ((_p6.ctor === 'Just') && (_p6._0.ctor === 'DragState')) {
+	var _p7 = model.dragging;
+	if ((_p7.ctor === 'Just') && (_p7._0.ctor === 'DragState')) {
 		return A2(
 			_andybalaam$foursies$Update$updateTryMove,
 			model,
-			A4(_andybalaam$foursies$Update$dragMoveAllowed, model, _p6._0._0, _p6._0._1, _p6._0._2));
+			A4(_andybalaam$foursies$Update$dragMoveAllowed, model, _p7._0._0, _p7._0._1, _p7._0._2));
 	} else {
 		return model;
 	}
 };
 var _andybalaam$foursies$Update$updateTouched = F3(
 	function (xpos, ypos, model) {
-		var _p7 = model.dragging;
-		if ((_p7.ctor === 'Just') && (_p7._0.ctor === 'TouchedState')) {
+		var _p8 = model.dragging;
+		if ((_p8.ctor === 'Just') && (_p8._0.ctor === 'TouchedState')) {
 			return A2(
 				_andybalaam$foursies$Update$updateTryMove,
 				model,
-				A5(_andybalaam$foursies$Update$moveAllowed, model, _p7._0._0, _p7._0._1, xpos, ypos));
+				A5(_andybalaam$foursies$Update$moveAllowed, model, _p8._0._0, _p8._0._1, xpos, ypos));
 		} else {
 			return _elm_lang$core$Native_Utils.update(
 				model,
@@ -12208,30 +12213,30 @@ var _andybalaam$foursies$Update$updateTouched = F3(
 var _andybalaam$foursies$Update$update = F2(
 	function (msg, model) {
 		var m = function () {
-			var _p8 = msg;
-			switch (_p8.ctor) {
+			var _p9 = msg;
+			switch (_p9.ctor) {
 				case 'Resize':
-					return A3(_andybalaam$foursies$Update$updateResize, _p8._0, _p8._1, model);
+					return A3(_andybalaam$foursies$Update$updateResize, _p9._0, _p9._1, model);
 				case 'ChoosePlayer':
 					return _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							choosingSide: _elm_lang$core$Maybe$Just(_p8._0)
+							choosingSide: _elm_lang$core$Maybe$Just(_p9._0)
 						});
 				case 'ChangePlayer':
-					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p8._0, _p8._1);
+					return A3(_andybalaam$foursies$Update$updatePlayer, model, _p9._0, _p9._1);
 				case 'StartAgain':
 					return _andybalaam$foursies$Update$updateStartAgain(model);
 				case 'MouseMove':
 					return _elm_lang$core$Native_Utils.update(
 						model,
-						{mousePos: _p8._0});
+						{mousePos: _p9._0});
 				case 'DragStart':
-					return A3(_andybalaam$foursies$Update$updateDragStart, _p8._0, _p8._1, model);
+					return A3(_andybalaam$foursies$Update$updateDragStart, _p9._0, _p9._1, model);
 				case 'DragStop':
 					return _andybalaam$foursies$Update$updateDragStop(model);
 				case 'Touched':
-					return A3(_andybalaam$foursies$Update$updateTouched, _p8._0, _p8._1, model);
+					return A3(_andybalaam$foursies$Update$updateTouched, _p9._0, _p9._1, model);
 				default:
 					return _elm_lang$core$Native_Utils.update(
 						model,
