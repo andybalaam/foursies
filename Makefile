@@ -4,6 +4,9 @@ all: test
 compile:
 	elm-make --output=foursies.js src/Main.elm
 
+debug:
+	elm-make --debug --output=foursies.js src/Main.elm
+
 run:
 	@echo 'http://localhost:8000/index.html'
 	elm-reactor
